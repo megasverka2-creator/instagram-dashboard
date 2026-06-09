@@ -1,14 +1,83 @@
 [
   {
-    "collected_at": "2026-06-09T13:38:23.066248+00:00",
+    "collected_at": "2026-06-09T14:30:01.703458+00:00",
     "date": "2026-06-09",
     "accounts": {
       "benison_uz": {
         "username": "benison_uz",
-        "followers": 41268,
+        "followers": 41270,
         "media_count": 459,
-        "reach_7d": 21243,
+        "reach_7d": 22116,
+        "profile_views_7d": 462,
+        "engagement_rate": 0.93,
+        "avg_engagement": 384,
+        "reach_rate": 30.1,
+        "avg_reach": 12417,
+        "total_saved": 215,
+        "total_shares": 2707,
+        "by_type": {
+          "IMAGE": {
+            "count": 12,
+            "engagement": 1546,
+            "reach": 115124,
+            "avg_engagement": 129
+          },
+          "VIDEO": {
+            "count": 11,
+            "engagement": 7750,
+            "reach": 185429,
+            "avg_engagement": 705
+          },
+          "CAROUSEL_ALBUM": {
+            "count": 2,
+            "engagement": 315,
+            "reach": 9872,
+            "avg_engagement": 158
+          }
+        },
         "posts": [
+          {
+            "id": "17877136476574544",
+            "caption": "Ofitsiantlarimizni hafa qilmang!😁😎  Benison bilan yaxshi kayfiyat doim hamrohingiz bo’l...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DXZOq0ujJhz/",
+            "timestamp": "2026-04-21T12:47:36+0000",
+            "likes": 1786,
+            "comments": 64,
+            "saved": 64,
+            "shares": 1363,
+            "reach": 69992,
+            "engagement": 3277,
+            "post_er": 4.7
+          },
+          {
+            "id": "18003070667879515",
+            "caption": "Ofitsiantlarimiz “Чаевые” olishganda!😁",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DXbuflbjHiG/",
+            "timestamp": "2026-04-22T12:05:17+0000",
+            "likes": 732,
+            "comments": 27,
+            "saved": 16,
+            "shares": 279,
+            "reach": 15877,
+            "engagement": 1054,
+            "post_er": 6.6
+          },
+          {
+            "id": "17888227509488592",
+            "caption": "Qaysi biri yutadi?!😎😁",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYISuEkRfKh/",
+            "timestamp": "2026-05-09T19:26:33+0000",
+            "likes": 663,
+            "comments": 21,
+            "saved": 15,
+            "shares": 97,
+            "reach": 16683,
+            "engagement": 796,
+            "post_er": 4.8
+          },
           {
             "id": "18121943377648444",
             "caption": "😁😁  Benison bilan yaxshi kayfiyat doim hamrohingiz bo’lsin!😊",
@@ -20,11 +89,12 @@
             "saved": 4,
             "shares": 67,
             "reach": 14345,
-            "engagement": 784
+            "engagement": 784,
+            "post_er": 5.5
           },
           {
             "id": "17946449193015296",
-            "caption": "Benison menyusida siz kutgan, siz so‘ragan mazali yangiliklar! 😋🔥  Benisonga ...",
+            "caption": "Benison menyusida siz kutgan, siz so‘ragan mazali yangiliklar! 😋🔥  Benisonga tashrif bu...",
             "type": "IMAGE",
             "permalink": "https://www.instagram.com/p/DZFqj6hsZ91/",
             "timestamp": "2026-06-02T15:29:28+0000",
@@ -32,21 +102,37 @@
             "comments": 7,
             "saved": 59,
             "shares": 338,
-            "reach": 55752,
-            "engagement": 711
+            "reach": 55926,
+            "engagement": 711,
+            "post_er": 1.3
+          },
+          {
+            "id": "17928685584090922",
+            "caption": "😎😁",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYFJ79ashzy/",
+            "timestamp": "2026-05-08T14:12:10+0000",
+            "likes": 443,
+            "comments": 5,
+            "saved": 14,
+            "shares": 57,
+            "reach": 27534,
+            "engagement": 519,
+            "post_er": 1.9
           },
           {
             "id": "18530341081073898",
-            "caption": "Benison menyusida siz kutgan, siz so‘ragan mazali yangiliklar! 😋🔥  Endi menyu...",
+            "caption": "Benison menyusida siz kutgan, siz so‘ragan mazali yangiliklar! 😋🔥  Endi menyumizda yang...",
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DZFsRGPsntc/",
             "timestamp": "2026-06-02T15:43:11+0000",
-            "likes": 249,
+            "likes": 251,
             "comments": 23,
             "saved": 8,
             "shares": 103,
-            "reach": 7700,
-            "engagement": 383
+            "reach": 7713,
+            "engagement": 385,
+            "post_er": 5.0
           },
           {
             "id": "18119251936777437",
@@ -58,112 +144,37 @@
             "comments": 25,
             "saved": 1,
             "shares": 68,
-            "reach": 11625,
-            "engagement": 330
+            "reach": 11669,
+            "engagement": 330,
+            "post_er": 2.8
           },
           {
-            "id": "17926005864340889",
-            "caption": "😁",
+            "id": "18118501480641485",
+            "caption": "Buni faqat oshpazlar tushunar ekan!😁  Benison bilan yaxshi kayfiyat doim hamrohingiz bo...",
             "type": "VIDEO",
-            "permalink": "https://www.instagram.com/reel/DY6tXlhu5GV/",
-            "timestamp": "2026-05-29T09:21:31+0000",
-            "likes": 151,
-            "comments": 6,
-            "saved": 5,
-            "shares": 14,
-            "reach": 5610,
-            "engagement": 176
+            "permalink": "https://www.instagram.com/reel/DXuIaiMjIGT/",
+            "timestamp": "2026-04-29T15:36:27+0000",
+            "likes": 232,
+            "comments": 16,
+            "saved": 4,
+            "shares": 26,
+            "reach": 10422,
+            "engagement": 278,
+            "post_er": 2.7
           },
           {
-            "id": "18071496611695181",
-            "caption": "Benison menyusida mazali yangilik! 😋  Siz kutgan, siz so‘ragan yangi ta’mlard...",
+            "id": "17998693643765753",
+            "caption": "Marvarid shashlik!😋  Do‘stlar bilan yig‘ilishmi, oilaviy dasturxonmi — Benison bilan ka...",
             "type": "IMAGE",
-            "permalink": "https://www.instagram.com/p/DZU2ovIRo8V/",
-            "timestamp": "2026-06-08T13:02:24+0000",
-            "likes": 55,
-            "comments": 2,
-            "saved": 5,
-            "shares": 69,
-            "reach": 5541,
-            "engagement": 131
-          },
-          {
-            "id": "18010618880715308",
-            "caption": "Issiq kunlarni Benison bilan salqin o’tkazing!😊  📌Filiallarimiz manzillari: •...",
-            "type": "VIDEO",
-            "permalink": "https://www.instagram.com/reel/DY6sJ_tOo83/",
-            "timestamp": "2026-05-29T09:10:28+0000",
-            "likes": 96,
-            "comments": 2,
-            "saved": 1,
-            "shares": 6,
-            "reach": 3821,
-            "engagement": 105
-          },
-          {
-            "id": "17953280361153799",
-            "caption": "🌙 Qurbon hayitingizni muborak bo’lsin! ✨  Benison Restoran oilasi sizni va az...",
-            "type": "IMAGE",
-            "permalink": "https://www.instagram.com/p/DY0TTLIubtl/",
-            "timestamp": "2026-05-26T21:37:55+0000",
-            "likes": 29,
-            "comments": 0,
-            "saved": 1,
-            "shares": 65,
-            "reach": 2726,
-            "engagement": 95
-          },
-          {
-            "id": "17954343507150425",
-            "caption": "😎😳😁",
-            "type": "VIDEO",
-            "permalink": "https://www.instagram.com/reel/DZNFrIiMnTm/",
-            "timestamp": "2026-06-05T12:40:17+0000",
-            "likes": 41,
-            "comments": 3,
-            "saved": 0,
-            "shares": 2,
-            "reach": 1760,
-            "engagement": 46
-          },
-          {
-            "id": "18118199746693841",
-            "caption": "🎈 1-IYUN – XALQARO BOLALARNI HIMOYA QILISH KUNI MUBORAK!  Benison va Eddo jam...",
-            "type": "IMAGE",
-            "permalink": "https://www.instagram.com/p/DZCASoBMOri/",
-            "timestamp": "2026-06-01T05:20:58+0000",
-            "likes": 26,
-            "comments": 0,
-            "saved": 0,
-            "shares": 6,
-            "reach": 2937,
-            "engagement": 32
-          },
-          {
-            "id": "18364398157229458",
-            "caption": "Qovurilgan lazzat — har luqmada mazali ta’m!😋  Qovurma lag’monimiz bilan kuni...",
-            "type": "IMAGE",
-            "permalink": "https://www.instagram.com/p/DYwvzxuu9F0/",
-            "timestamp": "2026-05-25T12:30:04+0000",
-            "likes": 21,
-            "comments": 0,
-            "saved": 1,
-            "shares": 0,
-            "reach": 3477,
-            "engagement": 22
-          },
-          {
-            "id": "17946595164011887",
-            "caption": "Mazali go’shtli lazzat! 😋  “Go’sht say” uyg’ur taomi bilan kuningizni yanada ...",
-            "type": "IMAGE",
-            "permalink": "https://www.instagram.com/p/DY9kBn6MZ-R/",
-            "timestamp": "2026-05-30T11:56:52+0000",
-            "likes": 20,
-            "comments": 0,
-            "saved": 0,
-            "shares": 0,
-            "reach": 2434,
-            "engagement": 20
+            "permalink": "https://www.instagram.com/p/DYCceXfjHrH/",
+            "timestamp": "2026-05-07T12:56:22+0000",
+            "likes": 201,
+            "comments": 11,
+            "saved": 9,
+            "shares": 53,
+            "reach": 18316,
+            "engagement": 274,
+            "post_er": 1.5
           }
         ]
       },
@@ -171,11 +182,26 @@
         "username": "dieto_uz",
         "followers": 378,
         "media_count": 3,
-        "reach_7d": 246,
+        "reach_7d": 252,
+        "profile_views_7d": 13,
+        "engagement_rate": 189.95,
+        "avg_engagement": 718,
+        "reach_rate": 3681.0,
+        "avg_reach": 13914,
+        "total_saved": 25,
+        "total_shares": 641,
+        "by_type": {
+          "VIDEO": {
+            "count": 3,
+            "engagement": 2154,
+            "reach": 41742,
+            "avg_engagement": 718
+          }
+        },
         "posts": [
           {
             "id": "18075042761234975",
-            "caption": "Benison x Dietto! 🤝🍣 Endi sevimli sushingizdan bahramand bo’lish yanada osonl...",
+            "caption": "Benison x Dietto! 🤝🍣 Endi sevimli sushingizdan bahramand bo’lish yanada osonlashdi. Ben...",
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DXynB0rsDT6/",
             "timestamp": "2026-05-01T09:22:24+0000",
@@ -184,11 +210,12 @@
             "saved": 17,
             "shares": 366,
             "reach": 16961,
-            "engagement": 980
+            "engagement": 980,
+            "post_er": 5.8
           },
           {
             "id": "18099079828831515",
-            "caption": "Dieto bilan mazali tanaffus vaqti keldi! 🥗✨  Sog‘lom, tezkor va eng muhimi — ...",
+            "caption": "Dieto bilan mazali tanaffus vaqti keldi! 🥗✨  Sog‘lom, tezkor va eng muhimi — hamyonbop ...",
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DXjEvdWjJZf/",
             "timestamp": "2026-04-25T08:35:41+0000",
@@ -196,12 +223,13 @@
             "comments": 34,
             "saved": 6,
             "shares": 241,
-            "reach": 14697,
-            "engagement": 857
+            "reach": 14700,
+            "engagement": 857,
+            "post_er": 5.8
           },
           {
             "id": "18010565966906987",
-            "caption": "Sizni va yaqinlaringizni Dietoda kutamiz!😊  📍 Bizning manzillar: • Zarafshon:...",
+            "caption": "Sizni va yaqinlaringizni Dietoda kutamiz!😊  📍 Bizning manzillar: • Zarafshon: Mo‘jizala...",
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DY_vW0EMMy9/",
             "timestamp": "2026-05-31T08:14:29+0000",
@@ -210,7 +238,8 @@
             "saved": 2,
             "shares": 34,
             "reach": 10081,
-            "engagement": 317
+            "engagement": 317,
+            "post_er": 3.1
           }
         ]
       },
@@ -218,8 +247,43 @@
         "username": "eddo_uz",
         "followers": 38213,
         "media_count": 275,
-        "reach_7d": 484,
+        "reach_7d": 499,
+        "profile_views_7d": 153,
+        "engagement_rate": 0.69,
+        "avg_engagement": 264,
+        "reach_rate": 32.4,
+        "avg_reach": 12379,
+        "total_saved": 251,
+        "total_shares": 2709,
+        "by_type": {
+          "VIDEO": {
+            "count": 7,
+            "engagement": 1864,
+            "reach": 46691,
+            "avg_engagement": 266
+          },
+          "IMAGE": {
+            "count": 18,
+            "engagement": 4743,
+            "reach": 262795,
+            "avg_engagement": 264
+          }
+        },
         "posts": [
+          {
+            "id": "18010604663676340",
+            "caption": "🌙 RAMAZON BARAKASI — 4-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restora...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DVBnMBDDAlW/",
+            "timestamp": "2026-02-21T15:35:47+0000",
+            "likes": 260,
+            "comments": 4,
+            "saved": 145,
+            "shares": 782,
+            "reach": 59894,
+            "engagement": 1191,
+            "post_er": 2.0
+          },
           {
             "id": "18116199985743188",
             "caption": "😍😅  Kimga jo’natishni o’zingiz bilasiz!😅",
@@ -231,7 +295,36 @@
             "saved": 18,
             "shares": 444,
             "reach": 28501,
-            "engagement": 1170
+            "engagement": 1170,
+            "post_er": 4.1
+          },
+          {
+            "id": "18052716710483289",
+            "caption": "🌙 RAMAZON BARAKASI — 8-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restora...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DVLm3LtjBUr/",
+            "timestamp": "2026-02-25T12:45:28+0000",
+            "likes": 163,
+            "comments": 2,
+            "saved": 17,
+            "shares": 244,
+            "reach": 37978,
+            "engagement": 426,
+            "post_er": 1.1
+          },
+          {
+            "id": "18062981738668440",
+            "caption": "🌙 RAMAZON BARAKASI — 22-KUN TAKLIFI  Maxsus taklifimiz — EDDО Fast Food restoranlaridan...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DVv6iWCjOtS/",
+            "timestamp": "2026-03-11T15:09:57+0000",
+            "likes": 157,
+            "comments": 7,
+            "saved": 11,
+            "shares": 207,
+            "reach": 23896,
+            "engagement": 382,
+            "post_er": 1.6
           },
           {
             "id": "18136456735526815",
@@ -244,7 +337,22 @@
             "saved": 2,
             "shares": 71,
             "reach": 6777,
-            "engagement": 372
+            "engagement": 372,
+            "post_er": 5.5
+          },
+          {
+            "id": "18186667435363163",
+            "caption": "🌙 RAMAZON BARAKASI — 8-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restora...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DVLmzltjJvA/",
+            "timestamp": "2026-02-25T12:44:56+0000",
+            "likes": 209,
+            "comments": 15,
+            "saved": 2,
+            "shares": 142,
+            "reach": 8114,
+            "engagement": 368,
+            "post_er": 4.5
           },
           {
             "id": "18081865577531103",
@@ -257,7 +365,8 @@
             "saved": 1,
             "shares": 54,
             "reach": 4902,
-            "engagement": 288
+            "engagement": 288,
+            "post_er": 5.9
           },
           {
             "id": "17858946579683812",
@@ -270,111 +379,36 @@
             "saved": 5,
             "shares": 12,
             "reach": 8138,
-            "engagement": 277
+            "engagement": 277,
+            "post_er": 3.4
           },
           {
-            "id": "17942374068226556",
-            "caption": "Oshpazlarimiz och qolganda😢😁",
-            "type": "VIDEO",
-            "permalink": "https://www.instagram.com/reel/DZIFOo9s8aG/",
-            "timestamp": "2026-06-03T13:59:42+0000",
-            "likes": 185,
-            "comments": 16,
-            "saved": 3,
-            "shares": 21,
-            "reach": 9423,
-            "engagement": 225
-          },
-          {
-            "id": "18108673966929069",
-            "caption": "😂  Sizni va yaqinlaringizni eddoda kutamiz!😁",
-            "type": "VIDEO",
-            "permalink": "https://www.instagram.com/reel/DYmjW3qsK-l/",
-            "timestamp": "2026-05-21T13:28:58+0000",
-            "likes": 185,
-            "comments": 19,
-            "saved": 1,
-            "shares": 6,
-            "reach": 5153,
-            "engagement": 211
-          },
-          {
-            "id": "17987881070816635",
-            "caption": "Pitsani tekinga olishni 1001 usuli😂",
-            "type": "VIDEO",
-            "permalink": "https://www.instagram.com/reel/DZAUZups2B0/",
-            "timestamp": "2026-05-31T13:38:24+0000",
-            "likes": 106,
-            "comments": 11,
-            "saved": 2,
-            "shares": 4,
-            "reach": 4157,
-            "engagement": 123
-          },
-          {
-            "id": "18112288975872048",
-            "caption": "Ba’zi narsalar borki, ularni hatto kuchli sevgi uchun ham qurbon qilib bo’lma...",
+            "id": "18076104614382489",
+            "caption": "🌙 RAMAZON BARAKASI — 9-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restora...",
             "type": "IMAGE",
-            "permalink": "https://www.instagram.com/p/DYcN5MEs3D-/",
-            "timestamp": "2026-05-17T13:09:17+0000",
-            "likes": 41,
-            "comments": 1,
-            "saved": 0,
-            "shares": 4,
-            "reach": 3732,
-            "engagement": 46
+            "permalink": "https://www.instagram.com/p/DVOUi7KDF2v/",
+            "timestamp": "2026-02-26T14:02:52+0000",
+            "likes": 98,
+            "comments": 5,
+            "saved": 8,
+            "shares": 154,
+            "reach": 13559,
+            "engagement": 265,
+            "post_er": 2.0
           },
           {
-            "id": "18012617165773541",
-            "caption": "Hurmatli yurtdoshlar!  Eddo jamoasi sizni Navro‘z bayrami bilan muborakbod et...",
+            "id": "18115831744653246",
+            "caption": "🌙 RAMAZON BARAKASI — 21-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restor...",
             "type": "IMAGE",
-            "permalink": "https://www.instagram.com/p/DWIaqOSjBkJ/",
-            "timestamp": "2026-03-21T03:32:46+0000",
-            "likes": 18,
-            "comments": 0,
-            "saved": 0,
-            "shares": 17,
-            "reach": 3708,
-            "engagement": 35
-          },
-          {
-            "id": "18118256737741190",
-            "caption": "Gooooldek mazali ta’m!😍  Olg’a O’zbekiston!💜",
-            "type": "IMAGE",
-            "permalink": "https://www.instagram.com/p/DYsAHFVRXJx/",
-            "timestamp": "2026-05-23T16:17:06+0000",
-            "likes": 29,
-            "comments": 0,
-            "saved": 0,
-            "shares": 3,
-            "reach": 2616,
-            "engagement": 32
-          },
-          {
-            "id": "18083799995561937",
-            "caption": "🌙 Qurbon hayitingizni muborak bo’lsin! ✨  Eddo jamoasi sizni va aziz oilangiz...",
-            "type": "IMAGE",
-            "permalink": "https://www.instagram.com/p/DY0T_r6sPSX/",
-            "timestamp": "2026-05-26T21:44:17+0000",
-            "likes": 15,
-            "comments": 0,
-            "saved": 0,
-            "shares": 8,
-            "reach": 3103,
-            "engagement": 23
-          },
-          {
-            "id": "18572300410031678",
-            "caption": "Eddodan rosa pitsa yaeydigan vaqt bo’layapti l!😅😋",
-            "type": "IMAGE",
-            "permalink": "https://www.instagram.com/p/DWgwLxfjNgN/",
-            "timestamp": "2026-03-30T14:22:45+0000",
-            "likes": 20,
-            "comments": 0,
-            "saved": 0,
-            "shares": 1,
-            "reach": 3757,
-            "engagement": 21
+            "permalink": "https://www.instagram.com/p/DVtTrqaDOTS/",
+            "timestamp": "2026-03-10T14:51:47+0000",
+            "likes": 92,
+            "comments": 2,
+            "saved": 7,
+            "shares": 131,
+            "reach": 12640,
+            "engagement": 232,
+            "post_er": 1.8
           }
         ]
       }
