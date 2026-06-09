@@ -1,0 +1,5 @@
+# Maxfiy fayllar — hech qachon yuklanmasin
+*.local
+token.txt
+secrets.txt
+.env

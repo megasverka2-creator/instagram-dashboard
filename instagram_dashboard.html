@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instagram Hisobot — Restoranlar</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --glass: rgba(255,255,255,0.55);
+    --glass-border: rgba(255,255,255,0.65);
+    --ink: #2a1a3e;
+    --muted: #6b5b8a;
+    --benison: #ff7a59;
+    --dieto: #8a5cf6;
+    --eddo: #f9b234;
+    --ig1: #feda75; --ig2: #fa7e1e; --ig3: #d62976; --ig4: #962fbf; --ig5: #4f5bd5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    color: var(--ink); min-height: 100vh; position: relative; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: -20%; z-index: -2;
+    background: linear-gradient(135deg, #feda75 0%, #fa7e1e 22%, #d62976 50%, #962fbf 74%, #4f5bd5 100%);
+    background-size: 300% 300%; animation: drift 22s ease infinite; filter: saturate(1.1);
+  }
+  body::after {
+    content: ''; position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(40% 50% at 15% 20%, rgba(255,255,255,0.35), transparent 60%),
+      radial-gradient(35% 45% at 85% 15%, rgba(255,210,117,0.4), transparent 60%),
+      radial-gradient(45% 55% at 75% 85%, rgba(79,91,213,0.35), transparent 60%);
+    pointer-events: none;
+  }
+  @keyframes drift { 0%{background-position:0% 0%} 50%{background-position:100% 100%} 100%{background-position:0% 0%} }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 60px; }
+  .glass {
+    background: var(--glass); backdrop-filter: blur(22px) saturate(160%); -webkit-backdrop-filter: blur(22px) saturate(160%);
+    border: 1px solid var(--glass-border); box-shadow: 0 8px 32px rgba(45,20,70,0.18), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+  header.glass { border-radius: 28px; padding: 30px 34px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .logo-badge {
+    width: 60px; height: 60px; border-radius: 18px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--ig1), var(--ig2) 30%, var(--ig3) 60%, var(--ig4) 80%, var(--ig5));
+    display: grid; place-items: center; box-shadow: 0 8px 22px rgba(214,41,118,0.45);
+  }
+  .logo-badge svg { width: 34px; height: 34px; }
+  .head-text h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.1; }
+  .head-text p { color: var(--muted); font-size: 14px; margin-top: 3px; font-weight: 500; }
+  .head-meta { margin-left: auto; text-align: right; font-size: 13px; color: var(--muted); background: rgba(255,255,255,0.4); padding: 10px 16px; border-radius: 14px; font-weight: 600; }
+  .head-meta b { color: var(--ink); font-size: 15px; }
+  .section-head { display: flex; align-items: center; gap: 10px; margin: 34px 6px 16px; color: #fff; text-shadow: 0 1px 8px rgba(45,20,70,0.35); font-weight: 700; font-size: 15px; letter-spacing: 0.3px; }
+  .section-head svg { width: 20px; height: 20px; opacity: 0.95; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .acct-card { border-radius: 24px; padding: 22px; position: relative; overflow: hidden; transition: transform .25s ease, box-shadow .25s ease; }
+  .acct-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(45,20,70,0.26), inset 0 1px 0 rgba(255,255,255,0.6); }
+  .acct-card .top { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .avatar { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 18px; flex-shrink: 0; box-shadow: 0 6px 16px rgba(0,0,0,0.18); }
+  .avatar.benison { background: linear-gradient(135deg, #ff9a76, var(--benison)); }
+  .avatar.dieto { background: linear-gradient(135deg, #a98bff, var(--dieto)); }
+  .avatar.eddo { background: linear-gradient(135deg, #ffd16b, var(--eddo)); }
+  .acct-card .name { font-weight: 700; font-size: 17px; }
+  .acct-card .handle { color: var(--muted); font-size: 12.5px; font-weight: 500; }
+  .stat { display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid rgba(107,91,138,0.14); }
+  .stat:last-child { border-bottom: none; }
+  .stat .l { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13.5px; font-weight: 500; }
+  .stat .l svg { width: 16px; height: 16px; }
+  .stat .v { font-size: 22px; font-weight: 700; }
+  .stat .v .delta { font-size: 12px; font-weight: 700; margin-left: 7px; padding: 2px 7px; border-radius: 8px; }
+  .delta.up { color: #1f7a45; background: rgba(74,200,120,0.22); }
+  .delta.down { color: #c0392b; background: rgba(255,107,90,0.2); }
+  .chart-card { border-radius: 24px; padding: 24px; }
+  .chart-card h3 { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .chart-card h3 svg { width: 18px; height: 18px; }
+  .chart-card .note { color: var(--muted); font-size: 12.5px; margin: 4px 0 16px; font-weight: 500; }
+  .chart-box { position: relative; height: 290px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .posts { display: grid; gap: 12px; }
+  .post { border-radius: 20px; padding: 16px 18px; display: grid; grid-template-columns: 46px 1fr auto; gap: 16px; align-items: center; transition: transform .2s ease; }
+  .post:hover { transform: scale(1.01); }
+  .post .rank { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; font-weight: 800; font-size: 16px; color: #fff; background: rgba(107,91,138,0.35); }
+  .post .rank.r1 { background: linear-gradient(135deg, #ffd16b, #f9b234); box-shadow: 0 4px 12px rgba(249,178,52,0.5); }
+  .post .rank.r2 { background: linear-gradient(135deg, #d8d8e8, #b8b8cc); }
+  .post .rank.r3 { background: linear-gradient(135deg, #f0b890, #d99a6c); }
+  .post .acct-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 8px; color: #fff; margin-bottom: 5px; }
+  .acct-pill.benison { background: var(--benison); }
+  .acct-pill.dieto { background: var(--dieto); }
+  .acct-pill.eddo { background: var(--eddo); }
+  .post .cap { font-size: 14.5px; font-weight: 500; }
+  .post .link { color: var(--muted); font-size: 12px; text-decoration: none; font-weight: 600; }
+  .post .link:hover { color: var(--dieto); }
+  .post .stats { display: flex; gap: 16px; }
+  .post .stats .s { text-align: center; }
+  .post .stats .s svg { width: 16px; height: 16px; color: var(--muted); }
+  .post .stats .s .n { font-size: 16px; font-weight: 700; line-height: 1.1; }
+  .post .stats .s .l { font-size: 9.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600; }
+  .demo-note { border-radius: 18px; padding: 16px 20px; margin-bottom: 18px; background: rgba(255,255,255,0.5); font-size: 13.5px; font-weight: 500; line-height: 1.6; display: flex; align-items: center; gap: 12px; }
+  .demo-note svg { width: 22px; height: 22px; flex-shrink: 0; color: var(--ig3); }
+  .demo-note code { background: rgba(255,255,255,0.7); padding: 2px 8px; border-radius: 6px; font-size: 12.5px; }
+  footer { text-align: center; color: rgba(255,255,255,0.92); font-size: 12.5px; font-weight: 500; margin-top: 40px; text-shadow: 0 1px 6px rgba(45,20,70,0.3); }
+  @media (max-width: 820px) {
+    .cards, .two-col { grid-template-columns: 1fr; }
+    .head-meta { margin-left: 0; width: 100%; text-align: left; }
+    .head-text h1 { font-size: 23px; }
+    .post { grid-template-columns: 38px 1fr; }
+    .post .stats { grid-column: 1 / -1; justify-content: flex-start; margin-top: 8px; gap: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="glass">
+    <div class="logo-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="6"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1.3" fill="#fff" stroke="none"/></svg>
+    </div>
+    <div class="head-text">
+      <h1>Instagram ko'rsatkichlari</h1>
+      <p>Benison &middot; Dieto &middot; Eddo &mdash; haftalik dinamika</p>
+    </div>
+    <div class="head-meta" id="updated">&mdash;</div>
+  </header>
+  <div id="content"></div>
+  <footer>Ma'lumot Instagram Graph API orqali avtomatik yig'iladi &middot; Ichki hisobot</footer>
+</div>
+<script>
+const ACCENTS = { benison_uz: '#ff7a59', dieto_uz: '#8a5cf6', eddo_uz: '#f9b234' };
+const LABELS  = { benison_uz: 'Benison', dieto_uz: 'Dieto', eddo_uz: 'Eddo' };
+const IC = {
+  users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+  grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>',
+  heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+  chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
+  bookmark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>',
+  trend: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+  bars: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+  info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+};
+function fmt(n){ if(n===null||n===undefined) return '\u2014'; return n.toLocaleString('en-US').replace(/,/g,' '); }
+function escapeHtml(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+async function load(){
+  let history=[];
+  try{ const r=await fetch('instagram_data.json'); if(r.ok) history=await r.json(); }catch(e){}
+  if(!history||history.length===0){
+    history=buildDemo();
+    document.getElementById('content').insertAdjacentHTML('afterbegin',
+      '<div class="demo-note glass">'+IC.info+'<div>Hozir <b>namuna ma\u02bclumot</b> ko\u02bcrsatilmoqda. Haqiqiy ma\u02bclumot uchun <code>instagram_collector.py</code> ni ishga tushiring \u2014 sahifa avtomatik <code>instagram_data.json</code> dan o\u02bcqiydi.</div></div>');
+  }
+  render(history);
+}
+function render(history){
+  const latest=history[history.length-1];
+  const prev=history.length>1?history[history.length-2]:null;
+  const accounts=Object.keys(latest.accounts);
+  document.getElementById('updated').innerHTML='Oxirgi yangilanish<br><b>'+latest.date+'</b>';
+  let html='';
+  html+='<div class="section-head">'+IC.users+'<span>Akkauntlar holati</span></div><div class="cards">';
+  for(const acct of accounts){
+    const a=latest.accounts[acct], p=prev?prev.accounts[acct]:null;
+    const fd=p?a.followers-p.followers:null; const key=acct.split('_')[0];
+    html+='<div class="acct-card glass"><div class="top"><div class="avatar '+key+'">'+(LABELS[acct]||a.username)[0]+'</div><div><div class="name">'+(LABELS[acct]||a.username)+'</div><div class="handle">@'+a.username+'</div></div></div>'+
+      '<div class="stat"><span class="l">'+IC.users+'Followerlar</span><span class="v">'+fmt(a.followers)+deltaHtml(fd)+'</span></div>'+
+      '<div class="stat"><span class="l">'+IC.eye+'Qamrov (7 kun)</span><span class="v">'+fmt(a.reach_7d)+'</span></div>'+
+      '<div class="stat"><span class="l">'+IC.grid+'Postlar</span><span class="v">'+fmt(a.media_count)+'</span></div></div>';
+  }
+  html+='</div>';
+  html+='<div class="section-head">'+IC.trend+'<span>O\u02bcsish dinamikasi</span></div><div class="chart-card glass"><h3>'+IC.trend+'Followerlar o\u02bczgarishi</h3><div class="note">Kunlar bo\u02bcyicha \u2014 har akkaunt alohida chiziq</div><div class="chart-box"><canvas id="growthChart"></canvas></div></div>';
+  html+='<div class="section-head">'+IC.bars+'<span>Taqqoslash</span></div><div class="two-col"><div class="chart-card glass"><h3>'+IC.heart+'Engagement</h3><div class="note">Layk + izoh + saqlash + ulashish</div><div class="chart-box"><canvas id="engChart"></canvas></div></div><div class="chart-card glass"><h3>'+IC.eye+'Qamrov (reach)</h3><div class="note">Oxirgi 7 kun, akkauntlar kesimida</div><div class="chart-box"><canvas id="reachChart"></canvas></div></div></div>';
+  const all=[];
+  for(const acct of accounts)(latest.accounts[acct].posts||[]).forEach(p=>all.push(Object.assign({},p,{acct:acct,key:acct.split('_')[0]})));
+  all.sort((a,b)=>b.engagement-a.engagement);
+  html+='<div class="section-head">'+IC.star+'<span>Eng yaxshi postlar</span></div><div class="posts">';
+  all.slice(0,8).forEach((p,i)=>{
+    html+='<div class="post glass"><div class="rank '+(i<3?'r'+(i+1):'')+'">'+(i+1)+'</div><div><span class="acct-pill '+p.key+'">'+(LABELS[p.acct]||p.acct)+'</span><div class="cap">'+escapeHtml(p.caption)+'</div>'+((p.permalink&&p.permalink!=='#')?'<a class="link" href="'+p.permalink+'" target="_blank">Instagram\u02bcda ochish \u2197</a>':'')+'</div><div class="stats"><div class="s">'+IC.heart+'<div class="n">'+fmt(p.likes)+'</div><div class="l">layk</div></div><div class="s">'+IC.chat+'<div class="n">'+fmt(p.comments)+'</div><div class="l">izoh</div></div><div class="s">'+IC.bookmark+'<div class="n">'+fmt(p.saved)+'</div><div class="l">saqlash</div></div><div class="s">'+IC.eye+'<div class="n">'+fmt(p.reach)+'</div><div class="l">qamrov</div></div></div></div>';
+  });
+  html+='</div>';
+  document.getElementById('content').insertAdjacentHTML('beforeend',html);
+  drawGrowth(history,accounts); drawEng(latest,accounts); drawReach(latest,accounts);
+}
+function deltaHtml(d){ if(d===null||d===0) return ''; const up=d>0; return '<span class="delta '+(up?'up':'down')+'">'+(up?'\u2191':'\u2193')+' '+fmt(Math.abs(d))+'</span>'; }
+const cFont={ family:"-apple-system, 'SF Pro Display', sans-serif", weight:'600' };
+function gridOpts(legend){
+  return { responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ display:legend, labels:{ font:cFont, color:'#2a1a3e', usePointStyle:true, boxWidth:8, padding:16 } },
+      tooltip:{ backgroundColor:'rgba(42,26,62,0.92)', padding:12, cornerRadius:12, titleFont:cFont, bodyFont:cFont } },
+    scales:{ y:{ ticks:{ font:cFont, color:'#6b5b8a' }, grid:{ color:'rgba(107,91,138,0.15)' } }, x:{ ticks:{ font:cFont, color:'#6b5b8a' }, grid:{ display:false } } } };
+}
+function grad(ctx,color){ const g=ctx.createLinearGradient(0,0,0,290); g.addColorStop(0,color+'55'); g.addColorStop(1,color+'05'); return g; }
+function drawGrowth(history,accounts){
+  const cv=document.getElementById('growthChart'); const ctx=cv.getContext('2d');
+  new Chart(cv,{ type:'line', data:{ labels:history.map(h=>h.date), datasets:accounts.map(acct=>({ label:LABELS[acct]||acct, data:history.map(h=>h.accounts[acct]?h.accounts[acct].followers:null), borderColor:ACCENTS[acct], backgroundColor:grad(ctx,ACCENTS[acct]), borderWidth:3, tension:0.4, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:ACCENTS[acct], pointBorderColor:'#fff', pointBorderWidth:2, fill:true })) }, options:gridOpts(true) });
+}
+function drawEng(latest,accounts){
+  const data=accounts.map(a=>(latest.accounts[a].posts||[]).reduce((s,p)=>s+p.engagement,0));
+  new Chart(document.getElementById('engChart'),{ type:'bar', data:{ labels:accounts.map(a=>LABELS[a]||a), datasets:[{ data:data, backgroundColor:accounts.map(a=>ACCENTS[a]), borderRadius:10, barThickness:46 }] }, options:gridOpts(false) });
+}
+function drawReach(latest,accounts){
+  const data=accounts.map(a=>latest.accounts[a].reach_7d||0);
+  new Chart(document.getElementById('reachChart'),{ type:'bar', data:{ labels:accounts.map(a=>LABELS[a]||a), datasets:[{ data:data, backgroundColor:accounts.map(a=>ACCENTS[a]+'cc'), borderRadius:10, barThickness:46 }] }, options:gridOpts(false) });
+}
+function buildDemo(){
+  const days=['2026-06-03','2026-06-04','2026-06-05','2026-06-06','2026-06-07','2026-06-08','2026-06-09'];
+  const base={ benison_uz:4200, dieto_uz:2850, eddo_uz:6100 };
+  return days.map((date,i)=>({ date:date, collected_at:date, accounts:Object.fromEntries(Object.keys(base).map(acct=>{
+    const followers=base[acct]+i*(acct==='eddo_uz'?35:acct==='benison_uz'?22:14)+i*i;
+    const posts=[
+      { caption:'Yangi mavsumiy menyu taqdimoti', type:'IMAGE', permalink:'#', likes:320+i*5, comments:28, saved:41, shares:12, reach:5400, engagement:401+i*5 },
+      { caption:'Bugungi maxsus taklif \u2014 chegirma', type:'IMAGE', permalink:'#', likes:210, comments:15, saved:22, shares:6, reach:3800, engagement:253 },
+      { caption:'Mijozlar fikri va atmosfera', type:'VIDEO', permalink:'#', likes:180, comments:9, saved:14, shares:4, reach:3100, engagement:207 },
+    ];
+    return [acct,{ username:acct, followers:followers, following:120, media_count:100+i, reach_7d:(acct==='eddo_uz'?18500:acct==='benison_uz'?12300:8700)+i*200, posts:posts }];
+  })) }));
+}
+load();
+</script>
+</body>
+</html>
