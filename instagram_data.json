@@ -413,5 +413,551 @@
         ]
       }
     }
+  },
+  {
+    "collected_at": "2026-06-10T09:31:19.796077+00:00",
+    "date": "2026-06-10",
+    "token": {
+      "days_left": 59,
+      "expires_at": "2026-08-08",
+      "never": false
+    },
+    "accounts": {
+      "benison_uz": {
+        "username": "benison_uz",
+        "followers": 41261,
+        "media_count": 459,
+        "reach_7d": 15782,
+        "profile_views_7d": 441,
+        "engagement_rate": 0.95,
+        "avg_engagement": 394,
+        "reach_rate": 30.8,
+        "avg_reach": 12706,
+        "total_saved": 224,
+        "total_shares": 2828,
+        "by_type": {
+          "IMAGE": {
+            "count": 12,
+            "engagement": 1607,
+            "reach": 119046,
+            "avg_engagement": 134
+          },
+          "VIDEO": {
+            "count": 11,
+            "engagement": 7936,
+            "reach": 188711,
+            "avg_engagement": 721
+          },
+          "CAROUSEL_ALBUM": {
+            "count": 2,
+            "engagement": 315,
+            "reach": 9890,
+            "avg_engagement": 158
+          }
+        },
+        "demographics": {
+          "age_gender": {
+            "13-17 · F": 376,
+            "18-24 · F": 810,
+            "25-34 · F": 2858,
+            "35-44 · F": 1687,
+            "45-54 · F": 453,
+            "55-64 · F": 137,
+            "65+ · F": 55,
+            "13-17 · M": 582,
+            "18-24 · M": 1188,
+            "25-34 · M": 3789,
+            "35-44 · M": 2486,
+            "45-54 · M": 546,
+            "55-64 · M": 136,
+            "65+ · M": 50,
+            "13-17 · U": 2541,
+            "18-24 · U": 4347,
+            "25-34 · U": 10040,
+            "35-44 · U": 6086,
+            "45-54 · U": 1781,
+            "55-64 · U": 720,
+            "65+ · U": 590
+          },
+          "cities": {
+            "Zarafshan, Navoiy Region": 13466,
+            "Navoi, Navoiy Region": 3540,
+            "Gurlan, Xorazm Region": 2322,
+            "Tashkent, Tashkent Region": 1544,
+            "Urgench, Xorazm Region": 1489,
+            "Samarkand, Samarqand Region": 1289,
+            "Namangan, Namangan Region": 966,
+            "Shakhrisabz, Qashqadaryo Region": 871
+          },
+          "countries": {
+            "UZ": 39373,
+            "RU": 680,
+            "KZ": 485,
+            "KG": 330,
+            "TJ": 158,
+            "TR": 88,
+            "TM": 23,
+            "KR": 14
+          }
+        },
+        "posts": [
+          {
+            "id": "17877136476574544",
+            "caption": "Ofitsiantlarimizni hafa qilmang!😁😎  Benison bilan yaxshi kayfiyat doim hamrohingiz bo’l...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DXZOq0ujJhz/",
+            "timestamp": "2026-04-21T12:47:36+0000",
+            "likes": 1840,
+            "comments": 65,
+            "saved": 64,
+            "shares": 1395,
+            "reach": 72106,
+            "engagement": 3364,
+            "post_er": 4.7
+          },
+          {
+            "id": "18003070667879515",
+            "caption": "Ofitsiantlarimiz “Чаевые” olishganda!😁",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DXbuflbjHiG/",
+            "timestamp": "2026-04-22T12:05:17+0000",
+            "likes": 733,
+            "comments": 27,
+            "saved": 17,
+            "shares": 279,
+            "reach": 15887,
+            "engagement": 1056,
+            "post_er": 6.6
+          },
+          {
+            "id": "17888227509488592",
+            "caption": "Qaysi biri yutadi?!😎😁",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYISuEkRfKh/",
+            "timestamp": "2026-05-09T19:26:33+0000",
+            "likes": 667,
+            "comments": 21,
+            "saved": 15,
+            "shares": 97,
+            "reach": 16683,
+            "engagement": 800,
+            "post_er": 4.8
+          },
+          {
+            "id": "18121943377648444",
+            "caption": "😁😁  Benison bilan yaxshi kayfiyat doim hamrohingiz bo’lsin!😊",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYeynVksJ7Z/",
+            "timestamp": "2026-05-18T13:14:20+0000",
+            "likes": 673,
+            "comments": 41,
+            "saved": 4,
+            "shares": 67,
+            "reach": 14363,
+            "engagement": 785,
+            "post_er": 5.5
+          },
+          {
+            "id": "17946449193015296",
+            "caption": "Benison menyusida siz kutgan, siz so‘ragan mazali yangiliklar! 😋🔥  Benisonga tashrif bu...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DZFqj6hsZ91/",
+            "timestamp": "2026-06-02T15:29:28+0000",
+            "likes": 314,
+            "comments": 7,
+            "saved": 65,
+            "shares": 354,
+            "reach": 57894,
+            "engagement": 740,
+            "post_er": 1.3
+          },
+          {
+            "id": "17928685584090922",
+            "caption": "😎😁",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYFJ79ashzy/",
+            "timestamp": "2026-05-08T14:12:10+0000",
+            "likes": 443,
+            "comments": 5,
+            "saved": 14,
+            "shares": 57,
+            "reach": 27534,
+            "engagement": 519,
+            "post_er": 1.9
+          },
+          {
+            "id": "18119251936777437",
+            "caption": "Yaxshi kayfiyat Benison bilan doim hamrohingiz bo’lsin😅😊",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DZSc8prsHRO/",
+            "timestamp": "2026-06-07T14:40:16+0000",
+            "likes": 268,
+            "comments": 27,
+            "saved": 2,
+            "shares": 116,
+            "reach": 12593,
+            "engagement": 413,
+            "post_er": 3.3
+          },
+          {
+            "id": "18530341081073898",
+            "caption": "Benison menyusida siz kutgan, siz so‘ragan mazali yangiliklar! 😋🔥  Endi menyumizda yang...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DZFsRGPsntc/",
+            "timestamp": "2026-06-02T15:43:11+0000",
+            "likes": 254,
+            "comments": 23,
+            "saved": 8,
+            "shares": 105,
+            "reach": 7844,
+            "engagement": 390,
+            "post_er": 5.0
+          },
+          {
+            "id": "18118501480641485",
+            "caption": "Buni faqat oshpazlar tushunar ekan!😁  Benison bilan yaxshi kayfiyat doim hamrohingiz bo...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DXuIaiMjIGT/",
+            "timestamp": "2026-04-29T15:36:27+0000",
+            "likes": 233,
+            "comments": 16,
+            "saved": 4,
+            "shares": 26,
+            "reach": 10442,
+            "engagement": 279,
+            "post_er": 2.7
+          },
+          {
+            "id": "17998693643765753",
+            "caption": "Marvarid shashlik!😋  Do‘stlar bilan yig‘ilishmi, oilaviy dasturxonmi — Benison bilan ka...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DYCceXfjHrH/",
+            "timestamp": "2026-05-07T12:56:22+0000",
+            "likes": 201,
+            "comments": 11,
+            "saved": 9,
+            "shares": 53,
+            "reach": 18340,
+            "engagement": 274,
+            "post_er": 1.5
+          }
+        ]
+      },
+      "dieto_uz": {
+        "username": "dieto_uz",
+        "followers": 377,
+        "media_count": 3,
+        "reach_7d": 215,
+        "profile_views_7d": 15,
+        "engagement_rate": 190.45,
+        "avg_engagement": 718,
+        "reach_rate": 3700.5,
+        "avg_reach": 13951,
+        "total_saved": 25,
+        "total_shares": 641,
+        "by_type": {
+          "VIDEO": {
+            "count": 3,
+            "engagement": 2153,
+            "reach": 41853,
+            "avg_engagement": 718
+          }
+        },
+        "demographics": {
+          "age_gender": {
+            "13-17 · F": 8,
+            "18-24 · F": 15,
+            "25-34 · F": 78,
+            "35-44 · F": 30,
+            "45-54 · F": 5,
+            "13-17 · M": 4,
+            "18-24 · M": 9,
+            "25-34 · M": 22,
+            "35-44 · M": 18,
+            "45-54 · M": 4,
+            "55-64 · M": 1,
+            "13-17 · U": 6,
+            "18-24 · U": 35,
+            "25-34 · U": 74,
+            "35-44 · U": 50,
+            "45-54 · U": 17,
+            "55-64 · U": 1
+          },
+          "cities": {
+            "Zarafshan, Navoiy Region": 201,
+            "Navoi, Navoiy Region": 61,
+            "Gurlan, Xorazm Region": 26,
+            "Nurota, Navoiy Region": 14,
+            "Qarshi, Qashqadaryo Region": 11,
+            "Urgench, Xorazm Region": 10,
+            "Turtkul, Karakalpakstan": 8,
+            "Romitan, Bukhara Region": 6
+          },
+          "countries": {
+            "UZ": 372,
+            "RU": 3,
+            "KZ": 2
+          }
+        },
+        "posts": [
+          {
+            "id": "18075042761234975",
+            "caption": "Benison x Dietto! 🤝🍣 Endi sevimli sushingizdan bahramand bo’lish yanada osonlashdi. Ben...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DXynB0rsDT6/",
+            "timestamp": "2026-05-01T09:22:24+0000",
+            "likes": 571,
+            "comments": 26,
+            "saved": 17,
+            "shares": 366,
+            "reach": 16966,
+            "engagement": 980,
+            "post_er": 5.8
+          },
+          {
+            "id": "18099079828831515",
+            "caption": "Dieto bilan mazali tanaffus vaqti keldi! 🥗✨  Sog‘lom, tezkor va eng muhimi — hamyonbop ...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DXjEvdWjJZf/",
+            "timestamp": "2026-04-25T08:35:41+0000",
+            "likes": 575,
+            "comments": 34,
+            "saved": 6,
+            "shares": 241,
+            "reach": 14722,
+            "engagement": 856,
+            "post_er": 5.8
+          },
+          {
+            "id": "18010565966906987",
+            "caption": "Sizni va yaqinlaringizni Dietoda kutamiz!😊  📍 Bizning manzillar: • Zarafshon: Mo‘jizala...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DY_vW0EMMy9/",
+            "timestamp": "2026-05-31T08:14:29+0000",
+            "likes": 273,
+            "comments": 8,
+            "saved": 2,
+            "shares": 34,
+            "reach": 10165,
+            "engagement": 317,
+            "post_er": 3.1
+          }
+        ]
+      },
+      "eddo_uz": {
+        "username": "eddo_uz",
+        "followers": 38201,
+        "media_count": 275,
+        "reach_7d": 361,
+        "profile_views_7d": 176,
+        "engagement_rate": 0.69,
+        "avg_engagement": 265,
+        "reach_rate": 32.4,
+        "avg_reach": 12389,
+        "total_saved": 251,
+        "total_shares": 2710,
+        "by_type": {
+          "VIDEO": {
+            "count": 7,
+            "engagement": 1870,
+            "reach": 46882,
+            "avg_engagement": 267
+          },
+          "IMAGE": {
+            "count": 18,
+            "engagement": 4743,
+            "reach": 262838,
+            "avg_engagement": 264
+          }
+        },
+        "demographics": {
+          "age_gender": {
+            "13-17 · F": 297,
+            "18-24 · F": 635,
+            "25-34 · F": 2387,
+            "35-44 · F": 1532,
+            "45-54 · F": 432,
+            "55-64 · F": 141,
+            "65+ · F": 57,
+            "13-17 · M": 442,
+            "18-24 · M": 961,
+            "25-34 · M": 3370,
+            "35-44 · M": 2396,
+            "45-54 · M": 556,
+            "55-64 · M": 142,
+            "65+ · M": 47,
+            "13-17 · U": 1984,
+            "18-24 · U": 3679,
+            "25-34 · U": 9565,
+            "35-44 · U": 6242,
+            "45-54 · U": 1904,
+            "55-64 · U": 798,
+            "65+ · U": 641
+          },
+          "cities": {
+            "Zarafshan, Navoiy Region": 12744,
+            "Navoi, Navoiy Region": 3777,
+            "Gurlan, Xorazm Region": 2156,
+            "Urgench, Xorazm Region": 1429,
+            "Tashkent, Tashkent Region": 1199,
+            "Samarkand, Samarqand Region": 1192,
+            "Namangan, Namangan Region": 911,
+            "Shakhrisabz, Qashqadaryo Region": 844
+          },
+          "countries": {
+            "UZ": 37130,
+            "RU": 470,
+            "KZ": 329,
+            "KG": 94,
+            "TR": 63,
+            "TJ": 47,
+            "GE": 9,
+            "KR": 6
+          }
+        },
+        "posts": [
+          {
+            "id": "18010604663676340",
+            "caption": "🌙 RAMAZON BARAKASI — 4-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restora...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DVBnMBDDAlW/",
+            "timestamp": "2026-02-21T15:35:47+0000",
+            "likes": 260,
+            "comments": 4,
+            "saved": 145,
+            "shares": 782,
+            "reach": 59894,
+            "engagement": 1191,
+            "post_er": 2.0
+          },
+          {
+            "id": "18116199985743188",
+            "caption": "😍😅  Kimga jo’natishni o’zingiz bilasiz!😅",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DYFVzVrjLbw/",
+            "timestamp": "2026-05-08T15:55:52+0000",
+            "likes": 694,
+            "comments": 14,
+            "saved": 18,
+            "shares": 444,
+            "reach": 28501,
+            "engagement": 1170,
+            "post_er": 4.1
+          },
+          {
+            "id": "18052716710483289",
+            "caption": "🌙 RAMAZON BARAKASI — 8-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restora...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DVLm3LtjBUr/",
+            "timestamp": "2026-02-25T12:45:28+0000",
+            "likes": 163,
+            "comments": 2,
+            "saved": 17,
+            "shares": 244,
+            "reach": 37978,
+            "engagement": 426,
+            "post_er": 1.1
+          },
+          {
+            "id": "18062981738668440",
+            "caption": "🌙 RAMAZON BARAKASI — 22-KUN TAKLIFI  Maxsus taklifimiz — EDDО Fast Food restoranlaridan...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DVv6iWCjOtS/",
+            "timestamp": "2026-03-11T15:09:57+0000",
+            "likes": 157,
+            "comments": 7,
+            "saved": 11,
+            "shares": 207,
+            "reach": 23896,
+            "engagement": 382,
+            "post_er": 1.6
+          },
+          {
+            "id": "18136456735526815",
+            "caption": "😁😂  Eddo bilan yaxshi kayfiyat hamrohingiz bo’lsin!",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DX_1X72sAVV/",
+            "timestamp": "2026-05-06T12:36:11+0000",
+            "likes": 264,
+            "comments": 35,
+            "saved": 2,
+            "shares": 71,
+            "reach": 6779,
+            "engagement": 372,
+            "post_er": 5.5
+          },
+          {
+            "id": "18186667435363163",
+            "caption": "🌙 RAMAZON BARAKASI — 8-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restora...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DVLmzltjJvA/",
+            "timestamp": "2026-02-25T12:44:56+0000",
+            "likes": 209,
+            "comments": 15,
+            "saved": 2,
+            "shares": 142,
+            "reach": 8125,
+            "engagement": 368,
+            "post_er": 4.5
+          },
+          {
+            "id": "18081865577531103",
+            "caption": "😢😂  Eddo bilan yaxshi kayfiyat doim hamrohingiz bo’lsin!😊",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYhYSSDuYR0/",
+            "timestamp": "2026-05-19T13:15:00+0000",
+            "likes": 208,
+            "comments": 25,
+            "saved": 1,
+            "shares": 54,
+            "reach": 4924,
+            "engagement": 288,
+            "post_er": 5.8
+          },
+          {
+            "id": "17858946579683812",
+            "caption": "Sizgachi Tandir lavashmi yoki Burger!?😁😊",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DW3vNw7DEsB/",
+            "timestamp": "2026-04-08T12:37:14+0000",
+            "likes": 238,
+            "comments": 22,
+            "saved": 5,
+            "shares": 12,
+            "reach": 8160,
+            "engagement": 277,
+            "post_er": 3.4
+          },
+          {
+            "id": "18076104614382489",
+            "caption": "🌙 RAMAZON BARAKASI — 9-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restora...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DVOUi7KDF2v/",
+            "timestamp": "2026-02-26T14:02:52+0000",
+            "likes": 98,
+            "comments": 5,
+            "saved": 8,
+            "shares": 154,
+            "reach": 13559,
+            "engagement": 265,
+            "post_er": 2.0
+          },
+          {
+            "id": "18115831744653246",
+            "caption": "🌙 RAMAZON BARAKASI — 21-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restor...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DVtTrqaDOTS/",
+            "timestamp": "2026-03-10T14:51:47+0000",
+            "likes": 92,
+            "comments": 2,
+            "saved": 7,
+            "shares": 131,
+            "reach": 12653,
+            "engagement": 232,
+            "post_er": 1.8
+          }
+        ]
+      }
+    }
   }
 ]
