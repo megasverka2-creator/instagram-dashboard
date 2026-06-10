@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Instagram Hisobot — Restoranlar</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+<script src="dashboard.js" defer></script>
 <style>
   :root {
     --glass: rgba(255,255,255,0.55);
@@ -63,6 +65,16 @@
   }
   .hero .upd small { display:block; color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
   .hero .upd b { font-size:18px; }
+  .pdf-btn {
+    margin-left:14px; border:none; cursor:pointer; padding:13px 20px; border-radius:16px;
+    font-family:inherit; font-size:14px; font-weight:700; color:#fff;
+    background: linear-gradient(135deg, #d62976, #962fbf); display:flex; align-items:center; gap:9px;
+    box-shadow: 0 4px 16px rgba(214,41,118,0.35); transition: transform .15s, box-shadow .15s;
+  }
+  .pdf-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 22px rgba(214,41,118,0.45); }
+  .pdf-btn:active { transform: translateY(0); }
+  .pdf-btn svg { width:18px; height:18px; }
+  .pdf-btn:disabled { opacity:0.6; cursor:wait; }
 
   /* NAV TABS */
   .nav { display:flex; gap:8px; padding:8px; margin-bottom:18px; flex-wrap:wrap; }
@@ -138,6 +150,10 @@
   .info-banner { padding:16px 22px; margin-bottom:18px; display:flex; gap:12px; align-items:flex-start; }
   .info-banner svg { width:22px; height:22px; flex-shrink:0; color:var(--dieto); }
   .info-banner p { font-size:14px; line-height:1.5; }
+  .info-banner.warn { background: rgba(255,243,205,0.85); border-color: rgba(240,180,40,0.5); }
+  .info-banner.warn svg { color:#c47f00; }
+  .info-banner.danger { background: rgba(255,220,225,0.9); border-color: rgba(210,59,94,0.5); }
+  .info-banner.danger svg { color:var(--bad); }
   code { background: rgba(255,255,255,0.5); padding:1px 7px; border-radius:6px; font-size:13px; }
 
   .page { display:none; } .page.active { display:block; animation: fade .4s ease; }
@@ -169,6 +185,10 @@
       <small>Oxirgi yangilanish</small>
       <b id="lastUpdate">—</b>
     </div>
+    <button class="pdf-btn" id="pdfBtn">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      PDF yuklash
+    </button>
   </div>
 
   <!-- NAV -->
@@ -183,6 +203,8 @@
     <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 8v5M12 16.5v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
     <p>Hozir <b>namuna ma'lumot</b> ko'rsatilmoqda. Haqiqiy ma'lumot uchun <code>instagram_collector.py</code> ishga tushadi — sahifa avtomatik <code>instagram_data.json</code> dan o'qiydi.</p>
   </div>
+
+  <div id="tokenBanner" class="info-banner glass" style="display:none;"></div>
 
   <!-- PERIOD -->
   <div class="period glass">
@@ -199,7 +221,5 @@
 
   <div class="foot">Har kuni avtomatik yangilanadi · GitHub Actions</div>
 </div>
-
-<script src="dashboard.js"></script>
 </body>
 </html>

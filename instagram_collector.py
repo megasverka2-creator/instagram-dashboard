@@ -85,6 +85,59 @@ def get_account_insights(ig_id):
     return result
 
 
+def _breakdown_to_dict(data, metric_name):
+    """API'ning breakdown javobini oddiy {nom: son} lug'atiga aylantiradi."""
+    out = {}
+    if not data or not data.get("data"):
+        return out
+    for item in data["data"]:
+        if item.get("name") != metric_name:
+            continue
+        tv = item.get("total_value", {})
+        breakdowns = tv.get("breakdowns", [])
+        for bd in breakdowns:
+            for res in bd.get("results", []):
+                dims = res.get("dimension_values", [])
+                key = " · ".join(str(d) for d in dims) if dims else "?"
+                out[key] = res.get("value", 0)
+    return out
+
+
+def get_demographics(ig_id):
+    """Followerlar demografiyasi: yosh+jins, shaharlar, davlatlar.
+    Faqat 100+ followerli akkauntlarda ishlaydi. Xato bo'lsa bo'sh qaytaradi."""
+    demo = {"age_gender": {}, "cities": {}, "countries": {}}
+
+    # Yosh + jins
+    ag = api_get(f"{ig_id}/insights", {
+        "metric": "follower_demographics", "period": "lifetime",
+        "timeframe": "this_month", "metric_type": "total_value",
+        "breakdown": "age,gender",
+    })
+    demo["age_gender"] = _breakdown_to_dict(ag, "follower_demographics")
+
+    # Shaharlar
+    ct = api_get(f"{ig_id}/insights", {
+        "metric": "follower_demographics", "period": "lifetime",
+        "timeframe": "this_month", "metric_type": "total_value",
+        "breakdown": "city",
+    })
+    cities = _breakdown_to_dict(ct, "follower_demographics")
+    # Top 8 shahar
+    demo["cities"] = dict(sorted(cities.items(), key=lambda x: x[1], reverse=True)[:8])
+
+    # Davlatlar
+    co = api_get(f"{ig_id}/insights", {
+        "metric": "follower_demographics", "period": "lifetime",
+        "timeframe": "this_month", "metric_type": "total_value",
+        "breakdown": "country",
+    })
+    countries = _breakdown_to_dict(co, "follower_demographics")
+    demo["countries"] = dict(sorted(countries.items(), key=lambda x: x[1], reverse=True)[:8])
+
+    return demo
+
+
 def get_posts(ig_id, limit=25):
     """Postlar va ularning to'liq ko'rsatkichlari."""
     posts = []
@@ -183,6 +236,27 @@ def analyze_posts(posts, followers):
 # =============================================================
 #  Asosiy jarayon
 # =============================================================
+def check_token_expiry():
+    """Token qachon tugashini tekshiradi. Kun sonini qaytaradi (yoki None)."""
+    try:
+        data = api_get("debug_token", {"input_token": ACCESS_TOKEN})
+        if data and data.get("data"):
+            expires_at = data["data"].get("expires_at", 0)
+            if expires_at == 0:
+                return {"days_left": None, "expires_at": None, "never": True}
+            exp_dt = datetime.fromtimestamp(expires_at, tz=timezone.utc)
+            now = datetime.now(timezone.utc)
+            days_left = (exp_dt - now).days
+            return {
+                "days_left": days_left,
+                "expires_at": exp_dt.strftime("%Y-%m-%d"),
+                "never": False,
+            }
+    except Exception as e:
+        print(f"  ! Token tekshirishda xato: {e}")
+    return {"days_left": None, "expires_at": None, "never": False}
+
+
 def collect():
     print(f"\n=== Instagram ma'lumot yig'ish (v2): {datetime.now():%Y-%m-%d %H:%M} ===")
 
@@ -193,6 +267,7 @@ def collect():
     snapshot = {
         "collected_at": datetime.now(timezone.utc).isoformat(),
         "date": datetime.now().strftime("%Y-%m-%d"),
+        "token": check_token_expiry(),
         "accounts": {},
     }
 
@@ -207,6 +282,7 @@ def collect():
         insights = get_account_insights(ig_id)
         posts = get_posts(ig_id, limit=25)
         analysis = analyze_posts(posts, followers)
+        demographics = get_demographics(ig_id)
 
         snapshot["accounts"][name] = {
             "username": profile.get("username", name),
@@ -221,6 +297,7 @@ def collect():
             "total_saved": analysis["total_saved"],
             "total_shares": analysis["total_shares"],
             "by_type": analysis["by_type"],
+            "demographics": demographics,
             "posts": analysis["top_posts"],
         }
         print(f"     followers: {followers}, ER: {analysis['engagement_rate']}%, "

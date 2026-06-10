@@ -226,6 +226,8 @@ function renderAccount(acc) {
       </div>
     </div>
 
+    ${demoSection(acc, d)}
+
     <div class="section-title" style="color:#fff">${IC.fire} Eng yaxshi postlar</div>
     <div class="posts-card glass">`;
 
@@ -258,6 +260,87 @@ function renderAccount(acc) {
   el.innerHTML = html;
   drawLineChart("acc-foll-" + acc, "followers", [acc]);
   drawTypeBar("acc-type-" + acc, d.by_type);
+  drawDemographics(acc, d.demographics);
+}
+
+// ---- Demografiya bo'limi (HTML) ----
+function demoSection(acc, d) {
+  const demo = d.demographics;
+  const hasDemo = demo && (
+    (demo.age_gender && Object.keys(demo.age_gender).length) ||
+    (demo.cities && Object.keys(demo.cities).length) ||
+    (demo.countries && Object.keys(demo.countries).length)
+  );
+
+  if (!hasDemo) {
+    return `
+      <div class="section-title" style="color:#fff">${IC.users} Auditoriya demografiyasi</div>
+      <div class="glass empty" style="padding:28px;">
+        Demografiya ma'lumoti hali to'planmoqda.<br>
+        <span style="font-size:13px;opacity:0.8;">Instagram demografiyani 100+ followerli akkauntlar uchun beradi va yangilanishi 1-2 kun kechikishi mumkin. Keyingi yig'ishlardan so'ng bu yerda yosh, jins va shaharlar ko'rinadi.</span>
+      </div>`;
+  }
+
+  return `
+    <div class="section-title" style="color:#fff">${IC.users} Auditoriya demografiyasi</div>
+    <div class="two-col">
+      <div class="chart-card glass">
+        <h3>Yosh va jins</h3>
+        <div class="csub">Followerlaringizning yosh guruhlari va jinsi</div>
+        <div class="chart-box tall"><canvas id="demo-ag-${acc}"></canvas></div>
+      </div>
+      <div class="chart-card glass">
+        <h3>Eng ko'p shaharlar</h3>
+        <div class="csub">Followerlaringiz qaysi shaharlardan</div>
+        <div class="chart-box tall"><canvas id="demo-city-${acc}"></canvas></div>
+      </div>
+    </div>`;
+}
+
+function drawDemographics(acc, demo) {
+  if (!chartReady()) return;
+  if (!demo) return;
+
+  // Yosh + jins (guruhlangan bar)
+  const agId = "demo-ag-" + acc;
+  if (document.getElementById(agId) && demo.age_gender && Object.keys(demo.age_gender).length) {
+    destroyChart(agId);
+    // Kalitlar "age · gender" ko'rinishida (masalan "25-34 · M")
+    const ages = {};       // age -> {M:.., F:.., U:..}
+    Object.entries(demo.age_gender).forEach(([k, v]) => {
+      const parts = k.split(" · ");
+      const age = parts[0] || "?";
+      const gen = (parts[1] || "U").toUpperCase()[0];
+      if (!ages[age]) ages[age] = { M:0, F:0, U:0 };
+      ages[age][gen === "M" ? "M" : gen === "F" ? "F" : "U"] += v;
+    });
+    const ageLabels = Object.keys(ages).sort();
+    const opts = commonOpts();
+    CHARTS[agId] = new Chart(document.getElementById(agId), {
+      type:"bar",
+      data:{
+        labels: ageLabels,
+        datasets:[
+          { label:"Erkak", data: ageLabels.map(a=>ages[a].M), backgroundColor:"#4f5bd5", borderRadius:6 },
+          { label:"Ayol", data: ageLabels.map(a=>ages[a].F), backgroundColor:"#d62976", borderRadius:6 },
+        ]
+      },
+      options: opts
+    });
+  }
+
+  // Shaharlar (gorizontal bar)
+  const cityId = "demo-city-" + acc;
+  if (document.getElementById(cityId) && demo.cities && Object.keys(demo.cities).length) {
+    destroyChart(cityId);
+    const entries = Object.entries(demo.cities).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    const opts = commonOpts(); opts.indexAxis = "y"; opts.plugins.legend.display = false;
+    CHARTS[cityId] = new Chart(document.getElementById(cityId), {
+      type:"bar",
+      data:{ labels: entries.map(e=>e[0]), datasets:[{ data: entries.map(e=>e[1]), backgroundColor:"#fa7e1e", borderRadius:7, barThickness:22 }] },
+      options: opts
+    });
+  }
 }
 
 function erVerdict(er) {
@@ -276,6 +359,7 @@ function escapeHtml(s) {
 //  GRAFIKLAR (Chart.js)
 // ============================================================
 function destroyChart(id) { if (CHARTS[id]) { CHARTS[id].destroy(); delete CHARTS[id]; } }
+function chartReady() { return typeof Chart !== "undefined"; }
 
 function commonOpts() {
   return {
@@ -289,6 +373,7 @@ function commonOpts() {
 }
 
 function drawLineChart(canvasId, field, only) {
+  if (!chartReady()) return;
   const cv = document.getElementById(canvasId);
   if (!cv) return;
   destroyChart(canvasId);
@@ -309,6 +394,7 @@ function drawLineChart(canvasId, field, only) {
 }
 
 function drawERBar(canvasId) {
+  if (!chartReady()) return;
   const cv = document.getElementById(canvasId);
   if (!cv) return;
   destroyChart(canvasId);
@@ -324,6 +410,7 @@ function drawERBar(canvasId) {
 }
 
 function drawTypeBar(canvasId, byType) {
+  if (!chartReady()) return;
   const cv = document.getElementById(canvasId);
   if (!cv) return;
   destroyChart(canvasId);
@@ -368,6 +455,53 @@ function setupControls() {
       rerender();
     });
   });
+
+  // PDF eksport
+  const pdfBtn = document.getElementById("pdfBtn");
+  if (pdfBtn) pdfBtn.addEventListener("click", exportPDF);
+}
+
+function exportPDF() {
+  const btn = document.getElementById("pdfBtn");
+  const activePage = document.querySelector(".page.active");
+  if (!activePage) return;
+
+  btn.disabled = true;
+  const origText = btn.innerHTML;
+  btn.innerHTML = "Tayyorlanmoqda...";
+
+  const pageName = PAGE === "overview" ? "Umumiy" : (META[PAGE] ? META[PAGE].name : PAGE);
+  const periodName = PERIOD === "7" ? "Haftalik" : PERIOD === "30" ? "Oylik" : "Hammasi";
+  const dateStr = document.getElementById("lastUpdate").textContent.replace(" (namuna)", "");
+  const fileName = `Instagram_hisobot_${pageName}_${periodName}_${dateStr}.pdf`;
+
+  // PDF uchun vaqtinchalik konteyner — sarlavha + sahifa nusxasi
+  const wrapper = document.createElement("div");
+  wrapper.style.cssText = "background:linear-gradient(135deg,#feda75,#fa7e1e 22%,#d62976 50%,#962fbf 74%,#4f5bd5);padding:30px;";
+  const header = document.createElement("div");
+  header.style.cssText = "color:#fff;font-family:-apple-system,sans-serif;margin-bottom:20px;";
+  header.innerHTML = `<div style="font-size:26px;font-weight:800;">Instagram hisoboti — ${pageName}</div>
+    <div style="font-size:15px;opacity:0.9;margin-top:4px;">${periodName} · ${dateStr}</div>`;
+  wrapper.appendChild(header);
+  wrapper.appendChild(activePage.cloneNode(true));
+
+  const opt = {
+    margin: 0,
+    filename: fileName,
+    image: { type: "jpeg", quality: 0.95 },
+    html2canvas: { scale: 2, useCORS: true, backgroundColor: null },
+    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    pagebreak: { mode: ["avoid-all", "css"] },
+  };
+
+  html2pdf().set(opt).from(wrapper).save().then(() => {
+    btn.disabled = false;
+    btn.innerHTML = origText;
+  }).catch(() => {
+    btn.disabled = false;
+    btn.innerHTML = origText;
+    alert("PDF yaratishda xatolik. Qayta urinib ko'ring.");
+  });
 }
 
 // ============================================================
@@ -383,6 +517,7 @@ async function loadData() {
       document.getElementById("demoBanner").style.display = "none";
       const last = HISTORY[HISTORY.length - 1];
       document.getElementById("lastUpdate").textContent = last.date || "—";
+      showTokenBanner(last.token);
       return;
     }
     throw new Error("bo'sh");
@@ -391,6 +526,22 @@ async function loadData() {
     document.getElementById("demoBanner").style.display = "flex";
     document.getElementById("lastUpdate").textContent = HISTORY[HISTORY.length-1].date + " (namuna)";
   }
+}
+
+// ---- Token muddati ogohlantirishi ----
+function showTokenBanner(token) {
+  const el = document.getElementById("tokenBanner");
+  if (!el || !token || token.never || token.days_left === null) {
+    if (el) el.style.display = "none";
+    return;
+  }
+  const days = token.days_left;
+  if (days > 14) { el.style.display = "none"; return; } // hammasi joyida, ko'rsatmaymiz
+
+  const warnSvg = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v4M12 16v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  el.className = "info-banner glass " + (days <= 5 ? "danger" : "warn");
+  el.innerHTML = `${warnSvg}<p><b>Token muddati tugayapti!</b> Instagram token ${days} kundan keyin (${token.expires_at}) tugaydi. Shundan keyin yangi ma'lumot kelmaydi. Yangi token olib, GitHub'dagi <code>IG_ACCESS_TOKEN</code> Secret'ini yangilang.</p>`;
+  el.style.display = "flex";
 }
 
 // ---- Namuna ma'lumot (haqiqiy fayl bo'lmasa) ----
@@ -414,6 +565,16 @@ function buildDemo() {
         total_saved: b.sv + Math.round((Math.random()-0.3)*30),
         total_shares: b.sh + Math.round((Math.random()-0.3)*15),
         by_type: { IMAGE:{count:12,avg_engagement:Math.round(b.f*b.er/100/6)}, VIDEO:{count:8,avg_engagement:Math.round(b.f*b.er/100/4)}, CAROUSEL_ALBUM:{count:5,avg_engagement:Math.round(b.f*b.er/100/5)} },
+        demographics: {
+          age_gender: {
+            "18-24 · M": Math.round(b.f*0.08), "18-24 · F": Math.round(b.f*0.12),
+            "25-34 · M": Math.round(b.f*0.15), "25-34 · F": Math.round(b.f*0.22),
+            "35-44 · M": Math.round(b.f*0.10), "35-44 · F": Math.round(b.f*0.14),
+            "45-54 · M": Math.round(b.f*0.05), "45-54 · F": Math.round(b.f*0.07),
+          },
+          cities: { "Toshkent":Math.round(b.f*0.45), "Samarqand":Math.round(b.f*0.12), "Buxoro":Math.round(b.f*0.08), "Andijon":Math.round(b.f*0.07), "Namangan":Math.round(b.f*0.06), "Farg'ona":Math.round(b.f*0.05) },
+          countries: { "Uzbekistan":Math.round(b.f*0.82), "Kazakhstan":Math.round(b.f*0.06), "Russia":Math.round(b.f*0.05) },
+        },
         posts: demoPosts(a, b),
       };
     });
