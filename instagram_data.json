@@ -415,43 +415,43 @@
     }
   },
   {
-    "collected_at": "2026-06-10T09:31:19.796077+00:00",
+    "collected_at": "2026-06-10T16:47:41.979678+00:00",
     "date": "2026-06-10",
     "token": {
-      "days_left": 59,
+      "days_left": 58,
       "expires_at": "2026-08-08",
       "never": false
     },
     "accounts": {
       "benison_uz": {
         "username": "benison_uz",
-        "followers": 41261,
+        "followers": 41253,
         "media_count": 459,
-        "reach_7d": 15782,
-        "profile_views_7d": 441,
-        "engagement_rate": 0.95,
-        "avg_engagement": 394,
-        "reach_rate": 30.8,
-        "avg_reach": 12706,
-        "total_saved": 224,
-        "total_shares": 2828,
+        "reach_7d": 21535,
+        "profile_views_7d": 746,
+        "engagement_rate": 0.96,
+        "avg_engagement": 398,
+        "reach_rate": 31.2,
+        "avg_reach": 12887,
+        "total_saved": 229,
+        "total_shares": 2848,
         "by_type": {
           "IMAGE": {
             "count": 12,
-            "engagement": 1607,
-            "reach": 119046,
-            "avg_engagement": 134
+            "engagement": 1638,
+            "reach": 121540,
+            "avg_engagement": 136
           },
           "VIDEO": {
             "count": 11,
-            "engagement": 7936,
-            "reach": 188711,
-            "avg_engagement": 721
+            "engagement": 7995,
+            "reach": 190739,
+            "avg_engagement": 727
           },
           "CAROUSEL_ALBUM": {
             "count": 2,
             "engagement": 315,
-            "reach": 9890,
+            "reach": 9903,
             "avg_engagement": 158
           }
         },
@@ -507,13 +507,13 @@
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DXZOq0ujJhz/",
             "timestamp": "2026-04-21T12:47:36+0000",
-            "likes": 1840,
+            "likes": 1867,
             "comments": 65,
-            "saved": 64,
-            "shares": 1395,
-            "reach": 72106,
-            "engagement": 3364,
-            "post_er": 4.7
+            "saved": 65,
+            "shares": 1403,
+            "reach": 73521,
+            "engagement": 3400,
+            "post_er": 4.6
           },
           {
             "id": "18003070667879515",
@@ -535,12 +535,12 @@
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DYISuEkRfKh/",
             "timestamp": "2026-05-09T19:26:33+0000",
-            "likes": 667,
+            "likes": 668,
             "comments": 21,
             "saved": 15,
             "shares": 97,
             "reach": 16683,
-            "engagement": 800,
+            "engagement": 801,
             "post_er": 4.8
           },
           {
@@ -549,12 +549,12 @@
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DYeynVksJ7Z/",
             "timestamp": "2026-05-18T13:14:20+0000",
-            "likes": 673,
+            "likes": 677,
             "comments": 41,
             "saved": 4,
             "shares": 67,
-            "reach": 14363,
-            "engagement": 785,
+            "reach": 14393,
+            "engagement": 789,
             "post_er": 5.5
           },
           {
@@ -563,12 +563,12 @@
             "type": "IMAGE",
             "permalink": "https://www.instagram.com/p/DZFqj6hsZ91/",
             "timestamp": "2026-06-02T15:29:28+0000",
-            "likes": 314,
+            "likes": 326,
             "comments": 7,
-            "saved": 65,
-            "shares": 354,
-            "reach": 57894,
-            "engagement": 740,
+            "saved": 68,
+            "shares": 366,
+            "reach": 59378,
+            "engagement": 767,
             "post_er": 1.3
           },
           {
@@ -591,12 +591,12 @@
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DZSc8prsHRO/",
             "timestamp": "2026-06-07T14:40:16+0000",
-            "likes": 268,
-            "comments": 27,
+            "likes": 282,
+            "comments": 30,
             "saved": 2,
             "shares": 116,
-            "reach": 12593,
-            "engagement": 413,
+            "reach": 13013,
+            "engagement": 430,
             "post_er": 3.3
           },
           {
@@ -605,13 +605,13 @@
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DZFsRGPsntc/",
             "timestamp": "2026-06-02T15:43:11+0000",
-            "likes": 254,
+            "likes": 255,
             "comments": 23,
             "saved": 8,
             "shares": 105,
-            "reach": 7844,
-            "engagement": 390,
-            "post_er": 5.0
+            "reach": 7965,
+            "engagement": 391,
+            "post_er": 4.9
           },
           {
             "id": "18118501480641485",
@@ -623,7 +623,7 @@
             "comments": 16,
             "saved": 4,
             "shares": 26,
-            "reach": 10442,
+            "reach": 10451,
             "engagement": 279,
             "post_er": 2.7
           },
@@ -637,7 +637,7 @@
             "comments": 11,
             "saved": 9,
             "shares": 53,
-            "reach": 18340,
+            "reach": 18366,
             "engagement": 274,
             "post_er": 1.5
           }
@@ -647,20 +647,20 @@
         "username": "dieto_uz",
         "followers": 377,
         "media_count": 3,
-        "reach_7d": 215,
-        "profile_views_7d": 15,
-        "engagement_rate": 190.45,
-        "avg_engagement": 718,
-        "reach_rate": 3700.5,
-        "avg_reach": 13951,
+        "reach_7d": 315,
+        "profile_views_7d": 24,
+        "engagement_rate": 190.72,
+        "avg_engagement": 719,
+        "reach_rate": 3702.9,
+        "avg_reach": 13960,
         "total_saved": 25,
         "total_shares": 641,
         "by_type": {
           "VIDEO": {
             "count": 3,
-            "engagement": 2153,
-            "reach": 41853,
-            "avg_engagement": 718
+            "engagement": 2157,
+            "reach": 41879,
+            "avg_engagement": 719
           }
         },
         "demographics": {
@@ -706,12 +706,12 @@
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DXynB0rsDT6/",
             "timestamp": "2026-05-01T09:22:24+0000",
-            "likes": 571,
+            "likes": 572,
             "comments": 26,
             "saved": 17,
             "shares": 366,
-            "reach": 16966,
-            "engagement": 980,
+            "reach": 16972,
+            "engagement": 981,
             "post_er": 5.8
           },
           {
@@ -720,12 +720,12 @@
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DXjEvdWjJZf/",
             "timestamp": "2026-04-25T08:35:41+0000",
-            "likes": 575,
+            "likes": 576,
             "comments": 34,
             "saved": 6,
             "shares": 241,
             "reach": 14722,
-            "engagement": 856,
+            "engagement": 857,
             "post_er": 5.8
           },
           {
@@ -734,40 +734,40 @@
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DY_vW0EMMy9/",
             "timestamp": "2026-05-31T08:14:29+0000",
-            "likes": 273,
+            "likes": 275,
             "comments": 8,
             "saved": 2,
             "shares": 34,
-            "reach": 10165,
-            "engagement": 317,
+            "reach": 10185,
+            "engagement": 319,
             "post_er": 3.1
           }
         ]
       },
       "eddo_uz": {
         "username": "eddo_uz",
-        "followers": 38201,
-        "media_count": 275,
-        "reach_7d": 361,
-        "profile_views_7d": 176,
-        "engagement_rate": 0.69,
-        "avg_engagement": 265,
-        "reach_rate": 32.4,
-        "avg_reach": 12389,
-        "total_saved": 251,
-        "total_shares": 2710,
+        "followers": 38198,
+        "media_count": 276,
+        "reach_7d": 2950,
+        "profile_views_7d": 337,
+        "engagement_rate": 0.7,
+        "avg_engagement": 267,
+        "reach_rate": 32.5,
+        "avg_reach": 12404,
+        "total_saved": 255,
+        "total_shares": 2718,
         "by_type": {
           "VIDEO": {
-            "count": 7,
-            "engagement": 1870,
-            "reach": 46882,
-            "avg_engagement": 267
+            "count": 8,
+            "engagement": 1973,
+            "reach": 49337,
+            "avg_engagement": 247
           },
           "IMAGE": {
-            "count": 18,
-            "engagement": 4743,
-            "reach": 262838,
-            "avg_engagement": 264
+            "count": 17,
+            "engagement": 4714,
+            "reach": 260758,
+            "avg_engagement": 277
           }
         },
         "demographics": {
@@ -906,13 +906,13 @@
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DYhYSSDuYR0/",
             "timestamp": "2026-05-19T13:15:00+0000",
-            "likes": 208,
+            "likes": 209,
             "comments": 25,
             "saved": 1,
             "shares": 54,
             "reach": 4924,
-            "engagement": 288,
-            "post_er": 5.8
+            "engagement": 289,
+            "post_er": 5.9
           },
           {
             "id": "17858946579683812",
@@ -924,7 +924,7 @@
             "comments": 22,
             "saved": 5,
             "shares": 12,
-            "reach": 8160,
+            "reach": 8165,
             "engagement": 277,
             "post_er": 3.4
           },
@@ -943,18 +943,18 @@
             "post_er": 2.0
           },
           {
-            "id": "18115831744653246",
-            "caption": "🌙 RAMAZON BARAKASI — 21-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restor...",
-            "type": "IMAGE",
-            "permalink": "https://www.instagram.com/p/DVtTrqaDOTS/",
-            "timestamp": "2026-03-10T14:51:47+0000",
-            "likes": 92,
-            "comments": 2,
-            "saved": 7,
-            "shares": 131,
-            "reach": 12653,
+            "id": "17942374068226556",
+            "caption": "Oshpazlarimiz och qolganda😢😁",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DZIFOo9s8aG/",
+            "timestamp": "2026-06-03T13:59:42+0000",
+            "likes": 192,
+            "comments": 16,
+            "saved": 3,
+            "shares": 21,
+            "reach": 9613,
             "engagement": 232,
-            "post_er": 1.8
+            "post_er": 2.4
           }
         ]
       }
