@@ -21,9 +21,13 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Kutubxonalar
+        run: pip install cryptography
+
       - name: AI reja tuzish
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SAVDO_PAROL: ${{ secrets.SAVDO_PAROL }}
         run: python kontent_ai_generator.py
 
       - name: Natijani saqlash (commit)

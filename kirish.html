@@ -74,6 +74,8 @@ async function kirish() {
   const hash = await sha256(val);
   if (hash === PAROL_HASH) {
     sessionStorage.setItem("rp_auth", hash);
+    // Shifrlangan savdo ma'lumotlarini ochish uchun (faqat shu brauzer seansida saqlanadi)
+    sessionStorage.setItem("rp_pw", btoa(unescape(encodeURIComponent(val))));
     location.replace("index.html");
   } else {
     document.getElementById("err").textContent = "Parol noto'g'ri. Qayta urinib ko'ring.";

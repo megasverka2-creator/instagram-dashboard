@@ -1,0 +1,32 @@
+name: Telegram xabarchi
+
+on:
+  schedule:
+    # Har kuni UTC 03:30 = Toshkent 08:30
+    - cron: '30 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodni olish
+        uses: actions/checkout@v4
+
+      - name: Python o'rnatish
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Kutubxonalar
+        run: pip install cryptography
+
+      - name: Xabar yuborish
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SAVDO_PAROL: ${{ secrets.SAVDO_PAROL }}
+        run: python telegram_xabar.py

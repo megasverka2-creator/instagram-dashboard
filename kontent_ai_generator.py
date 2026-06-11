@@ -130,20 +130,27 @@ IIKO_BRANDS = {
 
 
 def sales_context():
-    """iiko savdo ma'lumotlarini AI prompti uchun tayyorlash."""
-    savdo_file = os.path.join(BASE, "savdo_data.json")
-    taom_file = os.path.join(BASE, "savdo_taomlar.json")
-    if not os.path.exists(savdo_file):
-        return ""
-    try:
-        with open(savdo_file, "r", encoding="utf-8") as f:
-            savdo = json.load(f)
-        taomlar = None
-        if os.path.exists(taom_file):
-            with open(taom_file, "r", encoding="utf-8") as f:
-                taomlar = json.load(f)
-    except Exception:
-        return ""
+    """iiko savdo ma'lumotlarini AI prompti uchun tayyorlash (shifrlangan fayllardan)."""
+    savdo, taomlar = None, None
+    parol = os.environ.get("SAVDO_PAROL", "")
+    # 1) Shifrlangan fayllar (asosiy yo'l)
+    if parol:
+        try:
+            import shifr
+            savdo = shifr.load_encrypted(os.path.join(BASE, "savdo_data.enc.json"), parol)
+            taomlar = shifr.load_encrypted(os.path.join(BASE, "savdo_taomlar.enc.json"), parol)
+        except Exception:
+            pass
+    # 2) O'tish davri: eski ochiq fayllar
+    if savdo is None and os.path.exists(os.path.join(BASE, "savdo_data.json")):
+        try:
+            with open(os.path.join(BASE, "savdo_data.json"), "r", encoding="utf-8") as f:
+                savdo = json.load(f)
+            if os.path.exists(os.path.join(BASE, "savdo_taomlar.json")):
+                with open(os.path.join(BASE, "savdo_taomlar.json"), "r", encoding="utf-8") as f:
+                    taomlar = json.load(f)
+        except Exception:
+            pass
     if not savdo:
         return ""
 

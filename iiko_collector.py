@@ -35,10 +35,15 @@ MAPPING = {
 SERVER = os.environ.get("IIKO_SERVER", "").rstrip("/")
 LOGIN = os.environ.get("IIKO_LOGIN", "")
 PASSWORD = os.environ.get("IIKO_PASS", "")
+SAVDO_PAROL = os.environ.get("SAVDO_PAROL", "")  # shifrlash kaliti (sayt paroli)
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-DATA_FILE = os.path.join(BASE, "savdo_data.json")
+DATA_FILE = os.path.join(BASE, "savdo_data.json")          # eski (ochiq) — faqat o'tish davri uchun o'qiladi
 DISHES_FILE = os.path.join(BASE, "savdo_taomlar.json")
+DATA_ENC = os.path.join(BASE, "savdo_data.enc.json")        # yangi shifrlangan fayllar
+DISHES_ENC = os.path.join(BASE, "savdo_taomlar.enc.json")
+
+import shifr
 
 DAYS_BACK = 7  # har safar oxirgi 7 kunni yangilab yig'amiz (kech kelgan cheklar uchun)
 
@@ -134,6 +139,9 @@ def main():
     if not SERVER or not LOGIN or not PASSWORD:
         print("  XATO: IIKO_SERVER / IIKO_LOGIN / IIKO_PASS Secret'lari topilmadi")
         sys.exit(1)
+    if not SAVDO_PAROL:
+        print("  XATO: SAVDO_PAROL Secret'i topilmadi (shifrlash uchun sayt paroli kerak)")
+        sys.exit(1)
 
     today = datetime.now().date()
     date_from = (today - timedelta(days=DAYS_BACK)).isoformat()
@@ -180,11 +188,12 @@ def main():
             print(f"    - \"{n}\" -> {mapped}")
 
         # Tarixga qo'shish: shu davr kunlarini yangilab yozamiz
-        history = []
-        if os.path.exists(DATA_FILE):
+        history = shifr.load_encrypted(DATA_ENC, SAVDO_PAROL) or []
+        if not history and os.path.exists(DATA_FILE):
             try:
                 with open(DATA_FILE, "r", encoding="utf-8") as f:
                     history = json.load(f)
+                print("  (eski ochiq fayldan tarix olindi — endi shifrlanadi)")
             except (json.JSONDecodeError, IOError):
                 history = []
         refreshed = set(daily.keys())
@@ -192,9 +201,8 @@ def main():
         for date in sorted(daily.keys()):
             history.append({"date": date, "departments": daily[date]})
         history.sort(key=lambda h: h.get("date", ""))
-        with open(DATA_FILE, "w", encoding="utf-8") as f:
-            json.dump(history, f, ensure_ascii=False, indent=2)
-        print(f"  Saqlandi: {DATA_FILE} (jami kunlar: {len(history)})")
+        shifr.save_encrypted(DATA_ENC, history, SAVDO_PAROL)
+        print(f"  Saqlandi (shifrlangan): {DATA_ENC} (jami kunlar: {len(history)})")
 
         # --- 2. Top taomlar (oxirgi 7 kun) ---
         dishes = olap_top_dishes(token, date_from, date_to)
@@ -233,14 +241,13 @@ def main():
         for dept in by_dept:
             by_dept[dept] = by_dept[dept][:10]
 
-        with open(DISHES_FILE, "w", encoding="utf-8") as f:
-            json.dump({
-                "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
-                "period": f"{date_from} — {date_to}",
-                "departments": by_dept,
-                "opportunities": opportunities,
-            }, f, ensure_ascii=False, indent=2)
-        print(f"  Saqlandi: {DISHES_FILE} ({len(by_dept)} filial, "
+        shifr.save_encrypted(DISHES_ENC, {
+            "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "period": f"{date_from} — {date_to}",
+            "departments": by_dept,
+            "opportunities": opportunities,
+        }, SAVDO_PAROL)
+        print(f"  Saqlandi (shifrlangan): {DISHES_ENC} ({len(by_dept)} filial, "
               f"{sum(len(v) for v in opportunities.values())} ta reklama nomzodi)")
 
     except urllib.error.HTTPError as e:
