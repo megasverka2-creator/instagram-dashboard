@@ -40,6 +40,7 @@ RESTAURANTS = {
 
 POSTS_PER_WEEK = 4          # har restoran uchun haftasiga nechta post
 MODEL = "claude-sonnet-4-6" # arzonroq kerak bo'lsa: "claude-haiku-4-5-20251001"
+MAX_TOKENS = 12000          # AI javobi uchun yetarli joy (3 restoran x 4 post + tahlillar)
 
 API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -243,7 +244,7 @@ Type faqat: VIDEO, IMAGE, CAROUSEL_ALBUM."""
 def call_claude(prompt):
     body = json.dumps({
         "model": MODEL,
-        "max_tokens": 4000,
+        "max_tokens": MAX_TOKENS,
         "messages": [{"role": "user", "content": prompt}],
     }).encode("utf-8")
 
@@ -258,8 +259,11 @@ def call_claude(prompt):
         method="POST",
     )
     try:
-        with urllib.request.urlopen(req, timeout=120) as resp:
+        with urllib.request.urlopen(req, timeout=180) as resp:
             data = json.loads(resp.read().decode("utf-8"))
+            stop = data.get("stop_reason")
+            if stop == "max_tokens":
+                print("  ! OGOHLANTIRISH: javob token chegarasida kesildi (MAX_TOKENS'ni oshiring)")
             parts = [c.get("text", "") for c in data.get("content", []) if c.get("type") == "text"]
             return "".join(parts)
     except urllib.error.HTTPError as e:
@@ -324,6 +328,7 @@ def main():
         print("  XATO: AI javobini o'qib bo'lmadi")
         if answer:
             print("  Javob boshi:", answer[:200])
+            print("  Javob oxiri:", answer[-200:])
         sys.exit(1)
 
     # Eski rejani arxivga (oxirgi 8 hafta saqlanadi)
