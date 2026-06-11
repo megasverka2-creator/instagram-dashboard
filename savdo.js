@@ -291,12 +291,51 @@ function escapeHtml(s) {
   return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+function renderOpps() {
+  const el = document.getElementById("opps");
+  if (!TAOMLAR || !TAOMLAR.opportunities) {
+    el.innerHTML = `<div class="glass empty" style="grid-column:1/-1">Bu tahlil keyingi savdo yig'ishdan keyin paydo bo'ladi (Actions → "iiko savdo yig'ish")</div>`;
+    return;
+  }
+  const byBrand = {};
+  BRAND_ORDER.forEach(key => {
+    const b = BRANDS[key];
+    const all = {};
+    b.departments.forEach(dep => {
+      (TAOMLAR.opportunities[dep] || []).forEach(x => {
+        if (!all[x.dish] || x.price > all[x.dish].price) all[x.dish] = x;
+      });
+    });
+    byBrand[key] = Object.values(all).sort((a, b2) => b2.price - a.price).slice(0, 6);
+  });
+
+  const html = BRAND_ORDER.map(key => {
+    const b = BRANDS[key];
+    const list = byBrand[key];
+    if (!list.length) return "";
+    return `
+      <div class="dish-card glass">
+        <h4><span class="ddot" style="background:${b.color}"></span>${b.name} — sinab ko'rilmagan xazinalar</h4>
+        ${list.map((x, i) => `
+          <div class="dish-item">
+            <div class="dish-rank">💎</div>
+            <div class="dish-name">${escapeHtml(x.dish)}</div>
+            <div class="dish-amt">${fmt(x.amount)} dona/hafta</div>
+            <div class="dish-sum">${fmt(x.price)} so'm</div>
+          </div>`).join("")}
+        <div style="font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.5;">Bu taomlar qimmat (daromadli), lekin kam buyurtirilyapti — reklama qilish uchun eng foydali nomzodlar. AI keyingi rejada shularni hisobga oladi.</div>
+      </div>`;
+  }).join("");
+  el.innerHTML = html || `<div class="glass empty" style="grid-column:1/-1">Nomzodlar topilmadi</div>`;
+}
+
 function rerender() {
   renderSummary();
   renderBrands();
   renderRevenueChart();
   renderCorrelation();
   renderDishes();
+  renderOpps();
 }
 
 // ============================================================

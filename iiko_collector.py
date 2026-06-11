@@ -102,11 +102,11 @@ def olap_sales_daily(token, date_from, date_to):
 
 
 def olap_top_dishes(token, date_from, date_to):
-    """Eng ko'p sotilgan taomlar (filial bo'yicha)."""
+    """Eng ko'p sotilgan taomlar (filial + guruh bo'yicha)."""
     body = {
         "reportType": "SALES",
         "buildSummary": "false",
-        "groupByRowFields": ["Department", "DishName"],
+        "groupByRowFields": ["Department", "DishGroup", "DishName"],
         "aggregateFields": ["DishDiscountSumInt", "DishAmountInt"],
         "filters": {
             "OpenDate.Typed": {
@@ -204,19 +204,44 @@ def main():
             dept = dept_key(r.get("Department") or "?")
             by_dept.setdefault(dept, []).append({
                 "dish": r.get("DishName") or "?",
+                "group": r.get("DishGroup") or "",
                 "sum": round(r.get("DishDiscountSumInt") or 0),
                 "amount": round(r.get("DishAmountInt") or 0),
             })
         for dept in by_dept:
-            by_dept[dept] = sorted(by_dept[dept], key=lambda x: x["sum"], reverse=True)[:10]
+            by_dept[dept] = sorted(by_dept[dept], key=lambda x: x["sum"], reverse=True)
+
+        # 💡 Reklama nomzodlari: narxi yuqori (mediana+), sotuvi kam (mediana-)
+        opportunities = {}
+        for dept, items in by_dept.items():
+            real = [x for x in items if x["amount"] >= 3 and x["sum"] > 0]
+            if len(real) >= 10:
+                prices = sorted(x["sum"] / x["amount"] for x in real)
+                amounts = sorted(x["amount"] for x in real)
+                med_price = prices[len(prices) // 2]
+                med_amount = amounts[len(amounts) // 2]
+                opp = [x for x in real
+                       if (x["sum"] / x["amount"]) >= med_price and x["amount"] <= med_amount]
+                opp.sort(key=lambda x: x["sum"] / x["amount"], reverse=True)
+                opportunities[dept] = [
+                    {"dish": x["dish"], "group": x.get("group", ""),
+                     "price": round(x["sum"] / x["amount"]),
+                     "amount": x["amount"], "sum": x["sum"]}
+                    for x in opp[:8]
+                ]
+
+        for dept in by_dept:
+            by_dept[dept] = by_dept[dept][:10]
 
         with open(DISHES_FILE, "w", encoding="utf-8") as f:
             json.dump({
                 "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
                 "period": f"{date_from} — {date_to}",
                 "departments": by_dept,
+                "opportunities": opportunities,
             }, f, ensure_ascii=False, indent=2)
-        print(f"  Saqlandi: {DISHES_FILE} ({len(by_dept)} filial)")
+        print(f"  Saqlandi: {DISHES_FILE} ({len(by_dept)} filial, "
+              f"{sum(len(v) for v in opportunities.values())} ta reklama nomzodi)")
 
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")[:300]

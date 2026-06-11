@@ -176,7 +176,21 @@ def sales_context():
             if top:
                 lines.append("  TOP taomlar: " + "; ".join(f"{n} ({s:,})" for n, s in top))
 
-    lines.append("\nSAVDOdan FOYDALANISH: rejada eng ko'p sotiladigan (TOP) taomlarni ko'rsat — ular auditoriyaga tanish va ishonchli; sust savdo kunlariga (yuqorida ko'rsatilgan) maxsus aksiya yoki jonli kontent rejalashtir; o'rtacha chekni oshiradigan kombo/desert takliflarini caption'larga singdir. Dieto savdosi Benison oshxonasi ichida — Dieto uchun savdo raqamlariga emas, Instagram statistikasiga tayan.")
+        # 💡 Reklama nomzodlari: qimmat, lekin kam sotilayotgan taomlar
+        if taomlar and taomlar.get("opportunities"):
+            opp_agg = {}
+            for d in deps:
+                for x in taomlar["opportunities"].get(d, []):
+                    k = x.get("dish", "?")
+                    if k not in opp_agg or x.get("price", 0) > opp_agg[k]["price"]:
+                        opp_agg[k] = {"price": x.get("price", 0), "amount": x.get("amount", 0)}
+            opps = sorted(opp_agg.items(), key=lambda kv: kv[1]["price"], reverse=True)[:5]
+            if opps:
+                lines.append("  REKLAMA NOMZODLARI (narxi baland, lekin kam sotilyapti — mijozlar bilmaydi): "
+                             + "; ".join(f"{n} (narxi {v['price']:,}, haftada bor-yo'g'i {v['amount']} dona)"
+                                         for n, v in opps))
+
+    lines.append("\nSAVDOdan FOYDALANISH: (1) Har brend rejasiga kamida 1 ta post REKLAMA NOMZODLARIdan biriga bag'ishlansin — bu qimmatli, lekin mijozlar bilmaydigan taom; uni 'yashirin xazina' / 'sinab ko'rganmisiz?' formatida jozibali tanishtir va why maydonida savdo sababini yoz. (2) TOP taomlarni ham ko'rsat — ular ishonchli traffik beradi. (3) Sust savdo kunlariga (yuqorida ko'rsatilgan) aksiya yoki jonli kontent rejalashtir. (4) O'rtacha chekni oshiradigan kombo/desert takliflarini caption'larga singdir. Dieto savdosi Benison oshxonasi ichida — Dieto uchun savdo raqamlariga emas, Instagram statistikasiga tayan.")
     return "\n\n" + "\n".join(lines)
 
 
