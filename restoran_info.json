@@ -1,0 +1,58 @@
+{
+  "_izoh": "AI shu fayldan restoranlar haqida o'qiydi. O'zgartirish: GitHub'da faylni oching, qalam belgisi, tahrirlang, Commit changes. Yangi taom/filial/aksiya qo'shsangiz — AI keyingi rejadan boshlab biladi.",
+
+  "umumiy": {
+    "shaharlar": "Zarafshon va Uchquduq (Navoiy viloyati)",
+    "yetkazib_berish": "Benison va Eddo uchun umumiy yetkazib berish xizmati: tel 55-510-80-08 yoki Telegram bot @Benisonuzbot",
+    "aksiya_chegarasi": "Chegirmalar maksimum 20-25% gacha. Undan katta aksiya taklif qilinmasin.",
+    "taqiqlar": [
+      "Raqobatchilarni tilga olish MUMKIN EMAS",
+      "Caption'larda NARX yozish MUMKIN EMAS (hech qanday summa, so'm, raqamli narx)",
+      "Alkogol haqida yozish MUMKIN EMAS"
+    ],
+    "cta": "Buyurtma uchun: 55-510-80-08 yoki @Benisonuzbot"
+  },
+
+  "accounts": {
+    "benison_uz": {
+      "nomi": "Benison",
+      "tavsif": "Yevropa, turk, uyg'ur va milliy taomlar restorani — shashliklar va salatlar bilan mashhur",
+      "taomlar": "molotiy shashlik, kuskoviy shashlik, assorti (Yevro, Mangal, Milliy), tandir lavash, salatlar, milliy taomlar, turk va uyg'ur taomlari, sushi (FAQAT Mega Center filialida!)",
+      "muhim": "Sushi faqat Zarafshon Mega Center filialida bor — sushi haqidagi postlarda buni aniq yozish SHART (boshqa filiallarda yo'q).",
+      "filiallar": [
+        "Zarafshon: Mega Center, 2-qavat (1-kichik tuman) — sushi ham shu yerda",
+        "Zarafshon: Oila savdo markazi, 2-qavat (12-kichik tuman)",
+        "Uchquduq: Smart City, 3-qavat (11-kichik tuman)"
+      ],
+      "ish_vaqti": "10:00 — 22:30",
+      "mijozlar": "oilalar, ofis xodimlari, yoshlar, mehmonlar",
+      "yetkazib_berish": true
+    },
+    "eddo_uz": {
+      "nomi": "Eddo",
+      "tavsif": "Fastfud brendi — lavash, burger, hotdog, pitsa, klab-sendvich",
+      "taomlar": "tandir lavash, tandir lavash sirli, burger, korolevskiy hotdog, klab-sendvich, pitsa, kartoshka fri",
+      "filiallar": [
+        "Zarafshon: Mega Center, 2-qavat (1-kichik tuman)",
+        "Zarafshon: Mo'jizalar maydonchasi / Pole chudes (6-kichik tuman)",
+        "Zarafshon: Oila savdo markazi, 2-qavat (12-kichik tuman)",
+        "Uchquduq: Smart City, 3-qavat (11-kichik tuman)"
+      ],
+      "ish_vaqti": "10:00 — 23:00",
+      "mijozlar": "yoshlar, oilalar, tez ovqatlanish istovchilar",
+      "yetkazib_berish": true
+    },
+    "dieto_uz": {
+      "nomi": "Dieto",
+      "tavsif": "Foydali, mazali, tez va hamyonbop taomlar — tayyor taomlar maxsus vitrinalarda, kutmasdan olasiz",
+      "taomlar": "tayyor foydali taomlar, salatlar, sog'lom menyu (vitrinada doim tayyor)",
+      "format": "Tayyor taomlar oldindan pishirilib maxsus vitrinalarga qo'yiladi — mijoz kutmasdan tanlab oladi. Tezlik va qulaylik — asosiy afzallik.",
+      "filiallar": [
+        "Zarafshon: Mo'jizalar maydonchasi / Pole chudes (Eddo filiali ichida)",
+        "Uchquduq: Smart City, 3-qavat (Eddo bilan birga)"
+      ],
+      "mijozlar": "hamma uchun — sog'lom va tez ovqatlanmoqchi bo'lganlar",
+      "yetkazib_berish": false
+    }
+  }
+}

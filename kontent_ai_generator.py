@@ -18,25 +18,42 @@ import urllib.error
 from datetime import datetime
 
 # ╔═══════════════════════════════════════════════════════════╗
-# ║  SOZLAMALAR — restoranlar haqida (tahrirlash mumkin)       ║
+# ║  RESTORAN MA'LUMOTLARI                                      ║
+# ║  Asosiy manba: restoran_info.json (GitHub'da tahrirlanadi). ║
+# ║  Fayl topilmasa — quyidagi zaxira tavsiflar ishlatiladi.    ║
 # ╚═══════════════════════════════════════════════════════════╝
 RESTAURANTS = {
     "benison_uz": {
         "name": "Benison",
-        "specialty": "milliy va zamonaviy taomlar, jonli muhit",
-        "dishes": "osh, shashlik, lag'mon, somsa, sushi",
+        "specialty": "Yevropa, turk, uyg'ur va milliy taomlar, shashliklar",
+        "dishes": "shashliklar, assorti, tandir lavash, salatlar",
     },
     "dieto_uz": {
         "name": "Dieto",
-        "specialty": "sog'lom va parhez taomlar, tezkor yetkazib berish",
-        "dishes": "salatlar, smuzi, grill taomlar, parhez shirinliklar",
+        "specialty": "foydali, tez va hamyonbop tayyor taomlar (vitrina formati)",
+        "dishes": "tayyor sog'lom taomlar, salatlar",
     },
     "eddo_uz": {
         "name": "Eddo",
-        "specialty": "pitsa va fastfud, oilaviy muhit",
-        "dishes": "pitsa, burger, lavash, kartoshka fri",
+        "specialty": "fastfud — lavash, burger, hotdog, pitsa",
+        "dishes": "tandir lavash, burger, hotdog, klab-sendvich, pitsa",
     },
 }
+
+
+def load_info():
+    """restoran_info.json — AI uchun restoranlar haqidagi haqiqiy bilim."""
+    path = os.path.join(BASE, "restoran_info.json")
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+INFO = None  # main() da yuklanadi
 
 POSTS_PER_WEEK = 4          # har restoran uchun haftasiga nechta post
 MODEL = "claude-sonnet-4-6" # arzonroq kerak bo'lsa: "claude-haiku-4-5-20251001"
@@ -54,12 +71,31 @@ OUT_FILE = os.path.join(BASE, "kontent_reja_ai.json")
 def summarize(acc_key, acc):
     """Bitta akkaunt bo'yicha AI uchun qisqa, ammo boy xulosa."""
     r = RESTAURANTS.get(acc_key, {})
-    lines = [
-        f"### {r.get('name', acc_key)} (@{acc_key})",
-        f"Yo'nalishi: {r.get('specialty', '-')}. Mashhur taomlari: {r.get('dishes', '-')}.",
+    lines = [f"### {r.get('name', acc_key)} (@{acc_key})"]
+
+    # restoran_info.json'dan boy ma'lumot (bo'lsa)
+    inf = (INFO or {}).get("accounts", {}).get(acc_key)
+    if inf:
+        lines.append(f"Tavsif: {inf.get('tavsif', '')}. Taomlari: {inf.get('taomlar', '')}.")
+        if inf.get("muhim"):
+            lines.append(f"MUHIM: {inf['muhim']}")
+        if inf.get("format"):
+            lines.append(f"Format: {inf['format']}")
+        if inf.get("filiallar"):
+            lines.append("Filiallar: " + "; ".join(inf["filiallar"]) + ".")
+        if inf.get("ish_vaqti"):
+            lines.append(f"Ish vaqti: {inf['ish_vaqti']}.")
+        if inf.get("mijozlar"):
+            lines.append(f"Auditoriya: {inf['mijozlar']}.")
+        if inf.get("yetkazib_berish"):
+            lines.append("Yetkazib berish: BOR (CTA'da ishlatish mumkin).")
+    else:
+        lines.append(f"Yo'nalishi: {r.get('specialty', '-')}. Mashhur taomlari: {r.get('dishes', '-')}.")
+
+    lines.append(
         f"Followerlar: {acc.get('followers', 0)}, Engagement rate: {acc.get('engagement_rate', 0)}%, "
-        f"Reach (7 kun): {acc.get('reach_7d', 0)}, Saqlashlar: {acc.get('total_saved', 0)}.",
-    ]
+        f"Reach (7 kun): {acc.get('reach_7d', 0)}, Saqlashlar: {acc.get('total_saved', 0)}."
+    )
     bt = acc.get("by_type", {})
     if bt:
         parts = [f"{t}: o'rtacha {v.get('avg_engagement', 0)} engagement ({v.get('count', 0)} post)"
@@ -214,9 +250,25 @@ def build_prompt(snapshot):
     review_block = last_week_review(snapshot)
     sales_block = sales_context()
 
+    # Umumiy qoidalar (restoran_info.json'dan)
+    rules_block = ""
+    if INFO and INFO.get("umumiy"):
+        u = INFO["umumiy"]
+        rl = ["\n\nUMUMIY QOIDALAR (QAT'IY!):"]
+        if u.get("shaharlar"):
+            rl.append(f"- Joylashuv: {u['shaharlar']}. Kontent shu shaharlar auditoriyasiga mos bo'lsin (poytaxt emas!).")
+        if u.get("yetkazib_berish"):
+            rl.append(f"- Yetkazib berish: {u['yetkazib_berish']}. CTA'larda shuni ishlatish mumkin.")
+        if u.get("aksiya_chegarasi"):
+            rl.append(f"- Aksiyalar: {u['aksiya_chegarasi']}")
+        for t in u.get("taqiqlar", []):
+            rl.append(f"- TAQIQ: {t}")
+        rl.append("- Eslatma: 'yashirin xazina' postlarida ham taomning NARXINI yozma — faqat jozibasini tasvirla.")
+        rules_block = "\n".join(rl)
+
     return f"""Sen tajribali SMM-strateg va o'zbek tilida yozadigan kopirayter san. Quyida uchta restoranning HAQIQIY Instagram statistikasi va eng yaxshi postlari berilgan. Har bir restoranning o'z ovozi (uslubi) eng yaxshi postlarining caption'larida ko'rinadi — shu uslubni saqla.
 
-{data_block}{sales_block}{review_block}
+{data_block}{rules_block}{sales_block}{review_block}
 
 VAZIFA: Har bir restoran uchun keyingi haftaga {POSTS_PER_WEEK} ta postdan iborat kontent reja tuz.
 
@@ -308,7 +360,10 @@ def parse_json_response(text):
 #  Asosiy jarayon
 # =============================================================
 def main():
+    global INFO
     print(f"\n=== AI Kontent Reja: {datetime.now():%Y-%m-%d %H:%M} ===")
+    INFO = load_info()
+    print(f"  Restoran ma'lumotlari: {'restoran_info.json yuklandi' if INFO else 'zaxira tavsiflar (fayl topilmadi)'}")
 
     if not API_KEY:
         print("  XATO: ANTHROPIC_API_KEY topilmadi (GitHub Secret'ni tekshiring)")
