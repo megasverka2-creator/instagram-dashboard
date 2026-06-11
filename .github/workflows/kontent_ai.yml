@@ -1,0 +1,35 @@
+name: AI kontent reja
+
+on:
+  schedule:
+    # Har dushanba UTC 03:00 = Toshkent 08:00
+    - cron: '0 3 * * 1'
+  workflow_dispatch:  # qo'lda ham ishga tushirish mumkin
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodni olish
+        uses: actions/checkout@v4
+
+      - name: Python o'rnatish
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: AI reja tuzish
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python kontent_ai_generator.py
+
+      - name: Natijani saqlash (commit)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add kontent_reja_ai.json
+          git diff --staged --quiet || git commit -m "AI kontent reja yangilandi ($(date +%Y-%m-%d))"
+          git push
