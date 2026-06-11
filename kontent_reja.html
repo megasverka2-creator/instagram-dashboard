@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kontent Reja — Instagram</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="theme-color" content="#d62976">
+<script src="app_guard.js"></script>
+
 <style>
   :root {
     --glass: rgba(255,255,255,0.55);
@@ -126,7 +131,7 @@
   .empty { padding:36px; text-align:center; color:var(--muted); }
   .foot { text-align:center; color:rgba(255,255,255,0.85); font-size:12px; margin-top:28px; text-shadow:0 1px 4px rgba(60,20,90,0.3); }
   .toast {
-    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
+    position:fixed; bottom:96px; left:50%; transform:translateX(-50%) translateY(80px);
     background:rgba(42,26,62,0.92); color:#fff; padding:12px 22px; border-radius:14px;
     font-size:14px; font-weight:600; transition:transform .3s, opacity .3s; z-index:99; opacity:0; pointer-events:none;
   }

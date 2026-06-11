@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RestoPulse — Bosh sahifa</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="theme-color" content="#d62976">
+<script src="app_guard.js"></script>
+<style>
+  :root { --ink:#2a1a3e; --muted:#6b5b8a; --glass:rgba(255,255,255,0.55); --glass-border:rgba(255,255,255,0.65); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif;
+    color:var(--ink); min-height:100vh; overflow-x:hidden; -webkit-font-smoothing:antialiased;
+  }
+  body::before {
+    content:''; position:fixed; inset:-20%; z-index:-2;
+    background:linear-gradient(135deg,#feda75 0%,#fa7e1e 22%,#d62976 50%,#962fbf 74%,#4f5bd5 100%);
+    background-size:300% 300%; animation:drift 22s ease infinite;
+  }
+  @keyframes drift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  @media (prefers-reduced-motion: reduce){ body::before{animation:none;} }
+
+  .wrap { max-width:900px; margin:0 auto; padding:40px 20px 60px; }
+  .glass {
+    background:var(--glass); backdrop-filter:blur(22px) saturate(1.4);
+    -webkit-backdrop-filter:blur(22px) saturate(1.4);
+    border:1px solid var(--glass-border); border-radius:26px;
+    box-shadow:0 8px 32px rgba(80,30,120,0.18), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+
+  .hero { text-align:center; padding:44px 30px 38px; margin-bottom:18px; }
+  .hero img { width:92px; height:92px; border-radius:26px; box-shadow:0 10px 30px rgba(214,41,118,0.45); }
+  .hero h1 { font-size:36px; font-weight:800; letter-spacing:-1px; margin-top:16px; }
+  .hero p { color:var(--muted); font-size:15.5px; margin-top:7px; }
+
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:18px; }
+  .stat { padding:18px 20px; text-align:center; }
+  .stat .v { font-size:26px; font-weight:800; letter-spacing:-0.5px; }
+  .stat .l { font-size:11.5px; color:var(--muted); font-weight:600; margin-top:4px; text-transform:uppercase; letter-spacing:0.4px; }
+
+  .apps { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+  .app {
+    display:block; padding:30px 28px; text-decoration:none; color:var(--ink);
+    transition:transform .18s, box-shadow .18s;
+  }
+  .app:hover { transform:translateY(-4px); box-shadow:0 14px 44px rgba(80,30,120,0.28); }
+  .app .ic { font-size:38px; }
+  .app h3 { font-size:20px; font-weight:800; margin-top:12px; }
+  .app p { color:var(--muted); font-size:13.5px; line-height:1.55; margin-top:7px; }
+  .app .go { display:inline-block; margin-top:14px; font-size:13.5px; font-weight:700;
+    color:#962fbf; }
+
+  .hint { padding:16px 22px; margin-top:18px; font-size:13px; line-height:1.55; color:var(--muted); display:flex; gap:11px; align-items:flex-start; }
+  .hint .i { font-size:18px; }
+  .foot { text-align:center; color:rgba(255,255,255,0.85); font-size:12px; margin-top:26px; text-shadow:0 1px 4px rgba(60,20,90,0.3); }
+  @media (max-width:560px){ .hero h1{font-size:29px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero glass">
+    <img src="icon-192.png" alt="RestoPulse">
+    <h1>RestoPulse</h1>
+    <p>Benison · Dieto · Eddo — restoranlaringiz Instagram'i bir nigohda</p>
+  </div>
+
+  <div class="stats" id="stats">
+    <div class="stat glass"><div class="v" id="sFoll">—</div><div class="l">Jami followerlar</div></div>
+    <div class="stat glass"><div class="v" id="sReach">—</div><div class="l">Qamrov (7 kun)</div></div>
+    <div class="stat glass"><div class="v" id="sSaves">—</div><div class="l">Saqlashlar</div></div>
+    <div class="stat glass"><div class="v" id="sDate">—</div><div class="l">Oxirgi yangilanish</div></div>
+  </div>
+
+  <div class="apps">
+    <a class="app glass" href="instagram_dashboard.html">
+      <div class="ic">📊</div>
+      <h3>Statistika</h3>
+      <p>Followerlar, qamrov, faollik darajasi, demografiya — har restoran bo'yicha batafsil. Haftalik va oylik kesimda.</p>
+      <span class="go">Ochish →</span>
+    </a>
+    <a class="app glass" href="kontent_reja.html">
+      <div class="ic">📅</div>
+      <h3>Kontent reja</h3>
+      <p>AI har dushanba yangi haftalik reja tuzadi — tayyor caption'lar, eng yaxshi vaqtlar, ma'lumotga asoslangan tavsiyalar.</p>
+      <span class="go">Ochish →</span>
+    </a>
+  </div>
+
+  <div class="hint glass">
+    <span class="i">📲</span>
+    <span><b>Telefonga o'rnating:</b> brauzer menyusidan "Bosh ekranga qo'shish" (Add to Home Screen) ni tanlang — RestoPulse ilova kabi ishlaydi. iPhone'da: Ulashish tugmasi → "Bosh ekranga qo'shish".</span>
+  </div>
+
+  <div class="foot">RestoPulse · har kuni avtomatik yangilanadi</div>
+</div>
+
+<script>
+(async function(){
+  try {
+    const res = await fetch("instagram_data.json?v=" + Date.now());
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!Array.isArray(data) || !data.length) return;
+    const last = data[data.length - 1];
+    let f = 0, r = 0, s = 0;
+    Object.values(last.accounts || {}).forEach(a => {
+      f += a.followers || 0; r += a.reach_7d || 0; s += a.total_saved || 0;
+    });
+    const fmt = n => Math.round(n).toLocaleString("ru-RU").replace(/,/g, " ");
+    document.getElementById("sFoll").textContent = fmt(f);
+    document.getElementById("sReach").textContent = fmt(r);
+    document.getElementById("sSaves").textContent = fmt(s);
+    document.getElementById("sDate").textContent = last.date || "—";
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>
