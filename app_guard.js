@@ -24,6 +24,7 @@
       { href: "index.html", icon: "🏠", label: "Bosh" },
       { href: "instagram_dashboard.html", icon: "📊", label: "Statistika" },
       { href: "kontent_reja.html", icon: "📅", label: "Reja" },
+      { href: "savdo.html", icon: "💰", label: "Savdo" },
     ];
     const css = document.createElement("style");
     css.textContent = `

@@ -120,6 +120,66 @@ def last_week_review(snapshot):
             "\n\nO'RGANISH: yuqoridagi reja va haqiqiy natijalarni solishtir. Qaysi tavsiyalar amalda bajarilgan va ishlagan? Qaysilari bajarilmagan yoki kutilgandek ishlamagan? Yangi rejani shu xulosalar asosida yaxshila. Har akkaunt uchun \"review\" maydonida o'tgan haftaga 1-2 jumlalik baho yoz (nima yaxshi ketdi, nimani o'zgartirdik).")
 
 
+# Brend → iiko filiallari (savdo kontekstini bog'lash uchun)
+IIKO_BRANDS = {
+    "benison_uz": ["Benison-MegaCenter", "Benison-Oila", "Smart City"],
+    "dieto_uz": [],  # Dieto savdosi Benison ichida — alohida ajratilmaydi
+    "eddo_uz": ["Eddo"],
+}
+
+
+def sales_context():
+    """iiko savdo ma'lumotlarini AI prompti uchun tayyorlash."""
+    savdo_file = os.path.join(BASE, "savdo_data.json")
+    taom_file = os.path.join(BASE, "savdo_taomlar.json")
+    if not os.path.exists(savdo_file):
+        return ""
+    try:
+        with open(savdo_file, "r", encoding="utf-8") as f:
+            savdo = json.load(f)
+        taomlar = None
+        if os.path.exists(taom_file):
+            with open(taom_file, "r", encoding="utf-8") as f:
+                taomlar = json.load(f)
+    except Exception:
+        return ""
+    if not savdo:
+        return ""
+
+    days = savdo[-7:]
+    lines = ["SAVDO MA'LUMOTLARI (iiko, oxirgi 7 kun):"]
+    for acc_key, deps in IIKO_BRANDS.items():
+        if not deps:
+            continue
+        total_rev, total_checks = 0, 0
+        day_revs = []
+        for day in days:
+            rev = sum((day.get("departments", {}).get(d, {}) or {}).get("revenue", 0) for d in deps)
+            chk = sum((day.get("departments", {}).get(d, {}) or {}).get("checks", 0) for d in deps)
+            total_rev += rev
+            total_checks += chk
+            day_revs.append((day.get("date", "?"), rev))
+        avg = round(total_rev / total_checks) if total_checks else 0
+        lines.append(f"\n{acc_key}: haftalik tushum {total_rev:,} so'm, {total_checks} chek, o'rtacha chek {avg:,} so'm")
+        best = max(day_revs, key=lambda x: x[1]) if day_revs else None
+        worst = min(day_revs, key=lambda x: x[1]) if day_revs else None
+        if best and worst and best[1]:
+            lines.append(f"  Eng kuchli kun: {best[0]} ({best[1]:,}), eng sust kun: {worst[0]} ({worst[1]:,})")
+        # TOP taomlar (filiallar bo'yicha yig'ilgan)
+        if taomlar and taomlar.get("departments"):
+            agg = {}
+            for d in deps:
+                for x in taomlar["departments"].get(d, []):
+                    k = x.get("dish", "?")
+                    agg[k] = agg.get(k, 0) + (x.get("sum") or 0)
+            top = sorted(agg.items(), key=lambda kv: kv[1], reverse=True)[:5]
+            if top:
+                lines.append("  TOP taomlar: " + "; ".join(f"{n} ({s:,})" for n, s in top))
+
+    lines.append("\nSAVDOdan FOYDALANISH: rejada eng ko'p sotiladigan (TOP) taomlarni ko'rsat — ular auditoriyaga tanish va ishonchli; sust savdo kunlariga (yuqorida ko'rsatilgan) maxsus aksiya yoki jonli kontent rejalashtir; o'rtacha chekni oshiradigan kombo/desert takliflarini caption'larga singdir. Dieto savdosi Benison oshxonasi ichida — Dieto uchun savdo raqamlariga emas, Instagram statistikasiga tayan.")
+    return "\n\n" + "\n".join(lines)
+
+
 def build_prompt(snapshot):
     """Claude uchun to'liq topshiriq matni."""
     sections = []
@@ -129,10 +189,11 @@ def build_prompt(snapshot):
             sections.append(summarize(key, acc))
     data_block = "\n\n".join(sections)
     review_block = last_week_review(snapshot)
+    sales_block = sales_context()
 
     return f"""Sen tajribali SMM-strateg va o'zbek tilida yozadigan kopirayter san. Quyida uchta restoranning HAQIQIY Instagram statistikasi va eng yaxshi postlari berilgan. Har bir restoranning o'z ovozi (uslubi) eng yaxshi postlarining caption'larida ko'rinadi — shu uslubni saqla.
 
-{data_block}{review_block}
+{data_block}{sales_block}{review_block}
 
 VAZIFA: Har bir restoran uchun keyingi haftaga {POSTS_PER_WEEK} ta postdan iborat kontent reja tuz.
 
