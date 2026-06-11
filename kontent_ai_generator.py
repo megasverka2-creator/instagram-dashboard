@@ -393,11 +393,22 @@ def main():
 
     prompt = build_prompt(snapshot)
     print(f"  Claude'ga yuborilmoqda (model: {MODEL})...")
-    answer = call_claude(prompt)
-    plan = parse_json_response(answer)
+
+    # 2 marta urinish: API vaqtincha band bo'lsa yoki javob buzuq kelsa — qayta so'raymiz
+    plan, answer = None, None
+    for urinish in (1, 2):
+        if urinish > 1:
+            print("  Qayta urinish (30 soniyadan keyin)...")
+            import time
+            time.sleep(30)
+        answer = call_claude(prompt)
+        plan = parse_json_response(answer)
+        if plan and "accounts" in plan:
+            break
+        print(f"  ! {urinish}-urinish muvaffaqiyatsiz")
 
     if not plan or "accounts" not in plan:
-        print("  XATO: AI javobini o'qib bo'lmadi")
+        print("  XATO: AI javobini o'qib bo'lmadi (2 urinishda ham)")
         if answer:
             print("  Javob boshi:", answer[:200])
             print("  Javob oxiri:", answer[-200:])
