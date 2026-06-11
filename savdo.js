@@ -13,6 +13,7 @@ const BRANDS = {
     name: "Eddo", color: "#f9b234", letter: "E",
     departments: ["Eddo"],
     ig: "eddo_uz",
+    note: "+ Dieto taomlari shu yerda",
   },
   mazzona: {
     name: "Mazzona", color: "#2bb3a3", letter: "M",
@@ -123,7 +124,7 @@ function renderBrands() {
           <div class="brand-avatar" style="background:${b.color}">${b.letter}</div>
           <div>
             <h3>${b.name}</h3>
-            <div class="fil">${b.departments.join(" · ")}</div>
+            <div class="fil">${b.departments.join(" · ")}${b.note ? " · " + b.note : ""}</div>
           </div>
         </div>
         <div class="brand-row"><span class="rl">Tushum</span><span class="rv">${fmtMoney(t.revenue)} ${chg}</span></div>

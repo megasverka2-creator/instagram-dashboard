@@ -124,8 +124,8 @@ def last_week_review(snapshot):
 # Brend → iiko filiallari (savdo kontekstini bog'lash uchun)
 IIKO_BRANDS = {
     "benison_uz": ["Benison-MegaCenter", "Benison-Oila", "Smart City"],
-    "dieto_uz": [],  # Dieto savdosi Benison ichida — alohida ajratilmaydi
-    "eddo_uz": ["Eddo"],
+    "dieto_uz": [],  # Dieto savdosi Eddo filiali ichida hisoblanadi — alohida ajratilmaydi
+    "eddo_uz": ["Eddo"],  # DIQQAT: bu raqamlar ichida Dieto taomlari ham bor
 }
 
 
@@ -161,7 +161,8 @@ def sales_context():
             total_checks += chk
             day_revs.append((day.get("date", "?"), rev))
         avg = round(total_rev / total_checks) if total_checks else 0
-        lines.append(f"\n{acc_key}: haftalik tushum {total_rev:,} so'm, {total_checks} chek, o'rtacha chek {avg:,} so'm")
+        extra = " (DIQQAT: bu raqamlar ichiga Dieto taomlari savdosi ham kiradi)" if acc_key == "eddo_uz" else ""
+        lines.append(f"\n{acc_key}: haftalik tushum {total_rev:,} so'm, {total_checks} chek, o'rtacha chek {avg:,} so'm{extra}")
         best = max(day_revs, key=lambda x: x[1]) if day_revs else None
         worst = min(day_revs, key=lambda x: x[1]) if day_revs else None
         if best and worst and best[1]:
@@ -191,7 +192,7 @@ def sales_context():
                              + "; ".join(f"{n} (narxi {v['price']:,}, haftada bor-yo'g'i {v['amount']} dona)"
                                          for n, v in opps))
 
-    lines.append("\nSAVDOdan FOYDALANISH: (1) Har brend rejasiga kamida 1 ta post REKLAMA NOMZODLARIdan biriga bag'ishlansin — bu qimmatli, lekin mijozlar bilmaydigan taom; uni 'yashirin xazina' / 'sinab ko'rganmisiz?' formatida jozibali tanishtir va why maydonida savdo sababini yoz. (2) TOP taomlarni ham ko'rsat — ular ishonchli traffik beradi. (3) Sust savdo kunlariga (yuqorida ko'rsatilgan) aksiya yoki jonli kontent rejalashtir. (4) O'rtacha chekni oshiradigan kombo/desert takliflarini caption'larga singdir. Dieto savdosi Benison oshxonasi ichida — Dieto uchun savdo raqamlariga emas, Instagram statistikasiga tayan.")
+    lines.append("\nSAVDOdan FOYDALANISH: (1) Har brend rejasiga kamida 1 ta post REKLAMA NOMZODLARIdan biriga bag'ishlansin — bu qimmatli, lekin mijozlar bilmaydigan taom; uni 'yashirin xazina' / 'sinab ko'rganmisiz?' formatida jozibali tanishtir va why maydonida savdo sababini yoz. (2) TOP taomlarni ham ko'rsat — ular ishonchli traffik beradi. (3) Sust savdo kunlariga (yuqorida ko'rsatilgan) aksiya yoki jonli kontent rejalashtir. (4) O'rtacha chekni oshiradigan kombo/desert takliflarini caption'larga singdir. (5) Dieto savdosi Eddo filiali ichida hisoblanadi (alohida raqami yo'q) — Dieto uchun Instagram statistikasiga tayan; Eddo raqamlarida esa Dieto taomlari borligini hisobga ol (sog'lom taomlar Eddo'da ko'rinsa, bu Dieto bo'lishi mumkin).")
     return "\n\n" + "\n".join(lines)
 
 
