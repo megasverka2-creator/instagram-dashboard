@@ -1,0 +1,237 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+iiko Savdo Kollektori
+======================
+iiko Server API'dan kunlik savdo ma'lumotlarini yig'adi:
+  - savdo_data.json     — kunlik tushum, cheklar, o'rtacha chek (filial bo'yicha)
+  - savdo_taomlar.json  — oxirgi 7 kun eng ko'p sotilgan taomlar (filial bo'yicha)
+
+GitHub Secrets: IIKO_SERVER (https://nomingiz.iiko.it), IIKO_LOGIN, IIKO_PASS
+Har kuni avtomatik ishlaydi (GitHub Actions).
+"""
+
+import json
+import os
+import sys
+import hashlib
+import urllib.request
+import urllib.parse
+import urllib.error
+from datetime import datetime, timedelta
+
+# ╔═══════════════════════════════════════════════════════════╗
+# ║  FILIAL → AKKAUNT MOSLASHUVI                                ║
+# ║  Birinchi muvaffaqiyatli ishga tushirishdan keyin Actions   ║
+# ║  logida iiko'dagi haqiqiy filial nomlari ko'rinadi —        ║
+# ║  o'shanda shu lug'atni to'ldiramiz. Bo'sh bo'lsa, filial    ║
+# ║  nomlari iiko'dagidek saqlanadi (bu ham ishlayveradi).      ║
+# ╚═══════════════════════════════════════════════════════════╝
+MAPPING = {
+    # "iiko'dagi filial nomi": "benison_uz",
+    # "Masalan Benison Yunusobod": "benison_uz",
+}
+
+SERVER = os.environ.get("IIKO_SERVER", "").rstrip("/")
+LOGIN = os.environ.get("IIKO_LOGIN", "")
+PASSWORD = os.environ.get("IIKO_PASS", "")
+
+BASE = os.path.dirname(os.path.abspath(__file__))
+DATA_FILE = os.path.join(BASE, "savdo_data.json")
+DISHES_FILE = os.path.join(BASE, "savdo_taomlar.json")
+
+DAYS_BACK = 7  # har safar oxirgi 7 kunni yangilab yig'amiz (kech kelgan cheklar uchun)
+
+
+# =============================================================
+#  iiko API
+# =============================================================
+def api_get(path, params=None):
+    url = f"{SERVER}{path}"
+    if params:
+        url += "?" + urllib.parse.urlencode(params)
+    req = urllib.request.Request(url)
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        return resp.read().decode("utf-8")
+
+
+def api_post_json(path, params, body):
+    url = f"{SERVER}{path}?" + urllib.parse.urlencode(params)
+    data = json.dumps(body).encode("utf-8")
+    req = urllib.request.Request(url, data=data,
+                                 headers={"Content-Type": "application/json"},
+                                 method="POST")
+    with urllib.request.urlopen(req, timeout=120) as resp:
+        return json.loads(resp.read().decode("utf-8"))
+
+
+def login():
+    """Token olish. iiko parolni SHA1 ko'rinishida qabul qiladi."""
+    sha1 = hashlib.sha1(PASSWORD.encode("utf-8")).hexdigest()
+    token = api_get("/resto/api/auth", {"login": LOGIN, "pass": sha1}).strip()
+    if not token or len(token) < 8:
+        raise RuntimeError(f"Auth muvaffaqiyatsiz: '{token[:50]}'")
+    return token
+
+
+def logout(token):
+    """Litsenziya o'rnini bo'shatish — MUHIM!"""
+    try:
+        api_get("/resto/api/logout", {"key": token})
+    except Exception:
+        pass
+
+
+def olap_sales_daily(token, date_from, date_to):
+    """Kunlik savdo: sana + filial bo'yicha tushum va cheklar soni."""
+    body = {
+        "reportType": "SALES",
+        "buildSummary": "false",
+        "groupByRowFields": ["OpenDate.Typed", "Department"],
+        "aggregateFields": ["DishDiscountSumInt", "UniqOrderId.OrdersCount"],
+        "filters": {
+            "OpenDate.Typed": {
+                "filterType": "DateRange", "periodType": "CUSTOM",
+                "from": date_from, "to": date_to,
+            },
+            "DeletedWithWriteoff": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
+            "OrderDeleted": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
+        },
+    }
+    return api_post_json("/resto/api/v2/reports/olap", {"key": token}, body)
+
+
+def olap_top_dishes(token, date_from, date_to):
+    """Eng ko'p sotilgan taomlar (filial bo'yicha)."""
+    body = {
+        "reportType": "SALES",
+        "buildSummary": "false",
+        "groupByRowFields": ["Department", "DishName"],
+        "aggregateFields": ["DishDiscountSumInt", "DishAmountInt"],
+        "filters": {
+            "OpenDate.Typed": {
+                "filterType": "DateRange", "periodType": "CUSTOM",
+                "from": date_from, "to": date_to,
+            },
+            "DeletedWithWriteoff": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
+            "OrderDeleted": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
+        },
+    }
+    return api_post_json("/resto/api/v2/reports/olap", {"key": token}, body)
+
+
+def dept_key(name):
+    """Filial nomini akkaunt kalitiga aylantirish (MAPPING bo'yicha)."""
+    return MAPPING.get(name, name)
+
+
+# =============================================================
+#  Asosiy jarayon
+# =============================================================
+def main():
+    print(f"\n=== iiko savdo yig'ish: {datetime.now():%Y-%m-%d %H:%M} ===")
+
+    if not SERVER or not LOGIN or not PASSWORD:
+        print("  XATO: IIKO_SERVER / IIKO_LOGIN / IIKO_PASS Secret'lari topilmadi")
+        sys.exit(1)
+
+    today = datetime.now().date()
+    date_from = (today - timedelta(days=DAYS_BACK)).isoformat()
+    date_to = today.isoformat()
+    print(f"  Davr: {date_from} — {date_to}")
+    print(f"  Server: {SERVER}")
+
+    token = None
+    try:
+        token = login()
+        print("  Auth: OK")
+
+        # --- 1. Kunlik savdo ---
+        sales = olap_sales_daily(token, date_from, date_to)
+        rows = sales.get("data", [])
+        print(f"  Kunlik savdo qatorlari: {len(rows)}")
+
+        # Sana -> filial -> ko'rsatkichlar
+        daily = {}
+        dept_names = set()
+        for r in rows:
+            date = (r.get("OpenDate.Typed") or "")[:10]
+            dept = r.get("Department") or "?"
+            dept_names.add(dept)
+            revenue = r.get("DishDiscountSumInt") or 0
+            checks = r.get("UniqOrderId.OrdersCount") or 0
+            if not date:
+                continue
+            daily.setdefault(date, {})
+            k = dept_key(dept)
+            d = daily[date].setdefault(k, {"revenue": 0, "checks": 0})
+            d["revenue"] += revenue
+            d["checks"] += checks
+
+        # O'rtacha chek
+        for date in daily:
+            for k, d in daily[date].items():
+                d["revenue"] = round(d["revenue"])
+                d["avg_check"] = round(d["revenue"] / d["checks"]) if d["checks"] else 0
+
+        print("  Topilgan filiallar (MAPPING uchun):")
+        for n in sorted(dept_names):
+            mapped = MAPPING.get(n, "(moslanmagan — o'z nomida saqlanadi)")
+            print(f"    - \"{n}\" -> {mapped}")
+
+        # Tarixga qo'shish: shu davr kunlarini yangilab yozamiz
+        history = []
+        if os.path.exists(DATA_FILE):
+            try:
+                with open(DATA_FILE, "r", encoding="utf-8") as f:
+                    history = json.load(f)
+            except (json.JSONDecodeError, IOError):
+                history = []
+        refreshed = set(daily.keys())
+        history = [h for h in history if h.get("date") not in refreshed]
+        for date in sorted(daily.keys()):
+            history.append({"date": date, "departments": daily[date]})
+        history.sort(key=lambda h: h.get("date", ""))
+        with open(DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(history, f, ensure_ascii=False, indent=2)
+        print(f"  Saqlandi: {DATA_FILE} (jami kunlar: {len(history)})")
+
+        # --- 2. Top taomlar (oxirgi 7 kun) ---
+        dishes = olap_top_dishes(token, date_from, date_to)
+        drows = dishes.get("data", [])
+        by_dept = {}
+        for r in drows:
+            dept = dept_key(r.get("Department") or "?")
+            by_dept.setdefault(dept, []).append({
+                "dish": r.get("DishName") or "?",
+                "sum": round(r.get("DishDiscountSumInt") or 0),
+                "amount": round(r.get("DishAmountInt") or 0),
+            })
+        for dept in by_dept:
+            by_dept[dept] = sorted(by_dept[dept], key=lambda x: x["sum"], reverse=True)[:10]
+
+        with open(DISHES_FILE, "w", encoding="utf-8") as f:
+            json.dump({
+                "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "period": f"{date_from} — {date_to}",
+                "departments": by_dept,
+            }, f, ensure_ascii=False, indent=2)
+        print(f"  Saqlandi: {DISHES_FILE} ({len(by_dept)} filial)")
+
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="replace")[:300]
+        print(f"  ! API xato ({e.code}): {body}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"  ! Xato: {e}")
+        sys.exit(1)
+    finally:
+        if token:
+            logout(token)
+            print("  Logout: OK (litsenziya bo'shatildi)")
+
+    print("=== Tugadi ===\n")
+
+
+if __name__ == "__main__":
+    main()
