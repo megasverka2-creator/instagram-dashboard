@@ -235,6 +235,15 @@ def sales_context():
                              + "; ".join(f"{n} (narxi {v['price']:,}, haftada bor-yo'g'i {v['amount']} dona)"
                                          for n, v in opps))
 
+        # 🏪 Filialga xos taomlar (faqat ko'p filialli brendlar uchun ma'noli)
+        if len(deps) > 1 and taomlar and taomlar.get("exclusives"):
+            for d in deps:
+                exc = taomlar["exclusives"].get(d, [])
+                if exc:
+                    names = ", ".join(x["dish"] for x in exc[:8])
+                    lines.append(f"  FILIALGA XOS (sotuv ma'lumotidan, faqat {d}da sotilgan): {names}. "
+                                 f"Bu taomlar haqida post yozsang, filialni aniq ko'rsat!")
+
     lines.append("\nSAVDOdan FOYDALANISH: (1) Har brend rejasiga kamida 1 ta post REKLAMA NOMZODLARIdan biriga bag'ishlansin — bu qimmatli, lekin mijozlar bilmaydigan taom; uni 'yashirin xazina' / 'sinab ko'rganmisiz?' formatida jozibali tanishtir va why maydonida savdo sababini yoz. (2) TOP taomlarni ham ko'rsat — ular ishonchli traffik beradi. (3) Sust savdo kunlariga (yuqorida ko'rsatilgan) aksiya yoki jonli kontent rejalashtir. (4) O'rtacha chekni oshiradigan kombo/desert takliflarini caption'larga singdir. (5) Dieto savdosi Eddo filiali ichida hisoblanadi (alohida raqami yo'q) — Dieto uchun Instagram statistikasiga tayan; Eddo raqamlarida esa Dieto taomlari borligini hisobga ol (sog'lom taomlar Eddo'da ko'rinsa, bu Dieto bo'lishi mumkin).")
     return "\n\n" + "\n".join(lines)
 

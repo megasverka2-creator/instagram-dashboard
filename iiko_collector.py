@@ -238,6 +238,21 @@ def main():
                     for x in opp[:8]
                 ]
 
+        # 🏪 Filialga xos taomlar: faqat bitta filialda sotilgan (5+ dona)
+        dish_depts = {}
+        for dept, items in by_dept.items():
+            for x in items:
+                k = x["dish"]
+                dish_depts.setdefault(k, {})[dept] = dish_depts.get(k, {}).get(dept, 0) + x["amount"]
+        exclusives = {}
+        for dish, depts_map in dish_depts.items():
+            total = sum(depts_map.values())
+            if len(depts_map) == 1 and total >= 5:
+                dept = next(iter(depts_map))
+                exclusives.setdefault(dept, []).append({"dish": dish, "amount": total})
+        for dept in exclusives:
+            exclusives[dept] = sorted(exclusives[dept], key=lambda x: x["amount"], reverse=True)[:15]
+
         for dept in by_dept:
             by_dept[dept] = by_dept[dept][:10]
 
@@ -246,9 +261,11 @@ def main():
             "period": f"{date_from} — {date_to}",
             "departments": by_dept,
             "opportunities": opportunities,
+            "exclusives": exclusives,
         }, SAVDO_PAROL)
         print(f"  Saqlandi (shifrlangan): {DISHES_ENC} ({len(by_dept)} filial, "
-              f"{sum(len(v) for v in opportunities.values())} ta reklama nomzodi)")
+              f"{sum(len(v) for v in opportunities.values())} ta reklama nomzodi, "
+              f"{sum(len(v) for v in exclusives.values())} ta filialga xos taom)")
 
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")[:300]
