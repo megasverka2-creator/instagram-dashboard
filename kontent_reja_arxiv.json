@@ -1,0 +1,120 @@
+[
+  {
+    "generated_at": "2026-06-11 10:59",
+    "data_date": "2026-06-10",
+    "model": "claude-sonnet-4-6",
+    "accounts": {
+      "benison_uz": {
+        "insight": "Benison'da VIDEO kontent IMAGE'ga nisbatan 5x ko'p engagement olmoqda (727 vs 136); eng yaxshi postlar hazil/kayfiyat uslubida bo'lib, ofitsiant va restoran hayotidan kliplar viral bo'lgan — shu yo'nalish davom ettirildi va vaqt 12:05–13:14 oralig'iga moslashtirildi.",
+        "plan": [
+          {
+            "day": "Dushanba",
+            "time": "12:30",
+            "type": "VIDEO",
+            "theme": "Oshpazlarimiz 'sirlari' — hazilmi, rostmi?",
+            "why": "Ofitsiantlar seriyasi 3400 va 1056 engagement oldi — xodimlar haqidagi hazil videolar eng yuqori reach bermoqda, shu formatni oshpazlarga ko'chirtirish mantiqiy.",
+            "caption": "Oshpazlarimizning 'maxfiy siri' fosh bo'ldi! 😂🍳\nBu videoni ko'rganlar endi Benisonning taomlari nima uchun shunday mazali ekanini tushunishdi! 😎\nSiz ham bir bor sinab ko'ring — farqni his qilasiz!\n👇 Do'stingizni tag qiling, birga kelinglar!\n#Benison #BenisonUz #ToshkentRestoran #YaxshiKayfiyat #MilliyTaomlar"
+          },
+          {
+            "day": "Chorshanba",
+            "time": "15:30",
+            "type": "IMAGE",
+            "theme": "Yangi menyu taqdimoti — mavsumiy taom",
+            "why": "Menyu yangilik haqidagi IMAGE posti 767 engagement va 59378 reach olgan — bu kontent turida reach rekord, menyu postlari katta auditoriyaga yetib bormoqda.",
+            "caption": "Benison menyusida yana bir siz kutgan yangilik! 😋🔥\nMavsumning eng mazali taomlari endi sizning oldingizda — har bir luqma bir his!\nBizga tashrif buyuring va o'zingiz baholang!\n📍 Manzilimiz bio'da | Bron: +998XX XXX XX XX\n#Benison #YangiTaom #ToshkentRestoran #MilliyTaomlar #BenisonUz"
+          },
+          {
+            "day": "Juma",
+            "time": "12:45",
+            "type": "VIDEO",
+            "theme": "Juma kuni restoranda — kim yutadi?",
+            "why": "'Qaysi biri yutadi?!' formati 801 engagement oldi — raqobat/tanlov uslubidagi videolar kuchli ishlayapti, juma kuni trafik yuqori bo'ladi.",
+            "caption": "Juma kuni Benisonni to'ldirib keldi — lekin kim yutadi?! 😎😁\nBoshqalar navbat kutayotganda, aqllilari esa oldindan bron qilib qo'yishgan! 😄\nSiz qaysi tomonda turgan bo'lardingiz?\n📞 Bron qiling: bio'dagi havola orqali!\n#Benison #JumaMuzikasi #BenisonUz #ToshkentRestoran #YaxshiKayfiyat"
+          },
+          {
+            "day": "Yakshanba",
+            "time": "13:00",
+            "type": "VIDEO",
+            "theme": "Ofitsiantlar seriyasi davomi — 'Doimiy mijoz' hazili",
+            "why": "Ofitsiantlar haqidagi ikkita video (3400 + 1056 eng) seriyaning eng kuchli yo'nalishi ekanini isbotladi — hafta yakunida yangi epizod bilan auditoriyani qaytarish strategik.",
+            "caption": "Ofitsiantlarimiz doimiy mehmonlarni ko'rganida! 😁🤝\nBenison oilasiga bir marta kirib qolgan — qayta qayta qaytadi, shunday emasmi? 😊\nSiz ham bizning doimiy mehmonmisiz? Pastga yozing! ⬇️\n#Benison #BenisonOilasi #ToshkentRestoran #BenisonUz #YaxshiKayfiyat"
+          }
+        ]
+      },
+      "dieto_uz": {
+        "insight": "Dieto'da faqat VIDEO kontent bor va o'rtacha 719 engagement olmoqda — auditoriya kichik (377 follower) bo'lsa-da engagement rate fenomenal (190%+); Benison bilan hamkorlik posti eng yuqori natija (981 eng) berdi, sog'lom taom va tezkorlik mavzulari ishlayapti, ertalabki vaqt (08:14–09:22) optimal.",
+        "plan": [
+          {
+            "day": "Seshanba",
+            "time": "08:30",
+            "type": "VIDEO",
+            "theme": "Ertalabki sog'lom nonushta — kunni to'g'ri boshlang",
+            "why": "Dieto'ning eng yuqori engagement postlari 08:35 va 09:22 da chiqqan — ertalabki vaqt bu auditoriya uchun eng faol, sog'lom hayot tarziga urg'u beruvchi mazmun ishlayapti.",
+            "caption": "Dieto bilan kunni to'g'ri boshlang! 🌅🥗\nSog'lom, mazali va tezkor — ertalabgi nonushtangiz tayyor, faqat siz yetishmayapsiz!\nHamyonbop narxlar, yurak to'q ta'm — bu Dieto! ✨\n🛵 Yetkazib berish uchun: bio'dagi havola!\n#Dieto #DietoUz #SogломTaom #ParhezTaom #ToshkentYetkazib"
+          },
+          {
+            "day": "Payshanba",
+            "time": "08:20",
+            "type": "VIDEO",
+            "theme": "Tushlik tanaffuzi — ofis uchun eng yaxshi tanlov",
+            "why": "'Mazali tanaffus vaqti' posti 857 engagement oldi — ish vaqtida sog'lom tushlik mavzusi rezonans bermoqda, ofis auditoriyasiga murojaat qilish o'sishni tezlashtiradi.",
+            "caption": "Tushlik tanaffuzi keldi — nima yeysiz? 🥗⏰\nDieto bilan har tushlik — kichik bayram! Sog'lom, to'yimli va eng muhimi tezkor yetkazib beramiz!\nOfisingizga ham yetib boramiz — sinab ko'ring! 😊\n📍 Manzillar va buyurtma: bio'da!\n#Dieto #TushlikVaqti #DietoUz #SogломTaom #ToshkentOfis"
+          },
+          {
+            "day": "Shanba",
+            "time": "09:00",
+            "type": "VIDEO",
+            "theme": "Dam olish kuni ham parhez buzilmasin — hafta sonu menyusi",
+            "why": "Shanba kuni odamlar uyda bo'ladi va yetkazib berish xizmatiga talab ortadi; ertalabki vaqt Dieto uchun eng samarali ekan, hafta sonu maxsus taklifi bilan yangi buyurtmalar olish mumkin.",
+            "caption": "Dam olish kuni ham o'zingizni yaxshi his qiling! 🌿😊\nDieto'ning hafta sonu menyusi tayyor — mazali, sog'lom, uyingizgacha yetkazamiz!\nParhez ham bayram bo'lishi mumkin ekanligini unutmang! 😋✨\n🛵 Buyurtma bering: bio'dagi link!\n#Dieto #HaftaSonu #DietoUz #SogломHayot #ParhezTaom"
+          },
+          {
+            "day": "Yakshanba",
+            "time": "08:35",
+            "type": "VIDEO",
+            "theme": "Hamkorlik/kollaboratsiya teaseri — yangi brandlar bilan",
+            "why": "Benison x Dieto hamkorlik posti 981 engagement (eng yuqori) va 16972 reach oldi — hamkorlik formati viral potentsialga ega, yangi kollaboratsiya teaseri yana shunday effekt berishi mumkin.",
+            "caption": "Katta yangilik yaqinlashmoqda! 👀🤝\nDieto yana yangi do'stlar bilan qo'shilmoqda — tez kunda hammasi ma'lum bo'ladi!\nSizga yoqadimi deb o'ylaymiz... 😏✨\n🔔 Yangilikni birinchi bilish uchun sahifamizga obuna bo'ling!\n#Dieto #DietoUz #YangiHamkorlik #SogломTaom #ToshkentRestoran"
+          }
+        ]
+      },
+      "eddo_uz": {
+        "insight": "Eddo'da IMAGE va VIDEO deyarli teng ishlayapti (277 vs 247), lekin eng yuqori postlar IMAGE formatida (1191 va 1170 eng) — aksiya/taklif seriyalari (Ramazon) va hazil/tag-a-friend postlari rekord ko'rsatkich bergan; vaqt 12:36–15:55 oralig'i optimal, shu uslub va vaqt saqlanib yangi aksiya seriyasi taklif qilindi.",
+        "plan": [
+          {
+            "day": "Dushanba",
+            "time": "15:45",
+            "type": "IMAGE",
+            "theme": "Yoz mavsumi aksiyasi — 1-kun taklifi",
+            "why": "Ramazon aksiyasi seriyasi 1191 va 426 engagement oldi — seriyali aksiya formati Eddo auditoriyasi uchun eng kuchli ishlagan, yoz mavzusida yangi seriya boshlash mantiqiy.",
+            "caption": "☀️ YOZ BARAKASI — 1-KUN TAKLIFI!\nEddo Fast Food restoranlaridan maxsus yozgi sovg'a: har xaridda ajoyib chegirma va sovg'alar!\nYoz shu bilan boshlanadi — Eddo bilan! 🍕😍\n📍 Eng yaqin Eddo filialingizga tashrif buyuring yoki buyurtma bering!\n#Eddo #EddoUz #YozAksiyasi #FastFood #ToshkentPitsa"
+          },
+          {
+            "day": "Chorshanba",
+            "time": "15:55",
+            "type": "IMAGE",
+            "theme": "Tag-a-friend hazil posti — kim bilan Eddo?",
+            "why": "'Kimga jo'natishni o'zingiz bilasiz' posti 1170 engagement oldi — tag formati organik reach'ni keskin oshirmoqda, bu turdagi postni takrorlash oson va samarali.",
+            "caption": "😍😅 Bu pitsa haqida bilib qo'yganingiz yaxshi...\nKimga jo'natishni o'zingiz bilasiz! 😅🍕\nU bilan Eddoga kelganingizda minnatdor bo'ladi — kafolat beramiz!\n👇 Sheriging'ni tag qil va birga kelinglar!\n#Eddo #EddoUz #PitsaVaqti #TagFriend #ToshkentFastFood"
+          },
+          {
+            "day": "Juma",
+            "time": "12:40",
+            "type": "VIDEO",
+            "theme": "Juma kuni Eddo'da — yaxshi kayfiyat",
+            "why": "Eddo VIDEO postlari o'rtacha 247 eng olmoqda, 'yaxshi kayfiyat' uslubidagi video 372 eng oldi — juma kuni ertalab trafik yuqori bo'ladi, kayfiyat videosi hafta yakunini yaxshi boshlaydi.",
+            "caption": "😁😂 Juma keldi — demak Eddo vaqti!\nEddo bilan yaxshi kayfiyat hamrohingiz bo'lsin — pitsa, burger, kulgi... hammasi bir joyda!\nBugun qayerda tushlik qilasiz? Javob aniq! 🍕😎\n📞 Buyurtma: bio'dagi raqam!\n#Eddo #EddoUz #JumaKayfiyati #FastFood #ToshkentBurger"
+          },
+          {
+            "day": "Yakshanba",
+            "time": "15:30",
+            "type": "IMAGE",
+            "theme": "Yoz aksiyasi — 4-kun davomi",
+            "why": "Ramazon seriyasida har aksiya kuni alohida yaxshi natija berdi — seriyaning davomini hafta oxirida chiqarish auditoriyani qaytaradi va aksiya haqida eslatib turadi.",
+            "caption": "☀️ YOZ BARAKASI — 4-KUN TAKLIFI!\nEddo Fast Food restoranlaridan bugungi maxsus sovg'a sizni kutmoqda! 😋🎁\nOilaviy dam olish kunini Eddo bilan ajoyib qiling — hamma o'z sevimli taomlari topadi!\n📍 Manzillar va menyu: bio'da | Buyurtma ham qabul qilinadi!\n#Eddo #EddoUz #YozAksiyasi #OilaviyRestoran #ToshkentPitsa"
+          }
+        ]
+      }
+    }
+  }
+]

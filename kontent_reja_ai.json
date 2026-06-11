@@ -1,116 +1,119 @@
 {
-  "generated_at": "2026-06-11 10:59",
+  "generated_at": "2026-06-11 15:25",
   "data_date": "2026-06-10",
   "model": "claude-sonnet-4-6",
   "accounts": {
     "benison_uz": {
-      "insight": "Benison'da VIDEO kontent IMAGE'ga nisbatan 5x ko'p engagement olmoqda (727 vs 136); eng yaxshi postlar hazil/kayfiyat uslubida bo'lib, ofitsiant va restoran hayotidan kliplar viral bo'lgan — shu yo'nalish davom ettirildi va vaqt 12:05–13:14 oralig'iga moslashtirildi.",
+      "insight": "Video kontenti Benisonda raqamlar bilan aniq ustunlik qilmoqda (o'rtacha 727 eng vs IMAGE 136) — ofitsiantlar seriyasi va hazil formatdagi videolar eng yuqori reachni bergan. Reklama nomzodlari ichida Ассорти Мангал va Ассорти Миллий qimmatli, lekin kam sotilayotgan 'yashirin xazinalar' sifatida ajratib ko'rsatish kerak.",
+      "review": "O'tgan haftada faqat 1 ta post chiqdi (rejadagi 4 tadan) — 430 eng bilan yomon emas, lekin seriya postlari va aksiya kontenti o'tkazib yuborildi. Bu haftada muntazamlikni ta'minlash va seriyalarni qayta boshlash ustuvor.",
       "plan": [
         {
           "day": "Dushanba",
-          "time": "12:30",
+          "time": "12:47",
           "type": "VIDEO",
-          "theme": "Oshpazlarimiz 'sirlari' — hazilmi, rostmi?",
-          "why": "Ofitsiantlar seriyasi 3400 va 1056 engagement oldi — xodimlar haqidagi hazil videolar eng yuqori reach bermoqda, shu formatni oshpazlarga ko'chirtirish mantiqiy.",
-          "caption": "Oshpazlarimizning 'maxfiy siri' fosh bo'ldi! 😂🍳\nBu videoni ko'rganlar endi Benisonning taomlari nima uchun shunday mazali ekanini tushunishdi! 😎\nSiz ham bir bor sinab ko'ring — farqni his qilasiz!\n👇 Do'stingizni tag qiling, birga kelinglar!\n#Benison #BenisonUz #ToshkentRestoran #YaxshiKayfiyat #MilliyTaomlar"
+          "theme": "Ofitsiantlar seriyasi — 'Doimiy mijoz' hazili (davom)",
+          "why": "Ofitsiantlar seriyasi eng yuqori engagement bergan format (3400 va 1056 eng) — seriyani davom ettirish auditoriyani qaytaradi va reach oshiradi.",
+          "caption": "Doimiy mijoz Benisonga kelganda ofitsiantlarimiz shunday kutib olishadi! 😁🔥\n\nSiz ham o'zingizni tanishtirib qo'ydingizmi? 😎\n\nBenison bilan yaxshi kayfiyat doim hamrohingiz bo'lsin! 😊\n\n📍 Benisonga tashrif buyuring va o'zingizni «doimiy mijoz» his eting!\n\n#benison #benisonuz #toshkent #restoran #yaxshikayfiyat"
         },
         {
           "day": "Chorshanba",
           "time": "15:30",
           "type": "IMAGE",
-          "theme": "Yangi menyu taqdimoti — mavsumiy taom",
-          "why": "Menyu yangilik haqidagi IMAGE posti 767 engagement va 59378 reach olgan — bu kontent turida reach rekord, menyu postlari katta auditoriyaga yetib bormoqda.",
-          "caption": "Benison menyusida yana bir siz kutgan yangilik! 😋🔥\nMavsumning eng mazali taomlari endi sizning oldingizda — har bir luqma bir his!\nBizga tashrif buyuring va o'zingiz baholang!\n📍 Manzilimiz bio'da | Bron: +998XX XXX XX XX\n#Benison #YangiTaom #ToshkentRestoran #MilliyTaomlar #BenisonUz"
+          "theme": "Yashirin xazina — Ассорти Мангал taqdimoti",
+          "why": "Ассорти Мангал (420,333 so'm) haftada bor-yo'g'i 9 marta sotilgan — mijozlar bilmaydi, lekin narxi yuqori va o'rtacha chekni sezilarli oshiradi; IMAGE formati ham 767 eng bilan yaxshi natijalarga erishgan.",
+          "caption": "Benison menyusida siz hali sinab ko'rmaganlar ham bor! 🔥😋\n\n«Ассорти Мангал» — 4-6 kishilik qirollik dasturhoni: eng lazzatli mangal taomlaridan bir salphada! Bir bor tatib ko'rgan — qaytib keladi. 👑\n\nDo'stlar yig'ilsa — shu buyurtma qilsangiz, hech kim xafa bo'lmaydi 😎\n\nBron: +998 [telefon] | 📍 Benison\n\n#benison #assortimangal #benisonuz #toshkentrestoran #mangal"
         },
         {
           "day": "Juma",
           "time": "12:45",
           "type": "VIDEO",
-          "theme": "Juma kuni restoranda — kim yutadi?",
-          "why": "'Qaysi biri yutadi?!' formati 801 engagement oldi — raqobat/tanlov uslubidagi videolar kuchli ishlayapti, juma kuni trafik yuqori bo'ladi.",
-          "caption": "Juma kuni Benisonni to'ldirib keldi — lekin kim yutadi?! 😎😁\nBoshqalar navbat kutayotganda, aqllilari esa oldindan bron qilib qo'yishgan! 😄\nSiz qaysi tomonda turgan bo'lardingiz?\n📞 Bron qiling: bio'dagi havola orqali!\n#Benison #JumaMuzikasi #BenisonUz #ToshkentRestoran #YaxshiKayfiyat"
+          "theme": "Juma kuni restoranda — kim yutadi? (qayta format)",
+          "why": "'Qaysi biri yutadi?!' formati 801 eng va 'Juma kuni' konteksti yuqori reach bergan — juma tushligiga keluvchi auditoriya uchun eng to'g'ri vaqt va format.",
+          "caption": "Juma tushligida kim yutadi?! 😎😁\n\nBenisonda o'tirib, Молотый шашлык yeb, haftaning eng yaxshi kunidan bahramand bo'lish — bu g'alaba! 🏆🔥\n\nSiz bugun qayerdasiz? 👇\n\nJumangiz muborak, Benison oilasi! 😊\n\n#benison #jumakunи #benisonuz #shashlik #toshkent"
         },
         {
           "day": "Yakshanba",
           "time": "13:00",
           "type": "VIDEO",
-          "theme": "Ofitsiantlar seriyasi davomi — 'Doimiy mijoz' hazili",
-          "why": "Ofitsiantlar haqidagi ikkita video (3400 + 1056 eng) seriyaning eng kuchli yo'nalishi ekanini isbotladi — hafta yakunida yangi epizod bilan auditoriyani qaytarish strategik.",
-          "caption": "Ofitsiantlarimiz doimiy mehmonlarni ko'rganida! 😁🤝\nBenison oilasiga bir marta kirib qolgan — qayta qayta qaytadi, shunday emasmi? 😊\nSiz ham bizning doimiy mehmonmisiz? Pastga yozing! ⬇️\n#Benison #BenisonOilasi #ToshkentRestoran #BenisonUz #YaxshiKayfiyat"
+          "theme": "Oshpazlar sirlari — Ассорти Миллий tayyorlanishi",
+          "why": "Yakshanba eng kuchli savdo kuni tendentsiyasiga mos — Ассорти Миллий (385,458 so'm, 16 dona/hafta) ni oshpaz orqali 'yashirin taom' formatida ko'rsatish ham savdoni, ham reach ni oshiradi.",
+          "caption": "Oshpazlarimizning sirlari fosh bo'ldi! 😁🤫\n\n«Ассорти Миллий» — milliy taomlarning eng sara tanlamasi, 4-6 kishi uchun! Ko'pchilik menyuda ko'rsa ham — bir marta ham buyurtma qilmagan. Nega?! Chunki hali tatib ko'rishmagan! 😋\n\nBugun oila bilan Benisonga keling — bu dasturhonni sinab ko'ring! 👨‍👩‍👧‍👦🔥\n\n📍 Bron: +998 [telefon]\n\n#benison #assortimilliy #benisonuz #milliytaomlar #oilabilankeling"
         }
       ]
     },
     "dieto_uz": {
-      "insight": "Dieto'da faqat VIDEO kontent bor va o'rtacha 719 engagement olmoqda — auditoriya kichik (377 follower) bo'lsa-da engagement rate fenomenal (190%+); Benison bilan hamkorlik posti eng yuqori natija (981 eng) berdi, sog'lom taom va tezkorlik mavzulari ishlayapti, ertalabki vaqt (08:14–09:22) optimal.",
+      "insight": "Dieto'da faqat VIDEO ishlaydi (o'rtacha 719 eng) va Benison bilan kollaboratsiya posti eng yuqori natijani bergan (981 eng) — hamkorlik va sog'lom hayot tarzini rag'batlantiruvchi ertalabki kontentga urg'u berish kerak.",
+      "review": "O'tgan hafta Dieto'dan birorta post chiqmaganga o'xshaydi — ma'lumot yo'q. Bu haftada kamida 4 ta postni rejaga qat'iy kiritish va ertalabki vaqt oralig'ini (08:14–09:22) qat'iy saqlash kerak.",
       "plan": [
         {
           "day": "Seshanba",
-          "time": "08:30",
+          "time": "08:35",
           "type": "VIDEO",
           "theme": "Ertalabki sog'lom nonushta — kunni to'g'ri boshlang",
-          "why": "Dieto'ning eng yuqori engagement postlari 08:35 va 09:22 da chiqqan — ertalabki vaqt bu auditoriya uchun eng faol, sog'lom hayot tarziga urg'u beruvchi mazmun ishlayapti.",
-          "caption": "Dieto bilan kunni to'g'ri boshlang! 🌅🥗\nSog'lom, mazali va tezkor — ertalabgi nonushtangiz tayyor, faqat siz yetishmayapsiz!\nHamyonbop narxlar, yurak to'q ta'm — bu Dieto! ✨\n🛵 Yetkazib berish uchun: bio'dagi havola!\n#Dieto #DietoUz #SogломTaom #ParhezTaom #ToshkentYetkazib"
+          "why": "Dietoning barcha top postlari 08:14–09:22 oralig'ida chiqqan — ertalabki vaqt bu auditoriya uchun eng faol payt; nonushta kontenti sog'lom hayot tarziga mos brend ovozini mustahkamlaydi.",
+          "caption": "Kun boshida to'g'ri tanlov qilsang — qolgan vaqt ham yaxshi ketadi! 🥗✨\n\nDieto ertalabki menyusi: toza, mazali, hamyonbop — va 30 daqiqada eshigingizda! 🚀\n\nBugun nonushtani biz bilan boshlang 😊\n\n📍 Zarafshon: Mo'jizalar Toshkent / Buyurtma: +998 [telefon]\n\n#dieto #dietouz #soglomnonushta #parhezovqat #toshkent"
         },
         {
-          "day": "Payshanba",
+          "day": "Chorshanba",
           "time": "08:20",
           "type": "VIDEO",
           "theme": "Tushlik tanaffuzi — ofis uchun eng yaxshi tanlov",
-          "why": "'Mazali tanaffus vaqti' posti 857 engagement oldi — ish vaqtida sog'lom tushlik mavzusi rezonans bermoqda, ofis auditoriyasiga murojaat qilish o'sishni tezlashtiradi.",
-          "caption": "Tushlik tanaffuzi keldi — nima yeysiz? 🥗⏰\nDieto bilan har tushlik — kichik bayram! Sog'lom, to'yimli va eng muhimi tezkor yetkazib beramiz!\nOfisingizga ham yetib boramiz — sinab ko'ring! 😊\n📍 Manzillar va buyurtma: bio'da!\n#Dieto #TushlikVaqti #DietoUz #SogломTaom #ToshkentOfis"
+          "why": "857 eng olgan post 'mazali tanaffus vaqti' mavzusida bo'lgan — ofisga tezkor yetkazib berish Dieto'ning asosiy USP'si, bu formatni takrorlash izchil auditoriya yaratadi.",
+          "caption": "Ofistagi tushlik tanaffuzi keldi — nima eysan? 🥗⏰\n\nDieto bilan tushlik: sog'lom, tezkor va eng muhimi — hamyonbop! Kaloriyalar hisoblab, mazali yeyish mumkin ekan 😋\n\nBuyurtma ber — biz etkaz! 🚀\n\n📍 Manzil: Zarafshon / 📞 +998 [telefon]\n\n#dieto #tushlik #dietouz #soglomoziqa #ofistushlik"
         },
         {
-          "day": "Shanba",
-          "time": "09:00",
+          "day": "Juma",
+          "time": "08:30",
           "type": "VIDEO",
-          "theme": "Dam olish kuni ham parhez buzilmasin — hafta sonu menyusi",
-          "why": "Shanba kuni odamlar uyda bo'ladi va yetkazib berish xizmatiga talab ortadi; ertalabki vaqt Dieto uchun eng samarali ekan, hafta sonu maxsus taklifi bilan yangi buyurtmalar olish mumkin.",
-          "caption": "Dam olish kuni ham o'zingizni yaxshi his qiling! 🌿😊\nDieto'ning hafta sonu menyusi tayyor — mazali, sog'lom, uyingizgacha yetkazamiz!\nParhez ham bayram bo'lishi mumkin ekanligini unutmang! 😋✨\n🛵 Buyurtma bering: bio'dagi link!\n#Dieto #HaftaSonu #DietoUz #SogломHayot #ParhezTaom"
+          "theme": "Hafta sonu uchun parhez buzilmasin — dam olish kuni menyusi",
+          "why": "Shanba-yakshanba oldidan chiqarilgan motivatsion parhez kontenti saqlashlar sonini oshiradi — Dieto'da saqlashlar nisbati yuqori (25 ta/315 reach = 7.9%), bu auditoriya kontentni rejalashtirish uchun ishlatadi.",
+          "caption": "Juma keldi — dam olish kuni parhez buziladimi? 🤔\n\nDieto bilan YO'Q! 😄 Hafta sonu ham mazali, ham sog'lom yeyish mumkin — biz sizni o'yladik! 🥑🥗\n\nHafta sonu menyusini ko'rish uchun profilga o't 👆\n\n📍 Dieto | Buyurtma: +998 [telefon]\n\n#dieto #dietouz #hafta sonu #parhezovqat #soglomshakllanish"
         },
         {
           "day": "Yakshanba",
-          "time": "08:35",
+          "time": "09:00",
           "type": "VIDEO",
-          "theme": "Hamkorlik/kollaboratsiya teaseri — yangi brandlar bilan",
-          "why": "Benison x Dieto hamkorlik posti 981 engagement (eng yuqori) va 16972 reach oldi — hamkorlik formati viral potentsialga ega, yangi kollaboratsiya teaseri yana shunday effekt berishi mumkin.",
-          "caption": "Katta yangilik yaqinlashmoqda! 👀🤝\nDieto yana yangi do'stlar bilan qo'shilmoqda — tez kunda hammasi ma'lum bo'ladi!\nSizga yoqadimi deb o'ylaymiz... 😏✨\n🔔 Yangilikni birinchi bilish uchun sahifamizga obuna bo'ling!\n#Dieto #DietoUz #YangiHamkorlik #SogломTaom #ToshkentRestoran"
+          "theme": "Benison x Dieto kollaboratsiya — yangi oy taklifi",
+          "why": "Benison x Dieto hamkorlik posti eng yuqori natijani bergan (981 eng, 16,972 reach) — kollaboratsiya formati ikki brend auditoriyasini birlashtiradi va Dieto'ning kichik follower bazasini kengaytirish uchun eng samarali yo'l.",
+          "caption": "Benison x Dieto — ajoyib tandem davom etmoqda! 🤝🥗🍣\n\nBenisonga kelsangiz — Dieto menyusidan sog'lom va mazali taomlarni ham buyurtma qilishingiz mumkin! Ikki dunyo — bir manzil 😊✨\n\nSizni kutamiz! 📍 Benison | Dieto\n\n👉 @benison_uz @dieto_uz\n\n#benisonxdieto #dieto #benison #toshkent #soglomoziqa"
         }
       ]
     },
     "eddo_uz": {
-      "insight": "Eddo'da IMAGE va VIDEO deyarli teng ishlayapti (277 vs 247), lekin eng yuqori postlar IMAGE formatida (1191 va 1170 eng) — aksiya/taklif seriyalari (Ramazon) va hazil/tag-a-friend postlari rekord ko'rsatkich bergan; vaqt 12:36–15:55 oralig'i optimal, shu uslub va vaqt saqlanib yangi aksiya seriyasi taklif qilindi.",
+      "insight": "Eddo'da IMAGE (277 eng) va VIDEO (247 eng) deyarli teng ishlaydi, lekin Ramazon aksiya seriyasi va 'tag-a-friend' postlari eng yuqori natijalarni bergan — aksiya seriyasi va hazil formatini yoz mavzumiga ko'chirish kerak. Reklama nomzodlari ichida Мясная пицца с грибами va Комбо форматлари o'rtacha chekni oshirish imkonini beradi.",
+      "review": "O'tgan hafta Eddo'dan ham birorta post chiqmaganga o'xshaydi — ma'lumot yo'q. Ramazon seriyasi kabi yoz aksiya seriyasini muntazam chiqarish va tag-a-friend formatini qaytarish bu haftaning asosiy vazifasi.",
       "plan": [
         {
           "day": "Dushanba",
-          "time": "15:45",
+          "time": "15:55",
           "type": "IMAGE",
-          "theme": "Yoz mavsumi aksiyasi — 1-kun taklifi",
-          "why": "Ramazon aksiyasi seriyasi 1191 va 426 engagement oldi — seriyali aksiya formati Eddo auditoriyasi uchun eng kuchli ishlagan, yoz mavzusida yangi seriya boshlash mantiqiy.",
-          "caption": "☀️ YOZ BARAKASI — 1-KUN TAKLIFI!\nEddo Fast Food restoranlaridan maxsus yozgi sovg'a: har xaridda ajoyib chegirma va sovg'alar!\nYoz shu bilan boshlanadi — Eddo bilan! 🍕😍\n📍 Eng yaqin Eddo filialingizga tashrif buyuring yoki buyurtma bering!\n#Eddo #EddoUz #YozAksiyasi #FastFood #ToshkentPitsa"
+          "theme": "Yoz aksiyasi seriyasi — 1-kun: Комбо Дустлар taqdimoti",
+          "why": "Ramazon aksiya seriyasi 1191 va 426 eng olgan — xuddi shunday 'seriya' formatini yozga ko'chirish ishonchli trafik beradi; Комбо Дустлар (89,000 so'm) haftada 5 ta sotilgan, lekin kombo formati o'rtacha chekni oshiradi.",
+          "caption": "☀️ YOZ BARAKASI — 1-KUN TAKLIFI!\n\nBugungi maxsus taklifimiz — EDDO Fast Food'dan «Комбо Дустлар»! Do'sting bilan kel — ikkovingga ham yetadi, hamyonga ham yoqadi 😍🍕\n\nFaqat bugun maxsus narxda! Ulgurish — o'zingizdan! ⏰\n\n📍 Eddo | Buyurtma: +998 [telefon]\n\n#eddo #eddouz #yozaksiyasi #kombo #toshkentfastfood"
         },
         {
           "day": "Chorshanba",
           "time": "15:55",
           "type": "IMAGE",
           "theme": "Tag-a-friend hazil posti — kim bilan Eddo?",
-          "why": "'Kimga jo'natishni o'zingiz bilasiz' posti 1170 engagement oldi — tag formati organik reach'ni keskin oshirmoqda, bu turdagi postni takrorlash oson va samarali.",
-          "caption": "😍😅 Bu pitsa haqida bilib qo'yganingiz yaxshi...\nKimga jo'natishni o'zingiz bilasiz! 😅🍕\nU bilan Eddoga kelganingizda minnatdor bo'ladi — kafolat beramiz!\n👇 Sheriging'ni tag qil va birga kelinglar!\n#Eddo #EddoUz #PitsaVaqti #TagFriend #ToshkentFastFood"
+          "why": "'Kimga jo'natishni o'zingiz bilasiz!' posti 1170 eng olgan — tag-a-friend formati organik reach va yangi followerlar uchun eng samarali usul.",
+          "caption": "😍😅 Buni ko'rib kim yodingizga tushdi?\n\nO'sha kishini tag qiling 👇 — va Eddo'ga birga keling! 🍕🔥\n\nKimga jo'natishni o'zingiz bilasiz! 😅\n\n#eddo #eddouz #tagafriend #toshkent #pizzatoshkent"
         },
         {
           "day": "Juma",
           "time": "12:40",
           "type": "VIDEO",
-          "theme": "Juma kuni Eddo'da — yaxshi kayfiyat",
-          "why": "Eddo VIDEO postlari o'rtacha 247 eng olmoqda, 'yaxshi kayfiyat' uslubidagi video 372 eng oldi — juma kuni ertalab trafik yuqori bo'ladi, kayfiyat videosi hafta yakunini yaxshi boshlaydi.",
-          "caption": "😁😂 Juma keldi — demak Eddo vaqti!\nEddo bilan yaxshi kayfiyat hamrohingiz bo'lsin — pitsa, burger, kulgi... hammasi bir joyda!\nBugun qayerda tushlik qilasiz? Javob aniq! 🍕😎\n📞 Buyurtma: bio'dagi raqam!\n#Eddo #EddoUz #JumaKayfiyati #FastFood #ToshkentBurger"
+          "theme": "Juma kuni Eddo'da — Мясная пицца с грибами 'yashirin xazina'",
+          "why": "Juma kuni video formati 372 eng olgan — 'yashirin menyu' formatida Мясная пицца с грибами (98,076 so'm, 5 ta/hafta) ni ko'rsatish ham reach, ham qimmatli buyurtmalar sonini oshiradi.",
+          "caption": "😁😂 Eddo menyusida siz hali sinab ko'rmagan pitsa bor!\n\n«Мясная пицца с грибами» 35sm — go'sht va zamburug'ning mukammal uyg'unligi! Ko'pchilik menyuda ko'rgan, lekin bir marta ham buyurtma qilmagan 🤫🍕\n\nJuma kuni aynan shu bilan silab ko'ring — afsuslantirmaydi! 🔥\n\nEddo bilan yaxshi kayfiyat hamrohingiz bo'lsin! 😊\n\n#eddo #eddouz #meatpizza #jumakunи #toshkentpitsa"
         },
         {
           "day": "Yakshanba",
           "time": "15:30",
           "type": "IMAGE",
-          "theme": "Yoz aksiyasi — 4-kun davomi",
-          "why": "Ramazon seriyasida har aksiya kuni alohida yaxshi natija berdi — seriyaning davomini hafta oxirida chiqarish auditoriyani qaytaradi va aksiya haqida eslatib turadi.",
-          "caption": "☀️ YOZ BARAKASI — 4-KUN TAKLIFI!\nEddo Fast Food restoranlaridan bugungi maxsus sovg'a sizni kutmoqda! 😋🎁\nOilaviy dam olish kunini Eddo bilan ajoyib qiling — hamma o'z sevimli taomlari topadi!\n📍 Manzillar va menyu: bio'da | Buyurtma ham qabul qilinadi!\n#Eddo #EddoUz #YozAksiyasi #OilaviyRestoran #ToshkentPitsa"
+          "theme": "Yoz aksiyasi seriyasi — 4-kun: Комбо Севимли oilaviy taklif",
+          "why": "Aksiya seriyasi yakshanba kuni ham 368 eng olgan — Комбо Севимли (88,453 so'm, 10 ta/hafta) oilaviy formatda taqdim etish yakshanba oilaviy auditoriyasiga mos va o'rtacha chekni oshiradi.",
+          "caption": "☀️ YOZ BARAKASI — 4-KUN TAKLIFI!\n\nBugungi maxsus taklifimiz — EDDO'dan «Комбо Севимли»! Oila bilan yakshanba kechqurunini Eddo'da o'tkazing — hamma to'yadi, hamma xursand! 👨‍👩‍👧‍👦🍕😋\n\nBron qiling: +998 [telefon] | 📍 Eddo Fast Food\n\n#eddo #eddouz #yozaksiyasi #oilabilankeling #fastfoodtoshkent"
         }
       ]
     }
