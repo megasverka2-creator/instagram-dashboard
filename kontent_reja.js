@@ -336,6 +336,11 @@ function renderAIPlan() {
       <b>🤖 AI xulosasi:</b> ${escapeHtml(accData.insight)}
     </div>`;
   }
+  if (accData.review) {
+    html += `<div class="glass" style="grid-column:1/-1; padding:14px 20px; font-size:13.5px; line-height:1.55; background:rgba(31,157,87,0.12);">
+      <b>📈 O'tgan hafta bahosi:</b> ${escapeHtml(accData.review)}
+    </div>`;
+  }
 
   html += plan.map((s, i) => {
     const dayIdx = DAYS.indexOf(s.day);

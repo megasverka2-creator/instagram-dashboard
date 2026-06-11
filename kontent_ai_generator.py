@@ -75,6 +75,51 @@ def summarize(acc_key, acc):
     return "\n".join(lines)
 
 
+def last_week_review(snapshot):
+    """O'tgan hafta rejasi + haqiqatda chiqqan postlar — AI o'rganishi uchun."""
+    sections = []
+
+    # 1) O'tgan AI reja (bo'lsa)
+    if os.path.exists(OUT_FILE):
+        try:
+            with open(OUT_FILE, "r", encoding="utf-8") as f:
+                prev = json.load(f)
+            lines = [f"O'TGAN HAFTA REJASI (sen tuzgansan, {prev.get('generated_at', '?')}):"]
+            for key, v in prev.get("accounts", {}).items():
+                items = [f"{p.get('day')} {p.get('time')} [{p.get('type')}] {p.get('theme')}"
+                         for p in v.get("plan", [])]
+                if items:
+                    lines.append(f"- {key}: " + " | ".join(items))
+            sections.append("\n".join(lines))
+        except Exception:
+            pass
+
+    # 2) Oxirgi 7 kunda haqiqatda chiqqan postlar va natijalari
+    from datetime import timedelta, timezone as tz
+    week_ago = datetime.now(tz.utc) - timedelta(days=7)
+    lines = ["OXIRGI 7 KUNDA HAQIQATDA CHIQQAN POSTLAR (natijalari bilan):"]
+    found = False
+    for key, acc in snapshot.get("accounts", {}).items():
+        for p in acc.get("posts", []):
+            ts = p.get("timestamp") or ""
+            try:
+                dt = datetime.fromisoformat(ts.replace("Z", "+00:00").replace("+0000", "+00:00"))
+                if dt >= week_ago:
+                    cap = (p.get("caption") or "")[:70]
+                    lines.append(f"- {key}: [{p.get('type')}] {ts[:16]} eng={p.get('engagement')}, "
+                                 f"reach={p.get('reach')}: \"{cap}\"")
+                    found = True
+            except Exception:
+                continue
+    if found:
+        sections.append("\n".join(lines))
+
+    if not sections:
+        return ""
+    return ("\n\n" + "\n\n".join(sections) +
+            "\n\nO'RGANISH: yuqoridagi reja va haqiqiy natijalarni solishtir. Qaysi tavsiyalar amalda bajarilgan va ishlagan? Qaysilari bajarilmagan yoki kutilgandek ishlamagan? Yangi rejani shu xulosalar asosida yaxshila. Har akkaunt uchun \"review\" maydonida o'tgan haftaga 1-2 jumlalik baho yoz (nima yaxshi ketdi, nimani o'zgartirdik).")
+
+
 def build_prompt(snapshot):
     """Claude uchun to'liq topshiriq matni."""
     sections = []
@@ -83,10 +128,11 @@ def build_prompt(snapshot):
         if acc:
             sections.append(summarize(key, acc))
     data_block = "\n\n".join(sections)
+    review_block = last_week_review(snapshot)
 
     return f"""Sen tajribali SMM-strateg va o'zbek tilida yozadigan kopirayter san. Quyida uchta restoranning HAQIQIY Instagram statistikasi va eng yaxshi postlari berilgan. Har bir restoranning o'z ovozi (uslubi) eng yaxshi postlarining caption'larida ko'rinadi — shu uslubni saqla.
 
-{data_block}
+{data_block}{review_block}
 
 VAZIFA: Har bir restoran uchun keyingi haftaga {POSTS_PER_WEEK} ta postdan iborat kontent reja tuz.
 
@@ -102,6 +148,7 @@ JAVOBNI FAQAT QUYIDAGI JSON FORMATDA QAYTAR (boshqa hech qanday matn, izoh yoki 
   "accounts": {{
     "benison_uz": {{
       "insight": "1-2 jumlalik asosiy xulosa: bu restoranда nima ishlayapti va rejada nimaga urg'u berildi",
+      "review": "o'tgan hafta reja-natija solishtiruvi bo'yicha 1-2 jumlalik baho (ma'lumot bo'lmasa bo'sh qoldir)",
       "plan": [
         {{"day": "Dushanba", "time": "12:30", "type": "VIDEO", "theme": "qisqa mavzu nomi", "why": "nima uchun aynan shu (data asosida, 1 jumla)", "caption": "to'liq tayyor caption matni hashtag'lar bilan"}}
       ]
@@ -203,6 +250,23 @@ def main():
         if answer:
             print("  Javob boshi:", answer[:200])
         sys.exit(1)
+
+    # Eski rejani arxivga (oxirgi 8 hafta saqlanadi)
+    if os.path.exists(OUT_FILE):
+        try:
+            with open(OUT_FILE, "r", encoding="utf-8") as f:
+                old = json.load(f)
+            arxiv_file = os.path.join(BASE, "kontent_reja_arxiv.json")
+            arxiv = []
+            if os.path.exists(arxiv_file):
+                with open(arxiv_file, "r", encoding="utf-8") as f:
+                    arxiv = json.load(f)
+            arxiv.append(old)
+            arxiv = arxiv[-8:]
+            with open(arxiv_file, "w", encoding="utf-8") as f:
+                json.dump(arxiv, f, ensure_ascii=False, indent=2)
+        except Exception:
+            pass
 
     result = {
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M"),

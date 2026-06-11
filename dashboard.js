@@ -10,6 +10,7 @@ const META = {
 const ORDER = ["benison_uz", "dieto_uz", "eddo_uz"];
 
 let HISTORY = [];      // barcha kunlik snapshotlar
+let GOALS = null;      // maqsadlar.json
 let PERIOD = "7";      // 7 | 30 | all
 let PAGE = "overview";
 let CHARTS = {};       // chart instanslari (qayta chizishda o'chirish uchun)
@@ -124,6 +125,9 @@ function renderOverview() {
   });
   html += `</div>`;
 
+  // 🎯 Oylik maqsadlar (maqsadlar.json bo'lsa)
+  html += renderGoals();
+
   // Grafiklar
   html += `
     <div class="section-title">${IC.chart} O'sish dinamikasi</div>
@@ -150,6 +154,80 @@ function renderOverview() {
   drawLineChart("chartFollowers", "followers");
   drawLineChart("chartReach", "reach_7d");
   drawERBar("chartER");
+}
+
+// ============================================================
+//  🎯 OYLIK MAQSADLAR
+// ============================================================
+function monthBaseline(acc, field) {
+  // Joriy oyning birinchi snapshotidagi qiymat
+  const ym = new Date().toISOString().slice(0, 7); // "2026-06"
+  for (const s of HISTORY) {
+    if ((s.date || "").startsWith(ym) && s.accounts && s.accounts[acc]) {
+      return s.accounts[acc][field];
+    }
+  }
+  // Topilmasa — eng birinchi mavjud qiymat
+  for (const s of HISTORY) {
+    if (s.accounts && s.accounts[acc]) return s.accounts[acc][field];
+  }
+  return null;
+}
+
+function goalBar(label, currentText, pct) {
+  const p = Math.max(0, Math.min(100, Math.round(pct)));
+  return `
+    <div class="gb">
+      <div class="gl"><span>${label}</span><b>${currentText} · ${p}%</b></div>
+      <div class="track"><div class="fill ${p >= 100 ? "done" : ""}" style="width:${p}%"></div></div>
+    </div>`;
+}
+
+function renderGoals() {
+  if (!GOALS || !GOALS.accounts) return "";
+  let cards = "";
+  ORDER.forEach(a => {
+    const g = GOALS.accounts[a];
+    const d = latest(a);
+    if (!g || !d) return;
+    const m = META[a];
+
+    let bars = "";
+    // 1) Follower o'sishi (oy boshidan)
+    if (g.follower_growth) {
+      const base = monthBaseline(a, "followers");
+      const grown = base !== null ? (d.followers - base) : 0;
+      bars += goalBar(`Follower o'sishi (maqsad: +${fmt(g.follower_growth)})`,
+        `${grown >= 0 ? "+" : ""}${fmt(grown)}`,
+        grown / g.follower_growth * 100);
+    }
+    // 2) Faollik darajasi
+    if (g.er_target) {
+      bars += goalBar(`Faollik darajasi (maqsad: ${g.er_target}%)`,
+        `${d.engagement_rate || 0}%`,
+        (d.engagement_rate || 0) / g.er_target * 100);
+    }
+    // 3) Haftalik qamrov
+    if (g.reach_target) {
+      bars += goalBar(`Qamrov 7 kun (maqsad: ${fmt(g.reach_target)})`,
+        fmt(d.reach_7d || 0),
+        (d.reach_7d || 0) / g.reach_target * 100);
+    }
+    if (!bars) return;
+
+    cards += `
+      <div class="goal-card glass">
+        <div class="goal-head">
+          <div class="ga" style="background:${m.color}">${m.letter}</div>
+          <h4>${m.name}</h4>
+        </div>
+        ${bars}
+      </div>`;
+  });
+  if (!cards) return "";
+  return `
+    <div class="section-title">🎯 Oylik maqsadlar</div>
+    <div class="acc-grid">${cards}</div>`;
 }
 
 // ============================================================
@@ -518,6 +596,11 @@ async function loadData() {
       const last = HISTORY[HISTORY.length - 1];
       document.getElementById("lastUpdate").textContent = last.date || "—";
       showTokenBanner(last.token);
+      // Maqsadlar faylini yuklash (bo'lsa)
+      try {
+        const g = await fetch("maqsadlar.json?v=" + Date.now());
+        if (g.ok) GOALS = await g.json();
+      } catch(e) {}
       return;
     }
     throw new Error("bo'sh");

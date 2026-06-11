@@ -1,0 +1,20 @@
+{
+  "_izoh": "Oylik maqsadlar. O'zgartirish: GitHub'da shu faylni oching, qalam belgisini bosing, raqamlarni yangilang, Commit changes. follower_growth = shu oyda nechta yangi follower; er_target = maqsad faollik darajasi (%); reach_target = maqsad haftalik qamrov.",
+  "accounts": {
+    "benison_uz": {
+      "follower_growth": 300,
+      "er_target": 1.5,
+      "reach_target": 25000
+    },
+    "dieto_uz": {
+      "follower_growth": 100,
+      "er_target": 5.0,
+      "reach_target": 1500
+    },
+    "eddo_uz": {
+      "follower_growth": 300,
+      "er_target": 1.2,
+      "reach_target": 8000
+    }
+  }
+}
