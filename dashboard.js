@@ -555,19 +555,43 @@ function exportPDF() {
 
   // PDF uchun vaqtinchalik konteyner — sarlavha + sahifa nusxasi
   const wrapper = document.createElement("div");
-  wrapper.style.cssText = "background:linear-gradient(135deg,#feda75,#fa7e1e 22%,#d62976 50%,#962fbf 74%,#4f5bd5);padding:30px;";
+  wrapper.className = "pdf-root";
+  wrapper.style.cssText = "background:#F4F3FA;padding:30px;";
   const header = document.createElement("div");
-  header.style.cssText = "color:#fff;font-family:-apple-system,sans-serif;margin-bottom:20px;";
+  header.style.cssText = "color:#211A38;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',Inter,sans-serif;margin-bottom:20px;";
   header.innerHTML = `<div style="font-size:26px;font-weight:800;">Instagram hisoboti — ${pageName}</div>
-    <div style="font-size:15px;opacity:0.9;margin-top:4px;">${periodName} · ${dateStr}</div>`;
+    <div style="font-size:15px;color:#6E6890;margin-top:4px;">${periodName} · ${dateStr}</div>`;
   wrapper.appendChild(header);
-  wrapper.appendChild(activePage.cloneNode(true));
+
+  // PDF'da shisha effekti ishlamaydi — kartalarni qattiq oq qilamiz (faqat .pdf-root ichida)
+  const pdfFix = document.createElement("style");
+  pdfFix.textContent = `
+    .pdf-root .glass{background:#ffffff !important;backdrop-filter:none !important;-webkit-backdrop-filter:none !important;border:1px solid #E5E3F2 !important;box-shadow:none !important;}
+    .pdf-root .section-title{color:#211A38 !important;text-shadow:none !important;}
+    .pdf-root .page{display:block !important;animation:none !important;}
+    .pdf-root img.pdf-chart{width:100%;height:100%;object-fit:contain;display:block;}
+  `;
+  wrapper.appendChild(pdfFix);
+
+  const clone = activePage.cloneNode(true);
+  // Klonlangan canvas bo'sh bo'ladi — jonli grafiklarni rasmga aylantirib qo'yamiz
+  const liveCanvases = activePage.querySelectorAll("canvas");
+  const cloneCanvases = clone.querySelectorAll("canvas");
+  cloneCanvases.forEach((c, i) => {
+    try {
+      const img = document.createElement("img");
+      img.className = "pdf-chart";
+      img.src = liveCanvases[i].toDataURL("image/png");
+      c.replaceWith(img);
+    } catch (e) {}
+  });
+  wrapper.appendChild(clone);
 
   const opt = {
     margin: 0,
     filename: fileName,
     image: { type: "jpeg", quality: 0.95 },
-    html2canvas: { scale: 2, useCORS: true, backgroundColor: null },
+    html2canvas: { scale: 2, useCORS: true, backgroundColor: "#F4F3FA" },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     pagebreak: { mode: ["avoid-all", "css"] },
   };
