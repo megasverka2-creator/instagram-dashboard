@@ -1521,7 +1521,7 @@
     }
   },
   {
-    "collected_at": "2026-06-12T14:22:05.815848+00:00",
+    "collected_at": "2026-06-12T16:48:39.730537+00:00",
     "date": "2026-06-12",
     "token": {
       "days_left": 56,
@@ -1531,17 +1531,36 @@
     "accounts": {
       "benison_uz": {
         "username": "benison_uz",
-        "followers": 41255,
+        "followers": 41249,
         "media_count": 461,
-        "reach_7d": 20357,
-        "profile_views_7d": 683,
-        "engagement_rate": 0,
-        "avg_engagement": 0,
-        "reach_rate": 0,
-        "avg_reach": 0,
-        "total_saved": 0,
-        "total_shares": 0,
-        "by_type": {},
+        "reach_7d": 21960,
+        "profile_views_7d": 749,
+        "engagement_rate": 0.56,
+        "avg_engagement": 233,
+        "reach_rate": 23.7,
+        "avg_reach": 9796,
+        "total_saved": 160,
+        "total_shares": 1237,
+        "by_type": {
+          "VIDEO": {
+            "count": 13,
+            "engagement": 3880,
+            "reach": 112649,
+            "avg_engagement": 298
+          },
+          "IMAGE": {
+            "count": 10,
+            "engagement": 1618,
+            "reach": 122285,
+            "avg_engagement": 162
+          },
+          "CAROUSEL_ALBUM": {
+            "count": 2,
+            "engagement": 315,
+            "reach": 9961,
+            "avg_engagement": 158
+          }
+        },
         "demographics": {
           "age_gender": {
             "13-17 · F": 376,
@@ -1587,25 +1606,293 @@
             "KR": 14
           }
         },
-        "posts": []
+        "posts": [
+          {
+            "id": "17946449193015296",
+            "caption": "Benison menyusida siz kutgan, siz so‘ragan mazali yangiliklar! 😋🔥  Benisonga tashrif bu...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DZFqj6hsZ91/",
+            "timestamp": "2026-06-02T15:29:28+0000",
+            "likes": 352,
+            "comments": 7,
+            "saved": 76,
+            "shares": 405,
+            "reach": 68850,
+            "engagement": 840,
+            "post_er": 1.2
+          },
+          {
+            "id": "17888227509488592",
+            "caption": "Qaysi biri yutadi?!😎😁",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYISuEkRfKh/",
+            "timestamp": "2026-05-09T19:26:33+0000",
+            "likes": 669,
+            "comments": 21,
+            "saved": 15,
+            "shares": 97,
+            "reach": 16729,
+            "engagement": 802,
+            "post_er": 4.8
+          },
+          {
+            "id": "18121943377648444",
+            "caption": "😁😁  Benison bilan yaxshi kayfiyat doim hamrohingiz bo’lsin!😊",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYeynVksJ7Z/",
+            "timestamp": "2026-05-18T13:14:20+0000",
+            "likes": 683,
+            "comments": 41,
+            "saved": 4,
+            "shares": 69,
+            "reach": 14447,
+            "engagement": 797,
+            "post_er": 5.5
+          },
+          {
+            "id": "17928685584090922",
+            "caption": "😎😁",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYFJ79ashzy/",
+            "timestamp": "2026-05-08T14:12:10+0000",
+            "likes": 443,
+            "comments": 5,
+            "saved": 14,
+            "shares": 57,
+            "reach": 27534,
+            "engagement": 519,
+            "post_er": 1.9
+          },
+          {
+            "id": "18119251936777437",
+            "caption": "Yaxshi kayfiyat Benison bilan doim hamrohingiz bo’lsin😅😊",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DZSc8prsHRO/",
+            "timestamp": "2026-06-07T14:40:16+0000",
+            "likes": 312,
+            "comments": 32,
+            "saved": 4,
+            "shares": 128,
+            "reach": 13973,
+            "engagement": 476,
+            "post_er": 3.4
+          },
+          {
+            "id": "18530341081073898",
+            "caption": "Benison menyusida siz kutgan, siz so‘ragan mazali yangiliklar! 😋🔥  Endi menyumizda yang...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DZFsRGPsntc/",
+            "timestamp": "2026-06-02T15:43:11+0000",
+            "likes": 266,
+            "comments": 23,
+            "saved": 8,
+            "shares": 106,
+            "reach": 8152,
+            "engagement": 403,
+            "post_er": 4.9
+          },
+          {
+            "id": "18118501480641485",
+            "caption": "Buni faqat oshpazlar tushunar ekan!😁  Benison bilan yaxshi kayfiyat doim hamrohingiz bo...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DXuIaiMjIGT/",
+            "timestamp": "2026-04-29T15:36:27+0000",
+            "likes": 234,
+            "comments": 16,
+            "saved": 4,
+            "shares": 26,
+            "reach": 10483,
+            "engagement": 280,
+            "post_er": 2.7
+          },
+          {
+            "id": "17998693643765753",
+            "caption": "Marvarid shashlik!😋  Do‘stlar bilan yig‘ilishmi, oilaviy dasturxonmi — Benison bilan ka...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DYCceXfjHrH/",
+            "timestamp": "2026-05-07T12:56:22+0000",
+            "likes": 201,
+            "comments": 11,
+            "saved": 9,
+            "shares": 54,
+            "reach": 18483,
+            "engagement": 275,
+            "post_er": 1.5
+          },
+          {
+            "id": "18071496611695181",
+            "caption": "Benison menyusida mazali yangilik! 😋  Siz kutgan, siz so‘ragan yangi ta’mlardan biri — ...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DZU2ovIRo8V/",
+            "timestamp": "2026-06-08T13:02:24+0000",
+            "likes": 80,
+            "comments": 3,
+            "saved": 7,
+            "shares": 111,
+            "reach": 10096,
+            "engagement": 201,
+            "post_er": 2.0
+          },
+          {
+            "id": "18077577455254235",
+            "caption": "😁  “Bosh oshpazdan gap eshitgan oshpaz” filimi!😂  Benison bilan yaxshi kayfiyat doim ha...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DZcvSbQMjOl/",
+            "timestamp": "2026-06-11T14:34:33+0000",
+            "likes": 150,
+            "comments": 17,
+            "saved": 5,
+            "shares": 25,
+            "reach": 6693,
+            "engagement": 197,
+            "post_er": 2.9
+          }
+        ],
+        "recent_posts": [
+          {
+            "sana": "2026-06-12",
+            "vaqt": "18:04",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-12",
+            "vaqt": "17:58",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-12",
+            "vaqt": "16:37",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-11",
+            "vaqt": "19:34",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-08",
+            "vaqt": "18:02",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-06-07",
+            "vaqt": "19:40",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-05",
+            "vaqt": "17:40",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-02",
+            "vaqt": "20:43",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-02",
+            "vaqt": "20:29",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-06-01",
+            "vaqt": "10:20",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-30",
+            "vaqt": "16:56",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-29",
+            "vaqt": "14:21",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-29",
+            "vaqt": "14:10",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-27",
+            "vaqt": "02:37",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-25",
+            "vaqt": "17:30",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-18",
+            "vaqt": "18:14",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-18",
+            "vaqt": "17:03",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-17",
+            "vaqt": "15:13",
+            "type": "CAROUSEL_ALBUM"
+          },
+          {
+            "sana": "2026-05-13",
+            "vaqt": "18:25",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-12",
+            "vaqt": "16:20",
+            "type": "CAROUSEL_ALBUM"
+          },
+          {
+            "sana": "2026-05-10",
+            "vaqt": "00:26",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-08",
+            "vaqt": "19:12",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-07",
+            "vaqt": "17:56",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-04-30",
+            "vaqt": "16:38",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-04-29",
+            "vaqt": "20:36",
+            "type": "VIDEO"
+          }
+        ]
       },
       "dieto_uz": {
         "username": "dieto_uz",
         "followers": 418,
         "media_count": 3,
-        "reach_7d": 13319,
-        "profile_views_7d": 372,
+        "reach_7d": 13335,
+        "profile_views_7d": 375,
         "engagement_rate": 174.4,
         "avg_engagement": 729,
-        "reach_rate": 3382.3,
-        "avg_reach": 14138,
+        "reach_rate": 3385.9,
+        "avg_reach": 14153,
         "total_saved": 26,
         "total_shares": 647,
         "by_type": {
           "VIDEO": {
             "count": 3,
             "engagement": 2186,
-            "reach": 42414,
+            "reach": 42460,
             "avg_engagement": 729
           }
         },
@@ -1684,35 +1971,52 @@
             "comments": 8,
             "saved": 3,
             "shares": 37,
-            "reach": 10501,
+            "reach": 10547,
             "engagement": 337,
             "post_er": 3.2
+          }
+        ],
+        "recent_posts": [
+          {
+            "sana": "2026-05-31",
+            "vaqt": "13:14",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-01",
+            "vaqt": "14:22",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-04-25",
+            "vaqt": "13:35",
+            "type": "VIDEO"
           }
         ]
       },
       "eddo_uz": {
         "username": "eddo_uz",
-        "followers": 38194,
+        "followers": 38190,
         "media_count": 276,
-        "reach_7d": 2623,
-        "profile_views_7d": 316,
+        "reach_7d": 2880,
+        "profile_views_7d": 340,
         "engagement_rate": 0.72,
         "avg_engagement": 275,
         "reach_rate": 33.2,
-        "avg_reach": 12673,
+        "avg_reach": 12679,
         "total_saved": 260,
-        "total_shares": 2750,
+        "total_shares": 2751,
         "by_type": {
           "VIDEO": {
             "count": 8,
-            "engagement": 2160,
-            "reach": 55829,
+            "engagement": 2163,
+            "reach": 55969,
             "avg_engagement": 270
           },
           "IMAGE": {
             "count": 17,
             "engagement": 4711,
-            "reach": 260996,
+            "reach": 261013,
             "avg_engagement": 277
           }
         },
@@ -1828,7 +2132,7 @@
             "comments": 35,
             "saved": 2,
             "shares": 71,
-            "reach": 6817,
+            "reach": 6829,
             "engagement": 375,
             "post_er": 5.5
           },
@@ -1856,7 +2160,7 @@
             "comments": 25,
             "saved": 1,
             "shares": 54,
-            "reach": 5123,
+            "reach": 5130,
             "engagement": 292,
             "post_er": 5.7
           },
@@ -1894,13 +2198,140 @@
             "type": "VIDEO",
             "permalink": "https://www.instagram.com/reel/DZaDp86sk5e/",
             "timestamp": "2026-06-10T13:32:08+0000",
-            "likes": 202,
+            "likes": 204,
             "comments": 9,
             "saved": 10,
-            "shares": 40,
-            "reach": 7993,
-            "engagement": 261,
+            "shares": 41,
+            "reach": 8102,
+            "engagement": 264,
             "post_er": 3.3
+          }
+        ],
+        "recent_posts": [
+          {
+            "sana": "2026-06-10",
+            "vaqt": "18:32",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-03",
+            "vaqt": "18:59",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-31",
+            "vaqt": "18:38",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-27",
+            "vaqt": "02:44",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-23",
+            "vaqt": "21:17",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-21",
+            "vaqt": "18:28",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-19",
+            "vaqt": "18:15",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-17",
+            "vaqt": "18:09",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-08",
+            "vaqt": "20:55",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-06",
+            "vaqt": "17:36",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-04-08",
+            "vaqt": "17:37",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-03-30",
+            "vaqt": "19:22",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-21",
+            "vaqt": "08:32",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-20",
+            "vaqt": "06:05",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-11",
+            "vaqt": "20:09",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-10",
+            "vaqt": "19:51",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-08",
+            "vaqt": "00:22",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-07",
+            "vaqt": "20:11",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-05",
+            "vaqt": "19:54",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-03",
+            "vaqt": "19:45",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-02-28",
+            "vaqt": "19:16",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-02-26",
+            "vaqt": "19:02",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-02-25",
+            "vaqt": "17:45",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-02-25",
+            "vaqt": "17:44",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-02-21",
+            "vaqt": "20:35",
+            "type": "IMAGE"
           }
         ]
       }
