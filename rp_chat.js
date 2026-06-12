@@ -21,64 +21,64 @@
   // ---------- CSS ----------
   const css = document.createElement("style");
   css.textContent = `
-  .rpc-overlay { position:fixed; inset:0; background:rgba(30,18,12,0.45); z-index:120;
+  .rpc-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:120;
     opacity:0; pointer-events:none; transition:opacity .25s; backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); }
   .rpc-overlay.open { opacity:1; pointer-events:auto; }
   .rpc-sheet {
     position:fixed; left:50%; bottom:0; transform:translateX(-50%) translateY(105%);
     width:100%; max-width:600px; max-height:82vh; z-index:121;
-    background:#FFFBF6; border:1px solid rgba(226,85,47,0.18); border-bottom:none;
-    border-radius:24px 24px 0 0; box-shadow:0 -18px 60px rgba(120,62,30,0.25);
+    background:#FFFFFF; border:none;
+    border-radius:24px 24px 0 0; box-shadow:0 -14px 50px rgba(0,0,0,0.16);
     display:flex; flex-direction:column;
     transition:transform .38s cubic-bezier(.3,1.1,.35,1);
-    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text',Inter,sans-serif;
   }
   .rpc-sheet.open { transform:translateX(-50%) translateY(0); }
   .rpc-head { display:flex; align-items:center; gap:11px; padding:15px 18px 12px;
-    border-bottom:1px solid rgba(226,85,47,0.12); flex-shrink:0; }
+    border-bottom:1px solid rgba(60,60,67,0.12); flex-shrink:0; }
   .rpc-head .ava { width:38px; height:38px; border-radius:12px; flex-shrink:0;
-    background:linear-gradient(135deg,#F2A93B,#E2552F); display:flex; align-items:center; justify-content:center; font-size:18px; }
-  .rpc-head h3 { font-family:'Fraunces',serif; font-size:16.5px; font-weight:600; color:#34221B; }
-  .rpc-head .sub { font-size:11.5px; color:#92705F; margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:330px; }
+    background:#FF9500; display:flex; align-items:center; justify-content:center; font-size:18px; }
+  .rpc-head h3 { font-size:16.5px; font-weight:700; letter-spacing:-.35px; color:#1C1C1E; }
+  .rpc-head .sub { font-size:11.5px; color:rgba(60,60,67,.6); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:330px; }
   .rpc-head .sp { flex:1; }
-  .rpc-ic { border:none; background:rgba(226,85,47,0.07); color:#92705F; width:32px; height:32px;
+  .rpc-ic { border:none; background:rgba(118,118,128,0.12); color:rgba(60,60,67,.6); width:32px; height:32px;
     border-radius:10px; cursor:pointer; font-size:15px; transition:background .2s; flex-shrink:0; }
-  .rpc-ic:hover { background:rgba(226,85,47,0.14); color:#34221B; }
+  .rpc-ic:hover { background:rgba(118,118,128,0.2); color:#1C1C1E; }
   .rpc-body { flex:1; overflow-y:auto; padding:16px 18px; display:flex; flex-direction:column; gap:11px; -webkit-overflow-scrolling:touch; }
   .rpc-msg { max-width:88%; padding:11px 14px; border-radius:16px; font-size:13.5px; line-height:1.6; white-space:pre-wrap; word-break:break-word; }
-  .rpc-msg.user { align-self:flex-end; background:linear-gradient(135deg,#E2552F,#c93a18); color:#fff; border-bottom-right-radius:5px; }
-  .rpc-msg.ai { align-self:flex-start; background:#fff; border:1px solid rgba(226,85,47,0.14); color:#34221B; border-bottom-left-radius:5px; }
+  .rpc-msg.user { align-self:flex-end; background:#FF9500; color:#fff; border-bottom-right-radius:5px; }
+  .rpc-msg.ai { align-self:flex-start; background:#fff; border:1px solid rgba(60,60,67,0.1); color:#1C1C1E; border-bottom-left-radius:5px; }
   .rpc-msg.ai b { font-weight:600; }
   .rpc-msg.err { align-self:center; background:rgba(210,59,94,0.09); color:#b02a4d; font-size:12.5px; text-align:center; }
   .rpc-typing { align-self:flex-start; display:flex; gap:4px; padding:13px 16px; }
-  .rpc-typing i { width:7px; height:7px; border-radius:50%; background:#E2552F; opacity:.4; animation:rpcB 1.2s infinite; font-style:normal; }
+  .rpc-typing i { width:7px; height:7px; border-radius:50%; background:#FF9500; opacity:.4; animation:rpcB 1.2s infinite; font-style:normal; }
   .rpc-typing i:nth-child(2){animation-delay:.18s} .rpc-typing i:nth-child(3){animation-delay:.36s}
   @keyframes rpcB { 0%,60%,100%{opacity:.35; transform:translateY(0)} 30%{opacity:1; transform:translateY(-4px)} }
   .rpc-chips { display:flex; gap:7px; flex-wrap:wrap; padding:0 18px 8px; flex-shrink:0; }
-  .rpc-chip { border:1px solid rgba(226,85,47,0.22); background:#fff; color:#34221B;
+  .rpc-chip { border:1px solid rgba(60,60,67,0.16); background:#fff; color:#1C1C1E;
     font-family:inherit; font-size:12px; font-weight:500; padding:7px 12px; border-radius:999px; cursor:pointer; transition:all .2s; }
-  .rpc-chip:hover { background:rgba(226,85,47,0.08); border-color:rgba(226,85,47,0.4); }
-  .rpc-foot { display:flex; gap:9px; padding:11px 16px calc(13px + env(safe-area-inset-bottom)); border-top:1px solid rgba(226,85,47,0.12); flex-shrink:0; }
-  .rpc-foot textarea { flex:1; border:1.5px solid rgba(226,85,47,0.2); background:#fff; border-radius:14px;
-    padding:11px 14px; font-family:inherit; font-size:14px; color:#34221B; outline:none; resize:none;
+  .rpc-chip:hover { background:rgba(255,149,0,0.08); border-color:rgba(255,149,0,0.55); }
+  .rpc-foot { display:flex; gap:9px; padding:11px 16px calc(13px + env(safe-area-inset-bottom)); border-top:1px solid rgba(60,60,67,0.12); flex-shrink:0; }
+  .rpc-foot textarea { flex:1; border:1.5px solid rgba(60,60,67,0.14); background:#fff; border-radius:14px;
+    padding:11px 14px; font-family:inherit; font-size:14px; color:#1C1C1E; outline:none; resize:none;
     height:44px; max-height:110px; line-height:1.45; transition:border .2s; }
-  .rpc-foot textarea:focus { border-color:#E2552F; }
+  .rpc-foot textarea:focus { border-color:#FF9500; }
   .rpc-send { border:none; cursor:pointer; width:44px; height:44px; border-radius:14px; flex-shrink:0;
-    background:linear-gradient(135deg,#F2A93B,#E2552F); color:#fff; font-size:17px;
-    box-shadow:0 6px 18px rgba(226,85,47,0.3); transition:transform .15s, opacity .2s; }
+    background:#FF9500; color:#fff; font-size:17px;
+    box-shadow:0 5px 16px rgba(255,149,0,0.3); transition:transform .15s, opacity .2s; }
   .rpc-send:hover { transform:translateY(-2px); }
   .rpc-send:disabled { opacity:.5; cursor:wait; transform:none; }
   .rpc-setup { padding:22px 20px; display:flex; flex-direction:column; gap:12px; overflow-y:auto; }
-  .rpc-setup h4 { font-family:'Fraunces',serif; font-size:17px; font-weight:600; color:#34221B; }
-  .rpc-setup p { font-size:13px; line-height:1.6; color:#92705F; }
-  .rpc-setup input { border:1.5px solid rgba(226,85,47,0.2); background:#fff; border-radius:13px;
-    padding:12px 14px; font-family:inherit; font-size:13.5px; color:#34221B; outline:none; }
-  .rpc-setup input:focus { border-color:#E2552F; }
+  .rpc-setup h4 { font-size:17px; font-weight:700; letter-spacing:-.35px; color:#1C1C1E; }
+  .rpc-setup p { font-size:13px; line-height:1.6; color:rgba(60,60,67,.6); }
+  .rpc-setup input { border:1.5px solid rgba(60,60,67,0.14); background:#fff; border-radius:13px;
+    padding:12px 14px; font-family:inherit; font-size:13.5px; color:#1C1C1E; outline:none; }
+  .rpc-setup input:focus { border-color:#FF9500; }
   .rpc-setup .save { border:none; cursor:pointer; padding:13px; border-radius:13px; font-family:inherit;
-    font-size:14px; font-weight:600; color:#fff; background:linear-gradient(135deg,#F2A93B,#E2552F);
-    box-shadow:0 6px 18px rgba(226,85,47,0.3); }
-  .rpc-note { font-size:11.5px; color:#92705F; background:rgba(242,169,59,0.1);
-    border:1px solid rgba(242,169,59,0.25); border-radius:12px; padding:10px 13px; line-height:1.55; }
+    font-size:14px; font-weight:600; color:#fff; background:#FF9500;
+    box-shadow:0 5px 16px rgba(255,149,0,0.3); }
+  .rpc-note { font-size:11.5px; color:rgba(60,60,67,.6); background:#FFF8E6;
+    border:none; border-radius:12px; padding:10px 13px; line-height:1.55; }
   @media (max-width:640px){ .rpc-sheet{max-width:100%; border-radius:20px 20px 0 0; max-height:88vh;} .rpc-head .sub{max-width:200px;} }
   @media (prefers-reduced-motion:reduce){ .rpc-sheet{transition:none} .rpc-overlay{transition:none} }
   `;

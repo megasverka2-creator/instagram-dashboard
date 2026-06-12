@@ -6,74 +6,60 @@
 <title>RestoPulse — Bosh sahifa</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
-<meta name="theme-color" content="#15101F">
+<meta name="theme-color" content="#F2F2F7">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="app_guard.js"></script>
 <style>
   :root{
-    --ink:#F6F1FB; --muted:rgba(246,241,251,.60); --faint:rgba(246,241,251,.40);
-    --coral:#FF7A59; --magenta:#E0408A; --indigo:#6C6CF0; --gold:#E6B84F;
-    --glass:rgba(255,255,255,.05); --glass-bd:rgba(255,255,255,.12);
+    --bg:#F2F2F7; --card:#FFFFFF; --ink:#1C1C1E; --muted:rgba(60,60,67,.6); --faint:rgba(60,60,67,.35);
+    --sep:rgba(60,60,67,.12); --fill:rgba(118,118,128,.12);
+    --blue:#5856D6; --orange:#FF9500; --green:#34C759; --pink:#FF2D55;
+    --sf:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text',Inter,sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--ink);
-    min-height:100vh;background:#15101F;overflow-x:hidden;-webkit-font-smoothing:antialiased;
-  }
-  body::before{
-    content:'';position:fixed;inset:-30%;z-index:-2;
-    background:
-      radial-gradient(34% 30% at 16% 4%, rgba(255,122,89,.34), transparent 68%),
-      radial-gradient(36% 30% at 88% 8%, rgba(224,64,138,.32), transparent 68%),
-      radial-gradient(50% 40% at 50% 70%, rgba(108,108,240,.26), transparent 72%);
-    filter:blur(40px);animation:float 30s ease-in-out infinite;
-  }
-  @keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2.5%) scale(1.05)}}
-  @media (prefers-reduced-motion:reduce){body::before{animation:none}}
-
-  .wrap{max-width:880px;margin:0 auto;padding:38px 20px 30px}
-  .glass{
-    background:var(--glass);backdrop-filter:blur(34px) saturate(1.45);
-    -webkit-backdrop-filter:blur(34px) saturate(1.45);
-    border:1px solid var(--glass-bd);border-radius:26px;
-    box-shadow:0 20px 56px rgba(8,3,20,.4), inset 0 1px 0 rgba(255,255,255,.12);
-  }
-  .reveal{animation:rise .65s cubic-bezier(.2,.7,.2,1) both}
-  .reveal:nth-child(2){animation-delay:.06s}.reveal:nth-child(3){animation-delay:.12s}
-  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  body{font-family:var(--sf);color:var(--ink);min-height:100vh;background:var(--bg);
+    overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:34px 18px 30px}
+  .glass{background:var(--card);border-radius:20px;
+    box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.05)}
+  .reveal{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+  .reveal:nth-child(2){animation-delay:.05s}.reveal:nth-child(3){animation-delay:.1s}
+  @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){.reveal{animation:none}}
 
-  .hero{text-align:center;padding:40px 30px 34px;margin-bottom:14px}
-  .hero img{width:84px;height:84px;border-radius:24px;box-shadow:0 14px 36px rgba(224,64,138,.5)}
-  .hero h1{font-family:'Fraunces',serif;font-size:40px;font-weight:600;letter-spacing:-1px;margin-top:16px;line-height:1}
-  .hero p{color:var(--muted);font-size:15px;margin-top:10px}
+  .hero{text-align:center;padding:34px 28px 30px;margin-bottom:13px}
+  .hero img{width:80px;height:80px;border-radius:19px;box-shadow:0 8px 24px rgba(255,45,85,.25)}
+  .hero h1{font-size:33px;font-weight:700;letter-spacing:-.9px;margin-top:14px;line-height:1}
+  .hero p{color:var(--muted);font-size:15px;margin-top:8px;letter-spacing:-.2px}
 
-  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-bottom:14px}
-  .stat{padding:18px 16px;text-align:center}
-  .stat .v{font-family:-apple-system, BlinkMacSystemFont, 'SF Pro Display', Inter, sans-serif;font-size:27px;font-weight:700;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
-  .stat .l{font-size:11px;color:var(--muted);font-weight:500;margin-top:5px;text-transform:uppercase;letter-spacing:.5px}
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-bottom:13px}
+  .stat{padding:16px 14px;text-align:center}
+  .stat .v{font-family:var(--sf);font-size:25px;font-weight:700;letter-spacing:-.7px;font-variant-numeric:tabular-nums}
+  .stat .l{font-size:11px;color:var(--muted);font-weight:500;margin-top:4px;text-transform:uppercase;letter-spacing:.4px}
 
-  .apps{display:grid;grid-template-columns:1fr;gap:13px}
-  .app{display:block;padding:22px 22px;text-decoration:none;color:var(--ink);position:relative;overflow:hidden;
-    transition:transform .18s,box-shadow .18s,border-color .18s}
-  .app:hover{transform:translateY(-3px);box-shadow:0 22px 54px rgba(8,3,20,.5)}
-  .app .row{display:flex;align-items:center;gap:14px}
-  .app .chip{width:48px;height:48px;border-radius:15px;display:flex;align-items:center;justify-content:center;
-    font-size:23px;flex-shrink:0;border:1px solid rgba(255,255,255,.14)}
-  .app h3{font-family:'Fraunces',serif;font-size:21px;font-weight:600;letter-spacing:-.3px}
-  .app p{color:var(--muted);font-size:13px;line-height:1.55;margin-top:10px}
-  .app .go{display:inline-flex;align-items:center;gap:5px;margin-top:13px;font-size:13px;font-weight:500}
-  .app::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px}
-  .app.stat-ig::after{background:var(--indigo)} .app.stat-ig .chip{background:rgba(108,108,240,.16);color:#b9b9ff} .app.stat-ig .go{color:#b9b9ff}
-  .app.reja::after{background:var(--coral)} .app.reja .chip{background:rgba(255,122,89,.16);color:#ffb39c} .app.reja .go{color:#ffb39c}
-  .app.savdo::after{background:var(--gold)} .app.savdo .chip{background:rgba(230,184,79,.16);color:#f0d089} .app.savdo .go{color:#f0d089}
+  .apps{display:grid;grid-template-columns:1fr;gap:12px}
+  .app{display:block;padding:20px;text-decoration:none;color:var(--ink);position:relative;
+    transition:transform .18s,box-shadow .18s}
+  .app:hover{transform:translateY(-2px);box-shadow:0 1px 2px rgba(0,0,0,.04),0 14px 34px rgba(0,0,0,.09)}
+  .app:active{transform:scale(.99)}
+  .app .row{display:flex;align-items:center;gap:13px}
+  .app .chip{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+    font-size:22px;flex-shrink:0;color:#fff}
+  .app h3{font-size:19px;font-weight:600;letter-spacing:-.4px}
+  .app p{color:var(--muted);font-size:13.5px;line-height:1.55;margin-top:9px;letter-spacing:-.1px}
+  .app .go{display:inline-flex;align-items:center;gap:5px;margin-top:11px;font-size:13.5px;font-weight:500}
+  .app::after{display:none}
+  .app.stat-ig .chip{background:var(--blue)} .app.stat-ig .go{color:var(--blue)}
+  .app.reja .chip{background:var(--orange)} .app.reja .go{color:var(--orange)}
+  .app.savdo .chip{background:var(--green)} .app.savdo .go{color:var(--green)}
 
-  .hint{padding:16px 20px;margin-top:14px;font-size:12.5px;line-height:1.55;color:var(--muted);
-    display:flex;gap:12px;align-items:flex-start}
+  .hint{padding:15px 18px;margin-top:13px;font-size:12.5px;line-height:1.55;color:var(--muted);
+    display:flex;gap:11px;align-items:flex-start}
   .hint .i{font-size:18px}
-  .foot{text-align:center;color:var(--faint);font-size:11.5px;margin-top:24px;letter-spacing:.3px}
+  .hint b{color:var(--ink);font-weight:600 !important}
+  .foot{text-align:center;color:var(--faint);font-size:11.5px;margin-top:22px;letter-spacing:-.1px}
   @media (min-width:620px){ .apps{grid-template-columns:1fr 1fr} .app.savdo{grid-column:1/-1} .stats{grid-template-columns:repeat(4,1fr)} }
 </style>
 </head>

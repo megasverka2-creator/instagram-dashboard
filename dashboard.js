@@ -556,7 +556,7 @@ function exportPDF() {
   // PDF uchun vaqtinchalik konteyner — sarlavha + sahifa nusxasi
   const wrapper = document.createElement("div");
   wrapper.className = "pdf-root";
-  wrapper.style.cssText = "background:#F4F3FA;padding:30px;";
+  wrapper.style.cssText = "background:#F2F2F7;padding:30px;";
   const header = document.createElement("div");
   header.style.cssText = "color:#211A38;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',Inter,sans-serif;margin-bottom:20px;";
   header.innerHTML = `<div style="font-size:26px;font-weight:800;">Instagram hisoboti — ${pageName}</div>
@@ -591,7 +591,7 @@ function exportPDF() {
     margin: 0,
     filename: fileName,
     image: { type: "jpeg", quality: 0.95 },
-    html2canvas: { scale: 2, useCORS: true, backgroundColor: "#F4F3FA" },
+    html2canvas: { scale: 2, useCORS: true, backgroundColor: "#F2F2F7" },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     pagebreak: { mode: ["avoid-all", "css"] },
   };
