@@ -153,6 +153,24 @@ def haftalik_xulosa():
                 msg.append(f"  {brand}: {fmt_mln(rev)} so'm")
         msg.append("")
 
+    # Yaqin bayramlar
+    bayram = load_json("bayramlar.json")
+    if bayram:
+        from datetime import date as _date
+        bugun = _date.today()
+        bl = []
+        for b in bayram.get("bayramlar", []):
+            try:
+                qoldi = (_date.fromisoformat(b.get("sana", "")) - bugun).days
+            except Exception:
+                continue
+            if 0 <= qoldi <= 21:
+                bl.append(f"  🎉 {b.get('nom')} — {qoldi} kun qoldi")
+        if bl:
+            msg.append("📅 <b>Yaqin bayramlar:</b>")
+            msg.extend(bl)
+            msg.append("")
+
     # Yangi reja
     reja = load_json("kontent_reja_ai.json")
     if reja:

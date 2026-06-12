@@ -165,6 +165,35 @@ IIKO_BRANDS = {
 }
 
 
+def holidays_context():
+    """Yaqinlashayotgan bayramlar (21 kun ichida) — AI oldindan kampaniya rejalashtiradi."""
+    path = os.path.join(BASE, "bayramlar.json")
+    if not os.path.exists(path):
+        return ""
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception:
+        return ""
+    from datetime import date as _date
+    bugun = _date.today()
+    lines = []
+    for b in data.get("bayramlar", []):
+        try:
+            s = _date.fromisoformat(b.get("sana", ""))
+        except Exception:
+            continue
+        qoldi = (s - bugun).days
+        if 0 <= qoldi <= 21:
+            lines.append(f"- {b.get('nom')} — {b.get('sana')} ({qoldi} kun qoldi). G'oya: {b.get('goya', '')}")
+    if not lines:
+        return ""
+    return ("\n\nYAQINLASHAYOTGAN BAYRAMLAR:\n" + "\n".join(lines) +
+            "\nBAYRAM QOIDASI: 7 kundan yaqin bayram bo'lsa — rejaga bayram kontentini ALBATTA kirit. "
+            "8-21 kun qolgan bo'lsa — tayyorgarlik/anons postini taklif qil (masalan, oldindan buyurtma, kutish hissi). "
+            "Bayram g'oyasini restoran uslubiga moslab rivojlantir.")
+
+
 def sales_context():
     """iiko savdo ma'lumotlarini AI prompti uchun tayyorlash (shifrlangan fayllardan)."""
     savdo, taomlar = None, None
@@ -258,6 +287,7 @@ def build_prompt(snapshot):
     data_block = "\n\n".join(sections)
     review_block = last_week_review(snapshot)
     sales_block = sales_context()
+    holidays_block = holidays_context()
 
     # Umumiy qoidalar (restoran_info.json'dan)
     rules_block = ""
@@ -281,7 +311,7 @@ def build_prompt(snapshot):
 
     return f"""Sen tajribali SMM-strateg va o'zbek tilida yozadigan kopirayter san.{sana_block} Quyida uchta restoranning HAQIQIY Instagram statistikasi va eng yaxshi postlari berilgan. Har bir restoranning o'z ovozi (uslubi) eng yaxshi postlarining caption'larida ko'rinadi — shu uslubni saqla.
 
-{data_block}{rules_block}{sales_block}{review_block}
+{data_block}{rules_block}{holidays_block}{sales_block}{review_block}
 
 VAZIFA: Har bir restoran uchun keyingi haftaga {POSTS_PER_WEEK} ta postdan iborat kontent reja tuz.
 

@@ -1,0 +1,21 @@
+{
+  "_izoh": "Bayram-strateg bazasi. AI 21 kun oldin ko'rib, kampaniyani oldindan rejalashtiradi. Tahrirlash: GitHub'da qalam belgisi. Diniy bayramlar oy ko'rinishiga qarab ±1-2 kun siljishi mumkin — aniqlashgach sanani shu yerda to'g'rilang. O'zingizning sanalaringizni ham qo'shing (restoran tug'ilgan kuni, filial ochilishi...).",
+  "bayramlar": [
+    { "sana": "2026-06-30", "nom": "Yoshlar kuni (O'zbekiston)", "goya": "Yoshlar auditoriyasi uchun aksiya — do'stlar davrasi, kombo takliflar, tag-a-friend tanlovi" },
+    { "sana": "2026-09-01", "nom": "Mustaqillik kuni", "goya": "Bayramona milliy ruh — milliy taomlarga urg'u, oilaviy dasturxon, bayram kayfiyati kontenti" },
+    { "sana": "2026-09-02", "nom": "Yangi o'quv yili boshlanishi", "goya": "Maktab/talaba mavzusi — oilaviy nonushta, bolalar menyusi, '1-sentabrdan keyin dam oling' taklifi" },
+    { "sana": "2026-10-01", "nom": "Ustoz va murabbiylar kuni", "goya": "O'qituvchilarga ehtirom — ustozlar uchun maxsus taklif, minnatdorchilik kontenti" },
+    { "sana": "2026-12-08", "nom": "Konstitutsiya kuni", "goya": "Dam olish kuni — oilaviy tashrif uchun yengil aksiya" },
+    { "sana": "2026-12-20", "nom": "Yangi yil mavsumi boshlanishi", "goya": "Korporativ va oilaviy bayram dasturxonlari uchun OLDINDAN buyurtma kampaniyasi — eng daromadli mavsum!" },
+    { "sana": "2026-12-31", "nom": "Yangi yil kechasi", "goya": "Bayram kechasi, maxsus menyu, ish vaqti e'loni" },
+    { "sana": "2027-01-14", "nom": "Vatan himoyachilari kuni", "goya": "Erkaklar uchun taklif — shashlik/mangal urg'usi" },
+    { "sana": "2027-02-08", "nom": "Ramazon boshlanishi (taxminiy)", "goya": "IFTORLIK MAVSUMI — restoranlar uchun yilning eng muhim davri! Iftor menyusi, saharlik takliflari, 'Ramazon Barakasi' seriyasini qayta jonlantirish. 3 hafta oldin tayyorgarlik!" },
+    { "sana": "2027-02-14", "nom": "Sevishganlar kuni", "goya": "Juftliklar uchun kechki ovqat, ikki kishilik kombo, romantik muhit kontenti" },
+    { "sana": "2027-03-08", "nom": "Xotin-qizlar kuni", "goya": "Ayollar bayrami — oilaviy tashrif cho'qqisi, gul+desert taklifi, onalarga ehtirom kontenti" },
+    { "sana": "2027-03-10", "nom": "Ro'za hayiti / Iyd al-Fitr (taxminiy)", "goya": "Hayit dasturxoni, oilaviy bayram, hayit tabrigi — katta tashrif kuni" },
+    { "sana": "2027-03-21", "nom": "Navro'z bayrami", "goya": "Sumalak va milliy taomlar, bahor kayfiyati, milliy liboslar — eng kuchli milliy kontent imkoniyati" },
+    { "sana": "2027-05-09", "nom": "Xotira va qadrlash kuni", "goya": "Keksalarga ehtirom — oilaviy hurmat mavzusi, bobolar-buvilar bilan tashrif" },
+    { "sana": "2027-05-17", "nom": "Qurbon hayiti / Iyd al-Adha (taxminiy)", "goya": "Hayit bayrami — go'shtli taomlar, oilaviy dasturxon, bayram tabrigi. Savdo cho'qqisi kutiladi!" },
+    { "sana": "2027-06-01", "nom": "Bolalar kuni", "goya": "Bolalar menyusi, oilaviy formatlar, bolalar uchun sovg'acha" }
+  ]
+}
