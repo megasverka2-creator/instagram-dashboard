@@ -313,6 +313,7 @@ function renderPlan() {
       <div class="day-actions">
         <button class="btn btn-ghost btn-sm" onclick="copyCaption(${i}, this)">📋 Nusxa olish</button>
         <button class="btn btn-ghost btn-sm" onclick="reshuffleDay('${ACC}', ${i})">🔄 Almashtirish</button>
+        <button class="btn btn-ghost btn-sm" onclick="rpChatOchish(this)">🎬 Chuqurlashtirish</button>
       </div>
     </div>`).join("");
 }
@@ -374,6 +375,7 @@ function renderAIPlan() {
       <div class="cap">${escapeHtml(s.caption || "")}</div>
       <div class="day-actions">
         <button class="btn btn-ghost btn-sm" onclick="copyCaption(${i}, this)">📋 Nusxa olish</button>
+        <button class="btn btn-ghost btn-sm" onclick="rpChatOchish(this)">🎬 Chuqurlashtirish</button>
       </div>
     </div>`;
   }).join("");
