@@ -1,0 +1,38 @@
+name: Mijozlar ovozi
+
+on:
+  schedule:
+    # Har dushanba UTC 02:45 = Toshkent 07:45 (haftalik xulosadan oldin)
+    - cron: '45 2 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodni olish
+        uses: actions/checkout@v4
+
+      - name: Python o'rnatish
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Izohlarni tahlil qilish
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python izoh_agent.py
+
+      - name: Natijani saqlash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          [ -f izoh_tahlil.json ] && git add izoh_tahlil.json || true
+          git diff --staged --quiet || git commit -m "Mijozlar ovozi yangilandi ($(date +%Y-%m-%d))"
+          git push
