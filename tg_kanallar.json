@@ -1,0 +1,9 @@
+{
+  "_izoh": "RestoPulse kuzatadigan Telegram kanal/guruhlar. Nomini tahrirlash mumkin, id ga tegmang. Keraksizini o'chirib tashlang.",
+  "chatlar": [
+    { "id": "@benison_uz", "nom": "Benison kanal", "turi": "kanal", "username": "benison_uz" },
+    { "id": "@eddo_kanal", "nom": "Eddo kanal", "turi": "kanal", "username": "eddo_kanal" },
+    { "id": "@benisonuz", "nom": "Benison guruh", "turi": "guruh", "username": "benisonuz" },
+    { "id": "@eddo_uz", "nom": "Eddo guruh", "turi": "guruh", "username": "eddo_uz" }
+  ]
+}
