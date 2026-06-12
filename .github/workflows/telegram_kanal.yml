@@ -1,0 +1,50 @@
+name: Telegram kanal statistika
+
+# Har kuni avtomatik + qo'lda (rejim tanlash bilan)
+on:
+  schedule:
+    # Har kuni UTC 04:15 da (Toshkent ~09:15)
+    - cron: '15 4 * * *'
+  workflow_dispatch:
+    inputs:
+      rejim:
+        description: "Rejim: yigish (kunlik) yoki aniqlash (kanallarni topish)"
+        type: choice
+        default: yigish
+        options:
+          - yigish
+          - aniqlash
+
+permissions:
+  contents: write
+
+jobs:
+  telegram_kanal:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repozitoriyani yuklash
+        uses: actions/checkout@v4
+
+      - name: Python o'rnatish
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Kollektorni ishga tushirish
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          REJIM: ${{ github.event.inputs.rejim || 'yigish' }}
+        run: python3 telegram_kanal_collector.py
+
+      - name: Yangilangan ma'lumotni saqlash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tg_kanallar.json telegram_kanal_data.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "O'zgarish yo'q — saqlash kerak emas"
+          else
+            git commit -m "Avtomatik: Telegram kanal statistikasi ($(date +%Y-%m-%d))"
+            git push
+          fi

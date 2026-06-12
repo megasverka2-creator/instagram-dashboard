@@ -145,6 +145,20 @@
 
   .empty { padding:38px; text-align:center; color:var(--muted); }
   .foot { text-align:center; color:var(--faint); font-size:11.5px; margin-top:28px; }
+  /* ===== Telegram auditoriyasi ===== */
+  .tg-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:12px; }
+  .tg-card { padding:17px 19px; }
+  .tg-card .tlab { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12.5px; font-weight:500; margin-bottom:8px; letter-spacing:-.1px; }
+  .tg-card .ticon { width:24px; height:24px; border-radius:7px; background:#2AABEE; color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
+  .tg-card .tval { font-family:var(--sf); font-size:26px; font-weight:700; letter-spacing:-.7px; font-variant-numeric:tabular-nums; }
+  .tg-card .tchg { font-size:12.5px; font-weight:600; padding:2.5px 9px; border-radius:8px; margin-left:7px; vertical-align:3px; font-variant-numeric:tabular-nums; }
+  .tg-card .tchg.up { color:var(--good); background:rgba(52,199,89,.12); }
+  .tg-card .tchg.down { color:var(--bad); background:rgba(255,59,48,.1); }
+  .tg-card .tsub { font-size:11.5px; color:var(--muted); margin-top:5px; }
+  .tg-setup { padding:17px 20px; font-size:13.5px; line-height:1.6; color:var(--muted); }
+  .tg-setup b { color:var(--ink); font-weight:600; }
+
   @media (max-width:600px){ .hero h1{font-size:21px;} .hero .upd{margin-left:0; width:100%; text-align:left; margin-top:8px;} .kpi .val{font-size:25px;} }
 </style>
 </head>
@@ -198,7 +212,89 @@
   <div id="page-dieto_uz" class="page"></div>
   <div id="page-eddo_uz" class="page"></div>
 
+  <!-- TELEGRAM (mustaqil blok — dashboard.js ga bog'liq emas) -->
+  <div class="section-title" id="tgTitle" style="display:none;">✈️ Telegram auditoriyasi <span style="font-size:13px;font-weight:500;opacity:.7;">— kanal va guruhlar</span></div>
+  <div class="tg-grid" id="tgGrid"></div>
+  <div class="chart-card glass" id="tgChartCard" style="display:none;margin-top:13px;">
+    <h3>Obunachilar dinamikasi</h3>
+    <div class="csub">Har kuni avtomatik yangilanadi</div>
+    <div class="chart-box" style="height:260px;"><canvas id="tgChart"></canvas></div>
+  </div>
+
   <div class="foot">Har kuni avtomatik yangilanadi · GitHub Actions</div>
 </div>
+<script>
+/* Telegram auditoriyasi — mustaqil blok */
+window.addEventListener("load", async function () {
+  const grid = document.getElementById("tgGrid");
+  const title = document.getElementById("tgTitle");
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const fmt = n => Math.round(n).toLocaleString("ru-RU").replace(/,/g, " ");
+  let data = null;
+  try {
+    const r = await fetch("telegram_kanal_data.json?v=" + Date.now());
+    if (r.ok) data = await r.json();
+  } catch (e) {}
+
+  if (!data || !data.length) {
+    // Hali ma'lumot yo'q — qisqa yo'riqnoma
+    title.style.display = "flex";
+    grid.innerHTML = `<div class="glass tg-setup" style="grid-column:1/-1;">
+      <b>Telegram statistikasi hali yig'ilmagan.</b> Ishga tushirish:
+      GitHub → Actions → <b>"Telegram kanal statistika"</b> → Run workflow → rejim: <b>aniqlash</b>
+      (bot qo'shilgan kanallarni topadi), keyin yana bir marta rejim: <b>yigish</b>.
+      Shundan so'ng bu yerda kanal/guruh o'sishi avtomatik ko'rinadi.</div>`;
+    return;
+  }
+
+  title.style.display = "flex";
+  const oxirgi = data[data.length - 1];
+  const kecha = data.length > 1 ? data[data.length - 2] : null;
+  const hafta = data.length > 7 ? data[data.length - 8] : (data.length > 1 ? data[0] : null);
+
+  grid.innerHTML = Object.entries(oxirgi.chats).map(([cid, c]) => {
+    const old = kecha && kecha.chats[cid] ? kecha.chats[cid].azolar : null;
+    const old7 = hafta && hafta.chats[cid] ? hafta.chats[cid].azolar : null;
+    const d1 = old !== null ? c.azolar - old : null;
+    const d7 = old7 !== null ? c.azolar - old7 : null;
+    const chg = d1 === null ? "" :
+      `<span class="tchg ${d1 >= 0 ? "up" : "down"}">${d1 >= 0 ? "+" : ""}${fmt(d1)}</span>`;
+    const sub = d7 === null ? (c.turi === "kanal" ? "Kanal" : "Guruh")
+      : `${c.turi === "kanal" ? "Kanal" : "Guruh"} · 7 kunda ${d7 >= 0 ? "+" : ""}${fmt(d7)}`;
+    return `<div class="tg-card glass">
+      <div class="tlab"><span class="ticon">✈️</span>${esc(c.nom)}</div>
+      <div class="tval">${fmt(c.azolar)}${chg}</div>
+      <div class="tsub">${sub}</div>
+    </div>`;
+  }).join("");
+
+  // Grafik — kamida 2 kunlik ma'lumot va Chart.js yuklangan bo'lsa
+  if (data.length >= 2 && window.Chart) {
+    document.getElementById("tgChartCard").style.display = "block";
+    const labels = data.map(d => d.date.slice(5));
+    const ranglar = ["#2AABEE", "#5856D6", "#FF9500", "#34C759", "#FF2D55", "#AF52DE"];
+    const idlar = Object.keys(oxirgi.chats);
+    const datasets = idlar.map((cid, i) => ({
+      label: oxirgi.chats[cid].nom,
+      data: data.map(d => d.chats[cid] ? d.chats[cid].azolar : null),
+      borderColor: ranglar[i % ranglar.length],
+      backgroundColor: ranglar[i % ranglar.length],
+      tension: 0.35, pointRadius: 2.5, borderWidth: 2.5, spanGaps: true,
+    }));
+    new Chart(document.getElementById("tgChart"), {
+      type: "line",
+      data: { labels, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: "#1C1C1E", font: { size: 12, weight: "600" }, usePointStyle: true, pointStyle: "circle" } } },
+        scales: {
+          x: { ticks: { color: "rgba(60,60,67,0.6)", font: { size: 11 } }, grid: { color: "rgba(60,60,67,0.06)" } },
+          y: { ticks: { color: "rgba(60,60,67,0.6)", font: { size: 11 } }, grid: { color: "rgba(60,60,67,0.08)" } },
+        },
+      },
+    });
+  }
+});
+</script>
 </body>
 </html>
