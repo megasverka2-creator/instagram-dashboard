@@ -342,16 +342,28 @@ function renderAIPlan() {
     </div>`;
   }
 
+  const OYLAR = ["yanvar","fevral","mart","aprel","may","iyun","iyul","avgust","sentabr","oktabr","noyabr","dekabr"];
+  const todayIso = new Date().toISOString().slice(0,10);
+  function fmtSana(iso) {
+    const d = new Date(iso + "T00:00:00");
+    return d.getDate() + "-" + OYLAR[d.getMonth()];
+  }
+
   html += plan.map((s, i) => {
     const dayIdx = DAYS.indexOf(s.day);
     const shortDay = dayIdx >= 0 ? DAYS_SHORT[dayIdx] : (s.day || "").slice(0,4);
+    const bugun = s.sana === todayIso;
+    const sanaTxt = s.sana
+      ? `<div class="tm">📆 ${fmtSana(s.sana)}${bugun ? ' · <b style="color:#d62976">BUGUN</b>' : ''}</div>`
+      : "";
     return `
-    <div class="day-card glass">
+    <div class="day-card glass" ${bugun ? 'style="outline:2px solid #d62976;"' : ''}>
       <div class="day-head">
         <div class="day-num" style="background:${color}"><b>${shortDay}</b><small>${i+1}-post</small></div>
         <div>
           <h4>${escapeHtml(s.day || "")}</h4>
           <div class="tm">⏰ ${escapeHtml(s.time || "")}</div>
+          ${sanaTxt}
         </div>
       </div>
       <div class="badges">

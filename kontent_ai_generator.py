@@ -275,7 +275,11 @@ def build_prompt(snapshot):
         rl.append("- Eslatma: 'yashirin xazina' postlarida ham taomning NARXINI yozma — faqat jozibasini tasvirla.")
         rules_block = "\n".join(rl)
 
-    return f"""Sen tajribali SMM-strateg va o'zbek tilida yozadigan kopirayter san. Quyida uchta restoranning HAQIQIY Instagram statistikasi va eng yaxshi postlari berilgan. Har bir restoranning o'z ovozi (uslubi) eng yaxshi postlarining caption'larida ko'rinadi — shu uslubni saqla.
+    kunlar_uz = ["Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba", "Yakshanba"]
+    bugun = datetime.now()
+    sana_block = f"\nBUGUNGI SANA: {bugun:%Y-%m-%d} ({kunlar_uz[bugun.weekday()]}). Reja BUGUNDAN boshlab keyingi 7 kunni qamrasin."
+
+    return f"""Sen tajribali SMM-strateg va o'zbek tilida yozadigan kopirayter san.{sana_block} Quyida uchta restoranning HAQIQIY Instagram statistikasi va eng yaxshi postlari berilgan. Har bir restoranning o'z ovozi (uslubi) eng yaxshi postlarining caption'larida ko'rinadi — shu uslubni saqla.
 
 {data_block}{rules_block}{sales_block}{review_block}
 
@@ -430,6 +434,17 @@ def main():
                 json.dump(arxiv, f, ensure_ascii=False, indent=2)
         except Exception:
             pass
+
+    # Har postga haqiqiy kalendar sanasini biriktiramiz (shu haftadagi yaqin kun)
+    from datetime import date as _date, timedelta as _td
+    _KUNLAR = ["Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba", "Yakshanba"]
+    _bugun = _date.today()
+    for _acc in plan["accounts"].values():
+        for _p in _acc.get("plan", []):
+            _d = _p.get("day")
+            if _d in _KUNLAR:
+                _delta = (_KUNLAR.index(_d) - _bugun.weekday()) % 7
+                _p["sana"] = (_bugun + _td(days=_delta)).isoformat()
 
     result = {
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M"),

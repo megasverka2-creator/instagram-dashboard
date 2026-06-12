@@ -5,6 +5,15 @@ on:
     # Har kuni UTC 03:30 = Toshkent 08:30
     - cron: '30 3 * * *'
   workflow_dispatch:
+    inputs:
+      rejim:
+        description: "Rejim (sinov = darhol test xabar yuboradi)"
+        required: false
+        default: "oddiy"
+        type: choice
+        options:
+          - oddiy
+          - sinov
 
 permissions:
   contents: read
@@ -29,4 +38,4 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           SAVDO_PAROL: ${{ secrets.SAVDO_PAROL }}
-        run: python telegram_xabar.py
+        run: python telegram_xabar.py ${{ github.event.inputs.rejim || 'oddiy' }}

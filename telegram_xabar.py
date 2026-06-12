@@ -74,18 +74,48 @@ def fmt_mln(n):
 #  Xabar qismlari
 # =============================================================
 def bugungi_eslatma(reja):
-    """Bugungi rejadagi postlar eslatmasi."""
-    today = KUNLAR[datetime.now().weekday()] if not SINOV else "Juma"
-    lines = []
+    """Bugungi rejadagi postlar eslatmasi (sana bo'yicha aniq)."""
+    from datetime import date
+    today_iso = date.today().isoformat()
+    today_kun = KUNLAR[datetime.now().weekday()]
+
+    # Eski reja himoyasi: 8 kundan eski reja bo'yicha eslatma yubormaymiz
+    gen = (reja.get("generated_at") or "")[:10]
+    eski = False
+    try:
+        from datetime import datetime as dt
+        eski = (date.today() - dt.strptime(gen, "%Y-%m-%d").date()).days > 8
+    except Exception:
+        pass
+
+    def item_line(name, p):
+        s = p.get("sana", "")
+        s_txt = f" ({s[8:10]}-kun)" if s else ""
+        return f"  🍽 <b>{name}</b> {p.get('time','')} — {p.get('type','')}: {p.get('theme','')}{s_txt}"
+
+    lines, kelajak = [], []
     for acc, name in ACCOUNTS.items():
         v = (reja.get("accounts") or {}).get(acc) or {}
         for p in v.get("plan", []):
-            if p.get("day") == today:
-                lines.append(f"  🍽 <b>{name}</b> {p.get('time','')} — {p.get('type','')}: {p.get('theme','')}")
-    if not lines:
-        return None
-    return (f"📣 <b>Bugun post kuni!</b> ({today})\n\n" + "\n".join(lines) +
-            f"\n\n✍️ Tayyor caption'lar: {SITE}/kontent_reja.html")
+            sana = p.get("sana")
+            mos = (sana == today_iso) if sana else (not eski and p.get("day") == today_kun)
+            if mos:
+                lines.append(item_line(name, p))
+            elif sana and sana > today_iso:
+                kelajak.append((sana, name, p))
+
+    if lines:
+        return (f"📣 <b>Bugun post kuni!</b> ({today_kun})\n\n" + "\n".join(lines) +
+                f"\n\n✍️ Tayyor caption'lar: {SITE}/kontent_reja.html")
+
+    # Sinov rejimida: eng yaqin kelgusi postni namuna sifatida ko'rsatamiz
+    if SINOV and kelajak:
+        kelajak.sort()
+        sana, name, p = kelajak[0]
+        return (f"🧪 <b>SINOV — bot ishlayapti!</b>\n\nBugun rejada post yo'q. "
+                f"Eng yaqin post — {p.get('day','')} ({sana}):\n" + item_line(name, p) +
+                f"\n\n✍️ {SITE}/kontent_reja.html")
+    return None
 
 
 def haftalik_xulosa():
@@ -144,7 +174,7 @@ def haftalik_xulosa():
 #  Yuborish
 # =============================================================
 def send(text):
-    if SINOV or not TOKEN or not CHAT_ID:
+    if not TOKEN or not CHAT_ID:
         print("--- XABAR (sinov rejimi) ---")
         print(text.replace("<b>", "").replace("</b>", "").replace("<i>", "").replace("</i>", ""))
         print("--- TAMOM ---\n")
