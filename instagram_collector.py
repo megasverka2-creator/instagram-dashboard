@@ -21,7 +21,7 @@ import sys
 import urllib.request
 import urllib.parse
 import urllib.error
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 # ╔═══════════════════════════════════════════════════════════╗
 # ║  SOZLAMALAR — FAQAT SHU 4 QATORNI TO'LDIRING                ║
@@ -223,6 +223,17 @@ def analyze_posts(posts, followers):
 
     top = sorted(posts, key=lambda p: p["engagement"], reverse=True)[:10]
 
+    # Ijro nazorati uchun: barcha olingan postlarning sanasi (Toshkent vaqti, UTC+5)
+    recent = []
+    for p in posts:
+        ts = p.get("timestamp", "")
+        try:
+            dt = datetime.strptime(ts, "%Y-%m-%dT%H:%M:%S%z") + timedelta(hours=5)
+            recent.append({"sana": dt.strftime("%Y-%m-%d"), "vaqt": dt.strftime("%H:%M"), "type": p.get("type", "")})
+        except Exception:
+            continue
+    recent.sort(key=lambda r: r["sana"], reverse=True)
+
     return {
         "total_engagement": total_eng, "avg_engagement": avg_eng,
         "engagement_rate": eng_rate,
@@ -230,6 +241,7 @@ def analyze_posts(posts, followers):
         "total_reach": total_reach, "avg_reach": avg_reach,
         "reach_rate": reach_rate,
         "by_type": by_type, "top_posts": top,
+        "recent_posts": recent,
     }
 
 
@@ -299,6 +311,7 @@ def collect():
             "by_type": analysis["by_type"],
             "demographics": demographics,
             "posts": analysis["top_posts"],
+            "recent_posts": analysis.get("recent_posts", []),
         }
         print(f"     followers: {followers}, ER: {analysis['engagement_rate']}%, "
               f"reach(7d): {insights.get('reach', 0)}, profil ko'rish: {insights.get('profile_views', 0)}")

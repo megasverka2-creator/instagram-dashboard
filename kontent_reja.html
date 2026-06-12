@@ -103,6 +103,26 @@
   details summary { cursor:pointer; list-style:none; }
   details summary::-webkit-details-marker { display:none; }
 
+  /* ===== Ijro nazorati ===== */
+  .ij-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:12px; }
+  .ij-card { padding:18px 20px; }
+  .ij-head { display:flex; align-items:center; gap:13px; margin-bottom:13px; }
+  .ij-ring { width:58px; height:58px; border-radius:50%; flex-shrink:0; position:relative;
+    display:flex; align-items:center; justify-content:center; }
+  .ij-ring::before { content:''; position:absolute; inset:6px; border-radius:50%; background:var(--card); }
+  .ij-ring b { position:relative; font-family:var(--sf); font-size:14.5px; font-weight:700; letter-spacing:-.4px; font-variant-numeric:tabular-nums; }
+  .ij-head h4 { font-size:15.5px; font-weight:600; letter-spacing:-.3px; }
+  .ij-head .ij-sub { font-size:11.5px; color:var(--muted); margin-top:2px; }
+  .ij-slot { display:flex; align-items:center; gap:10px; padding:8px 0; border-top:1px solid var(--sep); font-size:13px; }
+  .ij-slot .st { width:22px; font-size:14px; flex-shrink:0; text-align:center; }
+  .ij-slot .nm { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; letter-spacing:-.1px; }
+  .ij-slot .dt { color:var(--muted); font-size:11.5px; flex-shrink:0; font-variant-numeric:tabular-nums; }
+  .ij-slot.miss .nm { color:#C73A30; }
+  .ij-slot.fut { opacity:.62; }
+  .ij-note { font-size:11.5px; color:var(--muted); margin-top:10px; line-height:1.5; }
+  .ij-banner { padding:13px 18px; margin-bottom:12px; font-size:13px; line-height:1.55; color:var(--muted); }
+  .ij-banner b { color:var(--ink); font-weight:600; }
+
   /* ===== Bayramlar kalendari ===== */
   .bay-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; }
   .bay-card { padding:16px 18px; display:flex; gap:13px; align-items:flex-start; position:relative; }
@@ -161,6 +181,10 @@
 
   <div class="section-title">🗓 Haftalik reja <span style="font-size:13px;font-weight:600;opacity:0.85;" id="planMeta"></span></div>
   <div class="plan-grid" id="plan"></div>
+
+  <div class="section-title">✅ Ijro nazorati <span style="font-size:13px;font-weight:500;opacity:.7;">— reja vs haqiqat</span></div>
+  <div id="ijBanner"></div>
+  <div class="ij-grid" id="ijGrid"></div>
 
   <div class="section-title">📆 Bayramlar kalendari <span style="font-size:13px;font-weight:500;opacity:0.75;font-family:'Inter',sans-serif;">— oldinda nimalar bor</span></div>
   <div class="bay-grid" id="bayGrid"></div>
@@ -234,5 +258,100 @@
 </script>
 <script src="kontent_reja.js"></script>
 <script src="rp_chat.js"></script>
+<script>
+/* Ijro nazorati — mustaqil blok: reja sanalari vs haqiqiy chiqqan postlar */
+(async function () {
+  const grid = document.getElementById("ijGrid");
+  const banner = document.getElementById("ijBanner");
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const NAMES = { benison_uz: "Benison", dieto_uz: "Dieto", eddo_uz: "Eddo" };
+  const COLORS = { benison_uz: "#ff7a59", dieto_uz: "#8a5cf6", eddo_uz: "#f9b234" };
+
+  function bugunISO() {
+    // Toshkent (UTC+5) bo'yicha bugungi sana
+    const d = new Date(Date.now() + 5 * 3600 * 1000);
+    return d.toISOString().slice(0, 10);
+  }
+
+  try {
+    const [planR, igR] = await Promise.all([
+      fetch("kontent_reja_ai.json?v=" + Date.now()),
+      fetch("instagram_data.json?v=" + Date.now()),
+    ]);
+    if (!planR.ok || !igR.ok) throw new Error("fayl yo'q");
+    const plan = await planR.json();
+    const ig = await igR.json();
+    const igLast = ig[ig.length - 1] || {};
+    const today = bugunISO();
+
+    let aniqEmas = false; // recent_posts hali yig'ilmagan akkauntlar uchun
+    const cards = [];
+
+    for (const [acc, data] of Object.entries(plan.accounts || {})) {
+      const slots = (data.plan || []).filter(sl => sl.sana);
+      if (!slots.length) continue;
+
+      // Haqiqiy chiqqan postlar sanalari
+      const accIg = (igLast.accounts || {})[acc] || {};
+      let postSanalar;
+      if (Array.isArray(accIg.recent_posts) && accIg.recent_posts.length) {
+        postSanalar = accIg.recent_posts.map(p => p.sana);
+      } else {
+        // Eski format: faqat TOP postlar bor — taxminiy rejim
+        aniqEmas = true;
+        postSanalar = (accIg.posts || []).map(p => (p.timestamp || "").slice(0, 10));
+      }
+      const sanaSet = new Set(postSanalar);
+
+      let chiqdi = 0, due = 0;
+      const rows = slots.map(sl => {
+        const otgan = sl.sana < today;
+        const bugun = sl.sana === today;
+        const bor = sanaSet.has(sl.sana);
+        let st, cls = "";
+        if (bor) { st = "✅"; if (otgan || bugun) chiqdi++; }
+        else if (otgan) { st = "❌"; cls = "miss"; }
+        else if (bugun) { st = "🕓"; }
+        else { st = "📅"; cls = "fut"; }
+        if (otgan || bugun) due++;
+        const dd = sl.sana.slice(8, 10) + "." + sl.sana.slice(5, 7);
+        return `<div class="ij-slot ${cls}"><span class="st">${st}</span><span class="nm">${esc(sl.day || "")} — ${esc(sl.theme || sl.type || "")}</span><span class="dt">${dd}</span></div>`;
+      }).join("");
+
+      const pct = due > 0 ? Math.round((chiqdi / due) * 100) : null;
+      const rang = pct === null ? "#C7C7CC" : pct >= 75 ? "#34C759" : pct >= 40 ? "#FF9500" : "#FF3B30";
+      const deg = (pct === null ? 0 : pct) * 3.6;
+      const sanalar = slots.map(sl => sl.sana).sort();
+      const hafta = sanalar[0].slice(8,10) + "." + sanalar[0].slice(5,7) + " – " +
+                    sanalar[sanalar.length-1].slice(8,10) + "." + sanalar[sanalar.length-1].slice(5,7);
+      const subTxt = pct === null
+        ? "Reja hali boshlanmadi"
+        : `${chiqdi}/${due} bajarildi · jami ${slots.length} post`;
+
+      cards.push(`<div class="ij-card glass">
+        <div class="ij-head">
+          <div class="ij-ring" style="background:conic-gradient(${rang} ${deg}deg, rgba(118,118,128,.14) 0deg)"><b>${pct === null ? "—" : pct + "%"}</b></div>
+          <div>
+            <h4 style="color:${COLORS[acc] || "var(--ink)"}">${esc(NAMES[acc] || acc)}</h4>
+            <div class="ij-sub">${hafta} · ${subTxt}</div>
+          </div>
+        </div>
+        ${rows}
+      </div>`);
+    }
+
+    if (!cards.length) {
+      grid.innerHTML = '<div class="glass empty" style="grid-column:1/-1">Sanali AI reja topilmadi — dushanba kuni yangi reja tuzilganda bu yerda ijro ko\'rinadi.</div>';
+      return;
+    }
+    grid.innerHTML = cards.join("");
+    if (aniqEmas) {
+      banner.innerHTML = `<div class="glass ij-banner">ℹ️ <b>Taxminiy rejim:</b> hozircha faqat TOP postlar ro'yxati bor, shuning uchun kam ko'rilgan post "chiqmagan" deb ko'rinishi mumkin. Ertangi avtomatik yig'ishdan keyin (yoki Actions'da "Instagram ma'lumot yig'ish"ni qo'lda ishga tushirsangiz) hisob to'liq aniq bo'ladi.</div>`;
+    }
+  } catch (e) {
+    grid.innerHTML = '<div class="glass empty" style="grid-column:1/-1">Ijro ma\'lumotini o\'qib bo\'lmadi.</div>';
+  }
+})();
+</script>
 </body>
 </html>
