@@ -1,14 +1,22 @@
 {
   "name": "RestoPulse — Instagram analitika",
   "short_name": "RestoPulse",
-  "description": "Benison, Dieto, Eddo — Instagram statistika va AI kontent reja",
+  "description": "Benison, Dieto, Eddo — Instagram statistika, savdo va AI kontent reja",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#962fbf",
-  "theme_color": "#d62976",
+  "background_color": "#15101F",
+  "theme_color": "#15101F",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }

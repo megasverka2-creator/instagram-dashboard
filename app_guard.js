@@ -29,24 +29,25 @@
     const css = document.createElement("style");
     css.textContent = `
       .rp-nav {
-        position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-        display: flex; gap: 4px; padding: 7px;
-        background: rgba(42,26,62,0.82); backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-        border: 1px solid rgba(255,255,255,0.18); border-radius: 22px;
-        box-shadow: 0 8px 30px rgba(20,5,40,0.45); z-index: 90;
+        position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+        display: flex; gap: 3px; padding: 7px;
+        background: rgba(26,17,34,0.72);
+        backdrop-filter: blur(28px) saturate(1.5); -webkit-backdrop-filter: blur(28px) saturate(1.5);
+        border: 1px solid rgba(255,255,255,0.14); border-radius: 24px;
+        box-shadow: 0 16px 44px rgba(8,3,20,0.55), inset 0 1px 0 rgba(255,255,255,0.12); z-index: 90;
       }
       .rp-nav a, .rp-nav button {
-        display: flex; flex-direction: column; align-items: center; gap: 2px;
-        min-width: 64px; padding: 7px 10px; border-radius: 15px;
-        color: rgba(255,255,255,0.85); text-decoration: none; border: none;
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+        min-width: 62px; padding: 8px 10px; border-radius: 16px;
+        color: rgba(246,241,251,0.66); text-decoration: none; border: none;
         background: transparent; cursor: pointer; font-family: inherit;
-        font-size: 10.5px; font-weight: 600; transition: background .2s;
+        font-size: 10.5px; font-weight: 500; letter-spacing: .2px; transition: background .2s, color .2s;
       }
-      .rp-nav a .ni, .rp-nav button .ni { font-size: 17px; }
-      .rp-nav a:hover, .rp-nav button:hover { background: rgba(255,255,255,0.12); }
-      .rp-nav a.active { background: rgba(255,255,255,0.92); color: #2a1a3e; }
-      body { padding-bottom: 92px !important; }
+      .rp-nav a .ni, .rp-nav button .ni { font-size: 18px; }
+      .rp-nav a:hover, .rp-nav button:hover { background: rgba(255,255,255,0.08); color: rgba(246,241,251,0.95); }
+      .rp-nav a.active { background: rgba(255,255,255,0.95); color: #1A1326; font-weight: 600;
+        box-shadow: 0 4px 16px rgba(224,64,138,0.35); }
+      body { padding-bottom: 96px !important; }
       @media print { .rp-nav { display: none; } }
     `;
     document.head.appendChild(css);

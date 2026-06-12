@@ -140,10 +140,10 @@ function chartReady() { return typeof Chart !== "undefined"; }
 function baseOpts() {
   return {
     responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { color:"#3a2456", font:{size:13, weight:"600"}, usePointStyle:true, pointStyle:"circle" } } },
+    plugins: { legend: { labels: { color:"#E9E2CF", font:{size:13, weight:"600"}, usePointStyle:true, pointStyle:"circle" } } },
     scales: {
-      x: { ticks:{color:"#6b5b8a", font:{size:11}}, grid:{color:"rgba(120,80,160,0.08)"} },
-      y: { ticks:{color:"#6b5b8a", font:{size:11}}, grid:{color:"rgba(120,80,160,0.1)"} }
+      x: { ticks:{color:"rgba(243,238,226,0.55)", font:{size:11}}, grid:{color:"rgba(243,238,226,0.06)"} },
+      y: { ticks:{color:"rgba(243,238,226,0.55)", font:{size:11}}, grid:{color:"rgba(243,238,226,0.08)"} }
     }
   };
 }
@@ -235,15 +235,15 @@ function renderCorrelation() {
       },
       options: {
         responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { labels: { color:"#3a2456", font:{size:12, weight:"600"}, usePointStyle:true } } },
+        plugins: { legend: { labels: { color:"#E9E2CF", font:{size:12, weight:"600"}, usePointStyle:true } } },
         scales: {
-          x: { ticks:{color:"#6b5b8a", font:{size:11}}, grid:{display:false} },
-          y: { position:"left", ticks:{color:"#6b5b8a", font:{size:11}},
-               grid:{color:"rgba(120,80,160,0.1)"},
-               title:{display:true, text:"mln so'm", color:"#6b5b8a", font:{size:10}} },
-          y2: { position:"right", ticks:{color:"#962fbf", font:{size:11}},
+          x: { ticks:{color:"rgba(243,238,226,0.55)", font:{size:11}}, grid:{display:false} },
+          y: { position:"left", ticks:{color:"rgba(243,238,226,0.55)", font:{size:11}},
+               grid:{color:"rgba(243,238,226,0.08)"},
+               title:{display:true, text:"mln so'm", color:"rgba(243,238,226,0.55)", font:{size:10}} },
+          y2: { position:"right", ticks:{color:"#E6B84F", font:{size:11}},
                 grid:{display:false},
-                title:{display:true, text:"qamrov", color:"#962fbf", font:{size:10}} },
+                title:{display:true, text:"qamrov", color:"#E6B84F", font:{size:10}} },
         },
       },
     });
