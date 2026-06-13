@@ -2338,38 +2338,38 @@
     }
   },
   {
-    "collected_at": "2026-06-13T11:29:12.400412+00:00",
+    "collected_at": "2026-06-13T13:56:10.186949+00:00",
     "date": "2026-06-13",
     "token": {
-      "days_left": 56,
+      "days_left": 55,
       "expires_at": "2026-08-08",
       "never": false
     },
     "accounts": {
       "benison_uz": {
         "username": "benison_uz",
-        "followers": 41241,
-        "media_count": 462,
-        "reach_7d": 17919,
-        "profile_views_7d": 412,
+        "followers": 41242,
+        "media_count": 461,
+        "reach_7d": 19358,
+        "profile_views_7d": 440,
         "engagement_rate": 0.58,
-        "avg_engagement": 238,
-        "reach_rate": 24.5,
-        "avg_reach": 10115,
+        "avg_engagement": 240,
+        "reach_rate": 25.1,
+        "avg_reach": 10366,
         "total_saved": 164,
-        "total_shares": 1259,
+        "total_shares": 1288,
         "by_type": {
           "VIDEO": {
-            "count": 13,
-            "engagement": 3992,
-            "reach": 117481,
-            "avg_engagement": 307
+            "count": 12,
+            "engagement": 3947,
+            "reach": 115865,
+            "avg_engagement": 329
           },
           "IMAGE": {
-            "count": 10,
-            "engagement": 1647,
-            "reach": 125416,
-            "avg_engagement": 165
+            "count": 11,
+            "engagement": 1742,
+            "reach": 133303,
+            "avg_engagement": 158
           },
           "CAROUSEL_ALBUM": {
             "count": 2,
@@ -2434,7 +2434,8 @@
             "comments": 7,
             "saved": 78,
             "shares": 413,
-            "reach": 71087,
+            "reach": 71216,
+            "views": 120647,
             "engagement": 860,
             "post_er": 1.2
           },
@@ -2449,6 +2450,7 @@
             "saved": 15,
             "shares": 97,
             "reach": 16734,
+            "views": 24983,
             "engagement": 802,
             "post_er": 4.8
           },
@@ -2463,6 +2465,7 @@
             "saved": 4,
             "shares": 69,
             "reach": 14464,
+            "views": 21140,
             "engagement": 797,
             "post_er": 5.5
           },
@@ -2477,6 +2480,7 @@
             "saved": 14,
             "shares": 57,
             "reach": 27534,
+            "views": 31479,
             "engagement": 519,
             "post_er": 1.9
           },
@@ -2490,7 +2494,8 @@
             "comments": 32,
             "saved": 4,
             "shares": 128,
-            "reach": 14137,
+            "reach": 14190,
+            "views": 26847,
             "engagement": 479,
             "post_er": 3.4
           },
@@ -2504,7 +2509,8 @@
             "comments": 23,
             "saved": 8,
             "shares": 107,
-            "reach": 8222,
+            "reach": 8224,
+            "views": 14682,
             "engagement": 406,
             "post_er": 4.9
           },
@@ -2519,6 +2525,7 @@
             "saved": 4,
             "shares": 26,
             "reach": 10483,
+            "views": 19334,
             "engagement": 280,
             "post_er": 2.7
           },
@@ -2533,6 +2540,7 @@
             "saved": 9,
             "shares": 54,
             "reach": 18483,
+            "views": 16956,
             "engagement": 274,
             "post_er": 1.5
           },
@@ -2546,9 +2554,10 @@
             "comments": 17,
             "saved": 5,
             "shares": 28,
-            "reach": 7585,
+            "reach": 7728,
+            "views": 10780,
             "engagement": 211,
-            "post_er": 2.8
+            "post_er": 2.7
           },
           {
             "id": "18071496611695181",
@@ -2560,17 +2569,13 @@
             "comments": 3,
             "saved": 8,
             "shares": 116,
-            "reach": 10594,
+            "reach": 10646,
+            "views": 17606,
             "engagement": 208,
             "post_er": 2.0
           }
         ],
         "recent_posts": [
-          {
-            "sana": "2026-06-12",
-            "vaqt": "18:04",
-            "type": "VIDEO"
-          },
           {
             "sana": "2026-06-12",
             "vaqt": "17:58",
@@ -2690,6 +2695,11 @@
             "sana": "2026-04-29",
             "vaqt": "20:36",
             "type": "VIDEO"
+          },
+          {
+            "sana": "2026-04-22",
+            "vaqt": "19:48",
+            "type": "IMAGE"
           }
         ]
       },
@@ -2697,8 +2707,8 @@
         "username": "dieto_uz",
         "followers": 417,
         "media_count": 3,
-        "reach_7d": 1229,
-        "profile_views_7d": 40,
+        "reach_7d": 1245,
+        "profile_views_7d": 41,
         "engagement_rate": 175.3,
         "avg_engagement": 731,
         "reach_rate": 3400.5,
@@ -2761,6 +2771,7 @@
             "saved": 17,
             "shares": 368,
             "reach": 17091,
+            "views": 32033,
             "engagement": 988,
             "post_er": 5.8
           },
@@ -2775,6 +2786,7 @@
             "saved": 6,
             "shares": 242,
             "reach": 14824,
+            "views": 28066,
             "engagement": 861,
             "post_er": 5.8
           },
@@ -2789,6 +2801,7 @@
             "saved": 3,
             "shares": 38,
             "reach": 10625,
+            "views": 18474,
             "engagement": 343,
             "post_er": 3.2
           }
@@ -2815,25 +2828,25 @@
         "username": "eddo_uz",
         "followers": 38186,
         "media_count": 276,
-        "reach_7d": 2036,
-        "profile_views_7d": 184,
+        "reach_7d": 2085,
+        "profile_views_7d": 203,
         "engagement_rate": 0.72,
         "avg_engagement": 275,
         "reach_rate": 33.3,
-        "avg_reach": 12706,
+        "avg_reach": 12708,
         "total_saved": 260,
         "total_shares": 2751,
         "by_type": {
           "VIDEO": {
             "count": 8,
-            "engagement": 2175,
-            "reach": 56593,
+            "engagement": 2176,
+            "reach": 56644,
             "avg_engagement": 272
           },
           "IMAGE": {
             "count": 17,
             "engagement": 4710,
-            "reach": 261061,
+            "reach": 261064,
             "avg_engagement": 277
           }
         },
@@ -2894,6 +2907,7 @@
             "saved": 145,
             "shares": 782,
             "reach": 59894,
+            "views": 128539,
             "engagement": 1190,
             "post_er": 2.0
           },
@@ -2908,6 +2922,7 @@
             "saved": 17,
             "shares": 444,
             "reach": 28535,
+            "views": 17473,
             "engagement": 1168,
             "post_er": 4.1
           },
@@ -2922,6 +2937,7 @@
             "saved": 17,
             "shares": 244,
             "reach": 37978,
+            "views": 81466,
             "engagement": 426,
             "post_er": 1.1
           },
@@ -2936,6 +2952,7 @@
             "saved": 11,
             "shares": 207,
             "reach": 23955,
+            "views": 43823,
             "engagement": 382,
             "post_er": 1.6
           },
@@ -2950,6 +2967,7 @@
             "saved": 2,
             "shares": 71,
             "reach": 6831,
+            "views": 10846,
             "engagement": 375,
             "post_er": 5.5
           },
@@ -2964,6 +2982,7 @@
             "saved": 2,
             "shares": 142,
             "reach": 8135,
+            "views": 14442,
             "engagement": 368,
             "post_er": 4.5
           },
@@ -2978,6 +2997,7 @@
             "saved": 1,
             "shares": 54,
             "reach": 5137,
+            "views": 7972,
             "engagement": 292,
             "post_er": 5.7
           },
@@ -2992,6 +3012,7 @@
             "saved": 5,
             "shares": 12,
             "reach": 8191,
+            "views": 13297,
             "engagement": 277,
             "post_er": 3.4
           },
@@ -3005,7 +3026,8 @@
             "comments": 9,
             "saved": 10,
             "shares": 41,
-            "reach": 8623,
+            "reach": 8663,
+            "views": 13603,
             "engagement": 273,
             "post_er": 3.2
           },
@@ -3020,6 +3042,7 @@
             "saved": 8,
             "shares": 154,
             "reach": 13561,
+            "views": 28271,
             "engagement": 265,
             "post_er": 2.0
           }
