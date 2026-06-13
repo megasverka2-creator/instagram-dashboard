@@ -25,6 +25,7 @@ const BRAND_ORDER = ["benison", "eddo", "mazzona"];
 
 let SAVDO = [];     // savdo_data.json
 let TAOMLAR = null; // savdo_taomlar.json
+let TURLAR = null;  // savdo_turlar.json (buyurtma turlari)
 let IG = [];        // instagram_data.json (korrelyatsiya uchun)
 let PERIOD = "7";
 let CHARTS = {};
@@ -77,6 +78,7 @@ function halfGrowth(brandKey, days) {
 // ============================================================
 //  RENDER
 // ============================================================
+
 function renderSummary() {
   const days = periodDays();
   let revenue = 0, checks = 0;
@@ -250,8 +252,132 @@ function renderCorrelation() {
   });
 }
 
-function renderDishes() {
-  const el = document.getElementById("dishes");
+// ---- 🛵 Dostavka vs Zal ----
+function turlarDays() {
+  if (!TURLAR || !Array.isArray(TURLAR)) return [];
+  if (PERIOD === "all") return TURLAR;
+  return TURLAR.slice(-parseInt(PERIOD, 10));
+}
+
+function renderDelivery() {
+  const wrap = document.getElementById("deliveryWrap");
+  if (!wrap) return;
+  const days = turlarDays();
+  if (!days.length) {
+    wrap.innerHTML = `<div class="glass empty">Dostavka ma'lumoti hali yig'ilmagan. Actions'da <b>"iiko savdo yig'ish"</b>ni bir marta ishga tushiring — keyin shu yerda dostavka/zal taqsimoti chiqadi.</div>`;
+    return;
+  }
+
+  const KINDS = [
+    { k: "dostavka", nom: "Dostavka", emoji: "🛵", rang: "#34C759" },
+    { k: "zal", nom: "Zal", emoji: "🍽", rang: "#5856D6" },
+    { k: "olib_ketish", nom: "Olib ketish", emoji: "🥡", rang: "#FF9500" },
+  ];
+
+  // Umumiy yig'indi (kind -> revenue, checks) + brend bo'yicha
+  const jami = {};
+  const brandKind = {}; // brand -> kind -> revenue
+  KINDS.forEach(x => jami[x.k] = { revenue: 0, checks: 0 });
+
+  days.forEach(day => {
+    Object.entries(day.departments || {}).forEach(([dep, kinds]) => {
+      // dep -> qaysi brand?
+      let brand = null;
+      for (const bk of BRAND_ORDER) {
+        if (BRANDS[bk].departments.includes(dep)) { brand = bk; break; }
+      }
+      Object.entries(kinds).forEach(([kind, v]) => {
+        if (!jami[kind]) jami[kind] = { revenue: 0, checks: 0 };
+        jami[kind].revenue += v.revenue || 0;
+        jami[kind].checks += v.checks || 0;
+        if (brand) {
+          brandKind[brand] = brandKind[brand] || {};
+          brandKind[brand][kind] = (brandKind[brand][kind] || 0) + (v.revenue || 0);
+        }
+      });
+    });
+  });
+
+  const jamiRev = KINDS.reduce((s, x) => s + (jami[x.k] ? jami[x.k].revenue : 0), 0);
+  if (jamiRev <= 0) {
+    wrap.innerHTML = `<div class="glass empty">Tanlangan davrda buyurtma turi ma'lumoti yo'q.</div>`;
+    return;
+  }
+
+  // KPI kartalari
+  const kpis = KINDS.map(x => {
+    const rev = jami[x.k] ? jami[x.k].revenue : 0;
+    const chk = jami[x.k] ? jami[x.k].checks : 0;
+    const pct = Math.round(rev / jamiRev * 100);
+    const avg = chk ? Math.round(rev / chk) : 0;
+    return `<div class="kpi glass">
+      <div class="label">${x.emoji} ${x.nom}</div>
+      <div class="val" style="color:${x.rang}">${fmtMoney(rev)}<span class="chg up" style="color:${x.rang};background:${x.rang}1f">${pct}%</span></div>
+      <div class="sub">${fmt(chk)} chek · o'rtacha ${fmt(avg)} so'm</div>
+    </div>`;
+  }).join("");
+
+  // Brend bo'yicha dostavka ulushi
+  const brandRows = BRAND_ORDER.map(bk => {
+    const kinds = brandKind[bk] || {};
+    const tot = Object.values(kinds).reduce((s, v) => s + v, 0);
+    if (tot <= 0) return "";
+    const dost = kinds["dostavka"] || 0;
+    const dpct = Math.round(dost / tot * 100);
+    const b = BRANDS[bk];
+    return `<div style="margin-bottom:13px;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:500;margin-bottom:6px;">
+        <span style="font-weight:600;color:${b.color}">${b.name}</span>
+        <span style="color:var(--muted)">dostavka <b style="color:var(--ink);font-variant-numeric:tabular-nums">${dpct}%</b> · ${fmtMoney(dost)}</span>
+      </div>
+      <div style="height:9px;border-radius:5px;background:var(--fill);overflow:hidden;display:flex;">
+        <div style="width:${dpct}%;background:#34C759;"></div>
+      </div>
+    </div>`;
+  }).join("");
+
+  wrap.innerHTML = `
+    <div class="kpi-grid" style="margin-bottom:13px;">${kpis}</div>
+    <div class="two-col">
+      <div class="chart-card glass">
+        <h3>Dostavka dinamikasi</h3>
+        <div class="csub">Kunlik dostavka tushumi, mln so'm</div>
+        <div class="chart-box" style="height:250px;"><canvas id="delivChart"></canvas></div>
+      </div>
+      <div class="glass" style="padding:22px 24px;">
+        <h3 style="font-size:16.5px;font-weight:600;letter-spacing:-.35px;margin-bottom:4px;">Brendlar bo'yicha dostavka ulushi</h3>
+        <div class="csub" style="color:var(--muted);font-size:13px;margin-bottom:16px;">Har brend tushumining qancha qismi yetkazib berishdan</div>
+        ${brandRows || '<div class="empty">Ma\'lumot yo\'q</div>'}
+      </div>
+    </div>`;
+
+  // Dinamika grafigi (dostavka kunlik)
+  if (window.Chart) {
+    const labels = days.map(d => d.date.slice(5));
+    const dostByDay = days.map(day => {
+      let s = 0;
+      Object.values(day.departments || {}).forEach(kinds => {
+        if (kinds.dostavka) s += kinds.dostavka.revenue || 0;
+      });
+      return Math.round(s / 1e6 * 10) / 10;
+    });
+    if (CHARTS.deliv) CHARTS.deliv.destroy();
+    CHARTS.deliv = new Chart(document.getElementById("delivChart"), {
+      type: "bar",
+      data: { labels, datasets: [{ label: "Dostavka (mln)", data: dostByDay, backgroundColor: "#34C759", borderRadius: 6 }] },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: "rgba(60,60,67,0.6)", font: { size: 11 } }, grid: { display: false } },
+          y: { ticks: { color: "rgba(60,60,67,0.6)", font: { size: 11 } }, grid: { color: "rgba(60,60,67,0.08)" } },
+        },
+      },
+    });
+  }
+}
+
+function renderDishes() {  const el = document.getElementById("dishes");
   if (!TAOMLAR || !TAOMLAR.departments) {
     el.innerHTML = `<div class="glass empty">Taomlar ma'lumoti hali yo'q</div>`;
     return;
@@ -335,6 +461,7 @@ function rerender() {
   renderBrands();
   renderRevenueChart();
   renderCorrelation();
+  renderDelivery();
   renderDishes();
   renderOpps();
 }
@@ -385,6 +512,7 @@ async function fetchEncrypted(encUrl, plainUrl) {
 async function loadData() {
   SAVDO = (await fetchEncrypted("savdo_data.enc.json", "savdo_data.json")) || [];
   TAOMLAR = await fetchEncrypted("savdo_taomlar.enc.json", "savdo_taomlar.json");
+  TURLAR = await fetchEncrypted("savdo_turlar.enc.json", "savdo_turlar.json");
   try {
     const r = await fetch("instagram_data.json?v=" + Date.now());
     if (r.ok) IG = await r.json();

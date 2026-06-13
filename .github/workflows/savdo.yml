@@ -38,6 +38,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           [ -f savdo_data.enc.json ] && git add savdo_data.enc.json || true
           [ -f savdo_taomlar.enc.json ] && git add savdo_taomlar.enc.json || true
+          [ -f savdo_turlar.enc.json ] && git add savdo_turlar.enc.json || true
           # Eski ochiq fayllarni repodan olib tashlash (bir martalik, xavfsiz)
           git rm -q --cached savdo_data.json 2>/dev/null || true
           git rm -q --cached savdo_taomlar.json 2>/dev/null || true
