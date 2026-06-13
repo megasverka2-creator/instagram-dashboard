@@ -87,6 +87,22 @@
   .dish-sum { font-family:var(--sf); font-size:13.5px; font-weight:700; flex-shrink:0; color:#1F8F43; font-variant-numeric:tabular-nums; }
   .dish-amt { font-size:11px; color:var(--muted); flex-shrink:0; font-variant-numeric:tabular-nums; }
 
+  .fil-seg { display:flex; gap:4px; padding:4px; margin-bottom:13px; width:fit-content;
+    background:rgba(118,118,128,.12); border-radius:12px; }
+  .fseg { border:none; cursor:pointer; padding:8px 18px; border-radius:9px; font-size:13px;
+    font-weight:500; color:var(--ink); background:transparent; font-family:inherit; transition:all .2s; letter-spacing:-.2px; }
+  .fseg.active { background:#fff; font-weight:600; box-shadow:0 1px 2px rgba(0,0,0,.08),0 3px 8px rgba(0,0,0,.06); }
+  #filiallar { grid-template-columns:1fr 1fr; }
+  @media (max-width:900px){ #filiallar { grid-template-columns:1fr; } }
+  .fil-card .fil-mini { margin-top:12px; overflow-x:auto; }
+  .fil-mini { margin-top:12px; }
+  .fil-mini table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+  .fil-mini th { text-align:right; font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.3px; padding:0 0 7px 8px; white-space:nowrap; }
+  .fil-mini th:first-child { text-align:left; padding-left:0; }
+  .fil-mini td { font-size:12px; padding:6px 0 6px 8px; border-top:1px solid var(--sep); text-align:right; white-space:nowrap; }
+  .fil-mini td:first-child { text-align:left; color:var(--muted); padding-left:0; }
+  .fil-mini td b { font-weight:600; }
+  .fil-dost { font-size:11.5px; color:#1F8F43; font-weight:600; }
   .empty { padding:34px; text-align:center; color:var(--muted); }
   .foot { text-align:center; color:var(--faint); font-size:11.5px; margin-top:26px; }
 </style>
@@ -117,6 +133,14 @@
 
   <div class="section-title">🏪 Brendlar</div>
   <div class="brand-grid" id="brands"></div>
+
+  <div class="section-title">🏢 Filiallar <span style="font-size:13px;font-weight:500;opacity:.7;">— har biri alohida</span></div>
+  <div class="fil-seg" id="filSeg">
+    <button class="fseg active" data-gran="kunlik">Kunlik</button>
+    <button class="fseg" data-gran="haftalik">Haftalik</button>
+    <button class="fseg" data-gran="oylik">Oylik</button>
+  </div>
+  <div class="brand-grid" id="filiallar"></div>
 
   <div class="section-title">📊 Dinamika</div>
   <div class="chart-card glass">

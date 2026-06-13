@@ -26,6 +26,7 @@ const BRAND_ORDER = ["benison", "eddo", "mazzona"];
 let SAVDO = [];     // savdo_data.json
 let TAOMLAR = null; // savdo_taomlar.json
 let TURLAR = null;  // savdo_turlar.json (buyurtma turlari)
+let FIL_GRAN = "kunlik"; // filiallar kesimi
 let IG = [];        // instagram_data.json (korrelyatsiya uchun)
 let PERIOD = "7";
 let CHARTS = {};
@@ -252,6 +253,138 @@ function renderCorrelation() {
   });
 }
 
+// ---- 🏢 Filiallar (har biri alohida, kunlik/haftalik/oylik) ----
+// Barcha filiallar ro'yxati (BRANDS dan), har biri qaysi brendga tegishli
+function allDepts() {
+  const out = [];
+  BRAND_ORDER.forEach(bk => {
+    BRANDS[bk].departments.forEach(dep => out.push({ dep, brand: bk, color: BRANDS[bk].color }));
+  });
+  return out;
+}
+
+// Bitta filialning bitta kundagi ko'rsatkichi
+function depDay(day, dep) {
+  const d = (day.departments || {})[dep];
+  return d ? { revenue: d.revenue || 0, checks: d.checks || 0 } : { revenue: 0, checks: 0 };
+}
+
+// Davrni kunlik/haftalik/oylik bo'laklarga guruhlash
+function buckets(days, gran) {
+  if (gran === "kunlik") {
+    return days.slice(-10).map(d => ({ label: d.date.slice(5), days: [d] }));
+  }
+  const map = new Map();
+  days.forEach(d => {
+    let key;
+    if (gran === "oylik") {
+      key = d.date.slice(0, 7); // YYYY-MM
+    } else {
+      // haftalik: ISO haftaga yaqin — sanani 7 kunlik blokka
+      const dt = new Date(d.date + "T00:00:00");
+      const onejan = new Date(dt.getFullYear(), 0, 1);
+      const week = Math.ceil((((dt - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+      key = dt.getFullYear() + "-H" + String(week).padStart(2, "0");
+    }
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(d);
+  });
+  const arr = [...map.entries()].map(([label, ds]) => ({ label, days: ds }));
+  arr.sort((a, b) => a.label.localeCompare(b.label));
+  // Faqat oxirgi 8 bo'lakni ko'rsatamiz
+  return arr.slice(-8);
+}
+
+function depDostShare(dep, days) {
+  if (!TURLAR || !Array.isArray(TURLAR)) return null;
+  const set = new Set(days.map(d => d.date));
+  let dost = 0, tot = 0;
+  TURLAR.forEach(td => {
+    if (!set.has(td.date)) return;
+    const node = (td.departments || {})[dep];
+    if (!node) return;
+    Object.entries(node).forEach(([kind, v]) => {
+      tot += v.revenue || 0;
+      if (kind === "dostavka") dost += v.revenue || 0;
+    });
+  });
+  return tot > 0 ? Math.round(dost / tot * 100) : null;
+}
+
+function depKindBucket(dep, days) {
+  // Bir filial uchun davr ichidagi dostavka/zal/olib_ketish tushumi
+  if (!TURLAR || !Array.isArray(TURLAR)) return null;
+  const set = new Set(days.map(d => d.date));
+  let dost = 0, zal = 0, olib = 0;
+  TURLAR.forEach(td => {
+    if (!set.has(td.date)) return;
+    const node = (td.departments || {})[dep];
+    if (!node) return;
+    Object.entries(node).forEach(([kind, v]) => {
+      const r = v.revenue || 0;
+      if (kind === "dostavka") dost += r;
+      else if (kind === "olib_ketish") olib += r;
+      else zal += r;
+    });
+  });
+  return { dost, zal, olib };
+}
+
+function renderFiliallar() {
+  const el = document.getElementById("filiallar");
+  if (!el) return;
+  const days = periodDays();
+  const bkts = buckets(days, FIL_GRAN);
+  const granNom = { kunlik: "Kun", haftalik: "Hafta", oylik: "Oy" }[FIL_GRAN];
+  const hasTur = !!(TURLAR && Array.isArray(TURLAR) && TURLAR.length);
+
+  el.innerHTML = allDepts().map(({ dep, brand, color }) => {
+    // Davr jami
+    let revenue = 0, checks = 0;
+    days.forEach(d => { const v = depDay(d, dep); revenue += v.revenue; checks += v.checks; });
+    if (revenue <= 0 && checks <= 0) return ""; // bu filialda ma'lumot yo'q
+    const avg = checks ? Math.round(revenue / checks) : 0;
+    const dpct = depDostShare(dep, days);
+
+    // Mini jadval — har bo'lak bo'yicha BARCHA ko'rsatkichlar
+    const rows = bkts.map(bk => {
+      let r = 0, c = 0;
+      bk.days.forEach(d => { const v = depDay(d, dep); r += v.revenue; c += v.checks; });
+      const a = c ? Math.round(r / c) : 0;
+      let turCols = "";
+      if (hasTur) {
+        const kb = depKindBucket(dep, bk.days) || { dost: 0, zal: 0 };
+        const tot = kb.dost + kb.zal + (kb.olib || 0);
+        const sh = tot > 0 ? Math.round(kb.dost / tot * 100) : 0;
+        turCols = `<td>${fmtMoney(kb.dost)}</td><td>${fmtMoney(kb.zal)}</td><td><span class="fil-dost">${sh}%</span></td>`;
+      }
+      return `<tr><td>${bk.label}</td><td><b>${fmtMoney(r)}</b></td><td>${fmt(c)}</td><td>${fmt(a)}</td>${turCols}</tr>`;
+    }).join("");
+
+    const turHead = hasTur ? `<th>🛵 Dost.</th><th>🍽 Zal</th><th>Ulush</th>` : "";
+
+    return `
+      <div class="brand-card glass fil-card">
+        <div class="brand-head">
+          <div class="brand-avatar" style="background:${color}">${dep[0]}</div>
+          <div>
+            <h3 style="font-size:16px;">${dep}</h3>
+            <div class="fil">${BRANDS[brand].name}${dpct !== null ? ` · 🛵 dostavka ${dpct}%` : ""}</div>
+          </div>
+        </div>
+        <div class="brand-row"><span class="rl">Tushum (${PERIOD === "all" ? "jami" : PERIOD + " kun"})</span><span class="rv">${fmtMoney(revenue)}</span></div>
+        <div class="brand-row"><span class="rl">Cheklar</span><span class="rv">${fmt(checks)}</span></div>
+        <div class="brand-row"><span class="rl">O'rtacha chek</span><span class="rv">${fmt(avg)}</span></div>
+        <div class="fil-mini">
+          <table>
+            <thead><tr><th>${granNom}</th><th>Tushum</th><th>Chek</th><th>O'rt.</th>${turHead}</tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>`;
+  }).join("");
+}
+
 // ---- 🛵 Dostavka vs Zal ----
 function turlarDays() {
   if (!TURLAR || !Array.isArray(TURLAR)) return [];
@@ -462,6 +595,7 @@ function rerender() {
   renderRevenueChart();
   renderCorrelation();
   renderDelivery();
+  renderFiliallar();
   renderDishes();
   renderOpps();
 }
@@ -531,6 +665,14 @@ async function loadData() {
       btn.classList.add("active");
       PERIOD = btn.dataset.period;
       rerender();
+    });
+  });
+  document.querySelectorAll(".fseg").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".fseg").forEach(x => x.classList.remove("active"));
+      btn.classList.add("active");
+      FIL_GRAN = btn.dataset.gran;
+      renderFiliallar();
     });
   });
   if (!SAVDO.length) {
