@@ -283,14 +283,20 @@ function topPostsFor(brandKey, limit) {
   const acc = last.accounts && last.accounts[b.ig];
   if (!acc || !acc.posts) return [];
   return acc.posts
-    .filter(p => p.timestamp && (p.reach || p.views || p.like_count))
-    .map(p => ({
-      date: p.timestamp.slice(0, 10),
-      reach: p.reach || p.views || 0,
-      likes: p.like_count || 0,
-      caption: (p.caption || "").replace(/\s+/g, " ").trim(),
-    }))
-    .sort((a, b2) => b2.reach - a.reach)
+    .filter(p => p.timestamp && (p.views || p.reach || p.likes || p.like_count))
+    .map(p => {
+      const views = p.views || 0;
+      const reach = p.reach || 0;
+      return {
+        date: p.timestamp.slice(0, 10),
+        views,
+        reach,
+        metric: views || reach,           // saralash uchun: avval ko'rishlar
+        likes: p.likes || p.like_count || 0,
+        caption: (p.caption || "").replace(/\s+/g, " ").trim(),
+      };
+    })
+    .sort((a, b2) => b2.metric - a.metric)
     .slice(0, limit || 6);
 }
 
@@ -340,7 +346,7 @@ function renderAttribution() {
           <div class="att-top">
             <div class="att-meta">
               <div class="att-date">${new Date(p.date).toLocaleDateString("ru-RU", {day:"2-digit",month:"short"})}</div>
-              <div class="att-reach">👁 ${fmt(p.reach)}${p.likes ? " · ❤️ " + fmt(p.likes) : ""}</div>
+              <div class="att-reach">${p.views ? "👁 " + fmt(p.views) + " ko'rish" : ""}${p.views && p.reach ? " · " : ""}${p.reach ? "📊 " + fmt(p.reach) + " qamrov" : ""}${p.likes ? " · ❤️ " + fmt(p.likes) : ""}</div>
             </div>
             ${badge}
           </div>
@@ -387,10 +393,10 @@ function renderHalo() {
     if (atts.length < 2) return;
 
     // Yirik (median reach dan yuqori) vs kichik postlar
-    const sortedReach = atts.map(a => a.reach).sort((x, y) => x - y);
+    const sortedReach = atts.map(a => a.metric || a.reach).sort((x, y) => x - y);
     const medianReach = sortedReach[Math.floor(sortedReach.length / 2)];
-    const big = atts.filter(a => a.reach >= medianReach);
-    const small = atts.filter(a => a.reach < medianReach);
+    const big = atts.filter(a => (a.metric || a.reach) >= medianReach);
+    const small = atts.filter(a => (a.metric || a.reach) < medianReach);
 
     const avgPct = arr => arr.length ? Math.round(arr.reduce((s, a) => s + (a.pct || 0), 0) / arr.length) : null;
     const bigAvg = avgPct(big);
@@ -469,7 +475,7 @@ function renderPostRanking() {
         <div class="rank-dot" style="background:${a.color}"></div>
         <div class="rank-mid">
           <div class="rank-cap">${cap}</div>
-          <div class="rank-sub">${a.brandName} · ${new Date(a.date).toLocaleDateString("ru-RU",{day:"2-digit",month:"short"})} · 👁 ${fmt(a.reach)}</div>
+          <div class="rank-sub">${a.brandName} · ${new Date(a.date).toLocaleDateString("ru-RU",{day:"2-digit",month:"short"})} · ${a.views ? "👁 " + fmt(a.views) : "📊 " + fmt(a.reach)}</div>
         </div>
         <span class="att-badge ${cls}">${arrow} ${Math.abs(a.pct)}%</span>
       </div>`;

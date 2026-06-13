@@ -138,13 +138,13 @@ def get_demographics(ig_id):
     return demo
 
 
-def get_posts(ig_id, limit=25):
+def get_posts(ig_id, limit=50):
     """Postlar va ularning to'liq ko'rsatkichlari."""
     posts = []
     data = api_get(f"{ig_id}/media", {
         "fields": "id,caption,media_type,permalink,timestamp,"
                   "like_count,comments_count,"
-                  "insights.metric(reach,saved,shares)",
+                  "insights.metric(reach,views,saved,shares)",
         "limit": limit,
     })
     if not data or not data.get("data"):
@@ -163,6 +163,7 @@ def get_posts(ig_id, limit=25):
         saved = ins.get("saved", 0)
         shares = ins.get("shares", 0)
         reach = ins.get("reach", 0)
+        views = ins.get("views", 0)  # Reels ko'rishlari (просмотры)
 
         caption = (m.get("caption") or "").strip().replace("\n", " ")
         if len(caption) > 90:
@@ -179,7 +180,7 @@ def get_posts(ig_id, limit=25):
             "permalink": m.get("permalink"),
             "timestamp": m.get("timestamp"),
             "likes": likes, "comments": comments, "saved": saved,
-            "shares": shares, "reach": reach,
+            "shares": shares, "reach": reach, "views": views,
             "engagement": engagement, "post_er": post_er,
         })
     return posts
