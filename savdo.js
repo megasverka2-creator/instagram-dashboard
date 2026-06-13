@@ -26,6 +26,7 @@ const BRAND_ORDER = ["benison", "eddo", "mazzona"];
 let SAVDO = [];     // savdo_data.json
 let TAOMLAR = null; // savdo_taomlar.json
 let TURLAR = null;  // savdo_turlar.json (buyurtma turlari)
+let DISHDAY = null; // savdo_taom_kun.json (taom×kun atributsiya)
 let FIL_GRAN = "kunlik"; // filiallar kesimi
 let IG = [];        // instagram_data.json (korrelyatsiya uchun)
 let PERIOD = "7";
@@ -251,6 +252,112 @@ function renderCorrelation() {
       },
     });
   });
+}
+
+// ---- 🎯 Marketing atributsiya (Daraja 1: post oldidan vs keyin savdo) ----
+
+// SAVDO massividan sana -> brend kunlik tushum (tez qidirish uchun map)
+function brandRevByDate(brandKey) {
+  const map = {};
+  SAVDO.forEach(day => { map[day.date] = brandDay(day, brandKey).revenue; });
+  return map;
+}
+
+// Sana atrofidagi N kun o'rtacha kunlik tushum (from..to oraliq)
+function avgRevWindow(revMap, centerDate, startOffset, endOffset) {
+  const c = new Date(centerDate + "T00:00:00");
+  let sum = 0, n = 0;
+  for (let k = startOffset; k <= endOffset; k++) {
+    const d = new Date(c); d.setDate(d.getDate() + k);
+    const key = d.toISOString().slice(0, 10);
+    if (revMap[key] != null && revMap[key] > 0) { sum += revMap[key]; n++; }
+  }
+  return n ? { avg: sum / n, days: n } : null;
+}
+
+// Brendning yirik postlari (reach bo'yicha, atributsiya uchun)
+function topPostsFor(brandKey, limit) {
+  const b = BRANDS[brandKey];
+  if (!b.ig || !IG.length) return [];
+  const last = IG[IG.length - 1];
+  const acc = last.accounts && last.accounts[b.ig];
+  if (!acc || !acc.posts) return [];
+  return acc.posts
+    .filter(p => p.timestamp && (p.reach || p.views || p.like_count))
+    .map(p => ({
+      date: p.timestamp.slice(0, 10),
+      reach: p.reach || p.views || 0,
+      likes: p.like_count || 0,
+      caption: (p.caption || "").replace(/\s+/g, " ").trim(),
+    }))
+    .sort((a, b2) => b2.reach - a.reach)
+    .slice(0, limit || 6);
+}
+
+// Har post uchun atributsiya: oldidan 7 kun vs keyin 7 kun
+function postAttribution(brandKey, post, revMap) {
+  const before = avgRevWindow(revMap, post.date, -7, -1);
+  const after = avgRevWindow(revMap, post.date, 1, 7);
+  if (!before || !after) return null;
+  const pct = before.avg > 0 ? Math.round((after.avg - before.avg) / before.avg * 100) : null;
+  return { before: before.avg, after: after.avg, pct, beforeDays: before.days, afterDays: after.days };
+}
+
+function renderAttribution() {
+  const el = document.getElementById("attribution");
+  if (!el) return;
+  const targets = BRAND_ORDER.filter(k => BRANDS[k].ig);
+  if (!targets.length || !SAVDO.length) {
+    el.innerHTML = `<div class="glass empty">Atributsiya uchun Instagram va savdo ma'lumoti kerak</div>`;
+    return;
+  }
+
+  let html = "";
+  targets.forEach(key => {
+    const b = BRANDS[key];
+    const revMap = brandRevByDate(key);
+    const posts = topPostsFor(key, 6);
+    if (!posts.length) return;
+
+    const cards = posts.map(p => {
+      const a = postAttribution(key, p, revMap);
+      const cap = p.caption ? (p.caption.length > 70 ? p.caption.slice(0, 70) + "…" : p.caption) : "(matnsiz post)";
+      let badge, detail;
+      if (!a) {
+        badge = `<span class="att-badge att-na">ma'lumot yetarli emas</span>`;
+        detail = `<div class="att-detail">Bu post atrofida 7 kunlik to'liq savdo ma'lumoti yo'q (yangi yoki eski post)</div>`;
+      } else {
+        const cls = a.pct > 0 ? "att-up" : (a.pct < 0 ? "att-down" : "att-flat");
+        const arrow = a.pct > 0 ? "↑" : (a.pct < 0 ? "↓" : "→");
+        badge = `<span class="att-badge ${cls}">${arrow} ${a.pct === null ? "—" : Math.abs(a.pct) + "%"}</span>`;
+        detail = `<div class="att-detail">
+          <span>Oldidan: <b>${fmtMoney(Math.round(a.before))}</b>/kun</span>
+          <span>Keyin: <b>${fmtMoney(Math.round(a.after))}</b>/kun</span>
+        </div>`;
+      }
+      return `
+        <div class="att-post">
+          <div class="att-top">
+            <div class="att-meta">
+              <div class="att-date">${new Date(p.date).toLocaleDateString("ru-RU", {day:"2-digit",month:"short"})}</div>
+              <div class="att-reach">👁 ${fmt(p.reach)}${p.likes ? " · ❤️ " + fmt(p.likes) : ""}</div>
+            </div>
+            ${badge}
+          </div>
+          <div class="att-cap">${cap}</div>
+          ${detail}
+        </div>`;
+    }).join("");
+
+    html += `
+      <div class="chart-card glass">
+        <h3>${b.name}: yirik postlar ta'siri</h3>
+        <div class="csub">Har post chiqishidan <b>oldingi 7 kun</b> o'rtacha kunlik savdo vs <b>keyingi 7 kun</b>. Bu sabab emas, bog'liqlikni ko'rsatadi.</div>
+        <div class="att-list">${cards}</div>
+      </div>`;
+  });
+
+  el.innerHTML = html || `<div class="glass empty">Yirik postlar topilmadi</div>`;
 }
 
 // ---- 🏢 Filiallar (har biri alohida, kunlik/haftalik/oylik) ----
@@ -594,6 +701,7 @@ function rerender() {
   renderBrands();
   renderRevenueChart();
   renderCorrelation();
+  renderAttribution();
   renderDelivery();
   renderFiliallar();
   renderDishes();
@@ -647,6 +755,7 @@ async function loadData() {
   SAVDO = (await fetchEncrypted("savdo_data.enc.json", "savdo_data.json")) || [];
   TAOMLAR = await fetchEncrypted("savdo_taomlar.enc.json", "savdo_taomlar.json");
   TURLAR = await fetchEncrypted("savdo_turlar.enc.json", "savdo_turlar.json");
+  DISHDAY = await fetchEncrypted("savdo_taom_kun.enc.json", "savdo_taom_kun.json");
   try {
     const r = await fetch("instagram_data.json?v=" + Date.now());
     if (r.ok) IG = await r.json();

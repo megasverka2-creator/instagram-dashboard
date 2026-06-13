@@ -43,6 +43,7 @@ DISHES_FILE = os.path.join(BASE, "savdo_taomlar.json")
 DATA_ENC = os.path.join(BASE, "savdo_data.enc.json")        # yangi shifrlangan fayllar
 DISHES_ENC = os.path.join(BASE, "savdo_taomlar.enc.json")
 TYPES_ENC = os.path.join(BASE, "savdo_turlar.enc.json")
+DISHDAY_ENC = os.path.join(BASE, "savdo_taom_kun.enc.json")  # taom×kun (atributsiya)
 
 import shifr
 
@@ -134,6 +135,26 @@ def order_kind(order_type):
     if any(w in t for w in ["себе", "self", "olib", "навынос", "pickup", "вынос", "take"]):
         return "olib_ketish"
     return "zal"
+
+
+def olap_dish_daily(token, date_from, date_to):
+    """Taom × kun kesimida savdo — marketing atributsiyasi uchun.
+    Faqat asosiy taomlarni kuzatish uchun (post oldidan/keyin solishtirish)."""
+    body = {
+        "reportType": "SALES",
+        "buildSummary": "false",
+        "groupByRowFields": ["OpenDate.Typed", "DishName"],
+        "aggregateFields": ["DishDiscountSumInt", "DishAmountInt"],
+        "filters": {
+            "OpenDate.Typed": {
+                "filterType": "DateRange", "periodType": "CUSTOM",
+                "from": date_from, "to": date_to,
+            },
+            "DeletedWithWriteoff": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
+            "OrderDeleted": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
+        },
+    }
+    return api_post_json("/resto/api/v2/reports/olap", {"key": token}, body)
 
 
 def olap_top_dishes(token, date_from, date_to):
@@ -331,6 +352,48 @@ def main():
                 print(f"    - \"{t}\" -> {order_kind(t)}")
         except Exception as e:
             print(f"  ! Buyurtma turi yig'ishda xato (qolgan ma'lumot saqlandi): {e}")
+
+        # --- 4. Taom × kun (marketing atributsiyasi uchun) ---
+        try:
+            # Eng ko'p sotilган ~30 taom nomини aniqlaymiz (barcha filiallar bo'yicha)
+            dish_total = {}
+            for dept, items in by_dept.items():
+                for x in items:
+                    dish_total[x["dish"]] = dish_total.get(x["dish"], 0) + x["sum"]
+            top_names = set(sorted(dish_total, key=lambda d: dish_total[d], reverse=True)[:30])
+
+            dd = olap_dish_daily(token, date_from, date_to)
+            ddrows = dd.get("data", [])
+            # sana -> taom -> {sum, amount}  (faqat top taomlar)
+            ddaily = {}
+            for r in ddrows:
+                name = r.get("DishName") or "?"
+                if name not in top_names:
+                    continue
+                date = (r.get("OpenDate.Typed") or "")[:10]
+                if not date:
+                    continue
+                node = ddaily.setdefault(date, {})
+                d = node.setdefault(name, {"sum": 0, "amount": 0})
+                d["sum"] += round(r.get("DishDiscountSumInt") or 0)
+                d["amount"] += round(r.get("DishAmountInt") or 0)
+
+            ddhist = shifr.load_encrypted(DISHDAY_ENC, SAVDO_PAROL) or {}
+            if not isinstance(ddhist, dict):
+                ddhist = {}
+            days_map = ddhist.get("days", {})
+            days_map.update(ddaily)  # shu davr kunларини yangilaymiz
+            # 180 kunlik tarix (atributsiya uchun yetarli)
+            keep = sorted(days_map.keys())[-180:]
+            days_map = {k: days_map[k] for k in keep}
+            shifr.save_encrypted(DISHDAY_ENC, {
+                "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "dishes": sorted(top_names),
+                "days": days_map,
+            }, SAVDO_PAROL)
+            print(f"  Saqlandi (shifrlangan): {DISHDAY_ENC} ({len(top_names)} taom, {len(days_map)} kun)")
+        except Exception as e:
+            print(f"  ! Taom×kun yig'ishda xato (qolgan ma'lumot saqlandi): {e}")
 
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")[:300]
