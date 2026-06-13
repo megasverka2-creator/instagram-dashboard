@@ -360,6 +360,129 @@ function renderAttribution() {
   el.innerHTML = html || `<div class="glass empty">Yirik postlar topilmadi</div>`;
 }
 
+// ---- 🌊 Daraja 2: Halo effekti (yirik post → butun savdo) ----
+// Barcha postlarni atributsiya bilan to'playmiz (brend bo'ylab)
+function allPostAttributions(brandKey) {
+  const revMap = brandRevByDate(brandKey);
+  const posts = topPostsFor(brandKey, 100); // hammasini olamiz
+  return posts.map(p => {
+    const a = postAttribution(brandKey, p, revMap);
+    return a ? { ...p, ...a } : null;
+  }).filter(Boolean);
+}
+
+function renderHalo() {
+  const el = document.getElementById("halo");
+  if (!el) return;
+  const targets = BRAND_ORDER.filter(k => BRANDS[k].ig);
+  if (!targets.length || !SAVDO.length) {
+    el.innerHTML = `<div class="glass empty">Halo effekti uchun ma'lumot kerak</div>`;
+    return;
+  }
+
+  let html = "";
+  targets.forEach(key => {
+    const b = BRANDS[key];
+    const atts = allPostAttributions(key);
+    if (atts.length < 2) return;
+
+    // Yirik (median reach dan yuqori) vs kichik postlar
+    const sortedReach = atts.map(a => a.reach).sort((x, y) => x - y);
+    const medianReach = sortedReach[Math.floor(sortedReach.length / 2)];
+    const big = atts.filter(a => a.reach >= medianReach);
+    const small = atts.filter(a => a.reach < medianReach);
+
+    const avgPct = arr => arr.length ? Math.round(arr.reduce((s, a) => s + (a.pct || 0), 0) / arr.length) : null;
+    const bigAvg = avgPct(big);
+    const smallAvg = avgPct(small);
+    const allAvg = avgPct(atts);
+
+    // Eng katta post-ko'tarilish (mln so'm/kun)
+    const lifts = atts.map(a => ({ post: a, lift: a.after - a.before }));
+    const bestLift = lifts.sort((x, y) => y.lift - x.lift)[0];
+
+    const sign = v => v > 0 ? "+" : "";
+    const cls = v => v > 0 ? "halo-up" : (v < 0 ? "halo-down" : "halo-flat");
+
+    html += `
+      <div class="chart-card glass">
+        <h3>${b.name}: umumiy halo effekti</h3>
+        <div class="csub">Postlar chiqqanda <b>butun ${b.name} savdosi</b> o'rtacha qanday o'zgaradi (post oldidan 7 kun → keyin 7 kun).</div>
+        <div class="halo-grid">
+          <div class="halo-kpi">
+            <div class="halo-num ${cls(allAvg)}">${sign(allAvg)}${allAvg}%</div>
+            <div class="halo-lbl">Barcha postlar o'rtacha</div>
+          </div>
+          <div class="halo-kpi">
+            <div class="halo-num ${cls(bigAvg)}">${sign(bigAvg)}${bigAvg}%</div>
+            <div class="halo-lbl">Yirik postlar (👁 ${fmt(medianReach)}+)</div>
+          </div>
+          <div class="halo-kpi">
+            <div class="halo-num ${cls(smallAvg)}">${sign(smallAvg)}${smallAvg}%</div>
+            <div class="halo-lbl">Kichik postlar</div>
+          </div>
+        </div>
+        ${bestLift && bestLift.lift > 0 ? `
+        <div class="halo-best">
+          🏆 Eng kuchli post: <b>${new Date(bestLift.post.date).toLocaleDateString("ru-RU",{day:"2-digit",month:"short"})}</b>
+          — kuniga <b>+${fmtMoney(Math.round(bestLift.lift))}</b> qo'shimcha savdo
+          <div class="halo-best-cap">${bestLift.post.caption ? (bestLift.post.caption.length > 60 ? bestLift.post.caption.slice(0,60)+"…" : bestLift.post.caption) : ""}</div>
+        </div>` : ""}
+        <div class="halo-note">${big.length} yirik · ${small.length} kichik post tahlil qilindi. Yirik postlar kichiklarga nisbatan ${bigAvg !== null && smallAvg !== null ? (bigAvg > smallAvg ? `<b style="color:#1F8F43">${bigAvg - smallAvg}% kuchliroq</b>` : "kam farq") : "—"} ta'sir qiladi.</div>
+      </div>`;
+  });
+
+  el.innerHTML = html || `<div class="glass empty">Tahlil uchun yetarli post yo'q</div>`;
+}
+
+// ---- 🏆 Daraja 3: Postlar reytingi (savdoga ta'siri bo'yicha) ----
+function renderPostRanking() {
+  const el = document.getElementById("postRank");
+  if (!el) return;
+  const targets = BRAND_ORDER.filter(k => BRANDS[k].ig);
+  if (!targets.length || !SAVDO.length) {
+    el.innerHTML = `<div class="glass empty">Reyting uchun ma'lumot kerak</div>`;
+    return;
+  }
+
+  // Barcha brendlarning postlarini bitta reytingga
+  let all = [];
+  targets.forEach(key => {
+    allPostAttributions(key).forEach(a => all.push({ ...a, brand: key, brandName: BRANDS[key].name, color: BRANDS[key].color }));
+  });
+  if (!all.length) {
+    el.innerHTML = `<div class="glass empty">Tahlil qilingan post yo'q (savdo tarixi to'planmoqda)</div>`;
+    return;
+  }
+
+  // Ta'sir foizi bo'yicha tartiblash (eng kuchli yuqorida)
+  all.sort((a, b) => (b.pct || 0) - (a.pct || 0));
+  const top = all.slice(0, 10);
+
+  const rows = top.map((a, i) => {
+    const cls = a.pct > 0 ? "att-up" : (a.pct < 0 ? "att-down" : "att-flat");
+    const arrow = a.pct > 0 ? "↑" : (a.pct < 0 ? "↓" : "→");
+    const cap = a.caption ? (a.caption.length > 54 ? a.caption.slice(0, 54) + "…" : a.caption) : "(matnsiz)";
+    return `
+      <div class="rank-row">
+        <div class="rank-n">${i + 1}</div>
+        <div class="rank-dot" style="background:${a.color}"></div>
+        <div class="rank-mid">
+          <div class="rank-cap">${cap}</div>
+          <div class="rank-sub">${a.brandName} · ${new Date(a.date).toLocaleDateString("ru-RU",{day:"2-digit",month:"short"})} · 👁 ${fmt(a.reach)}</div>
+        </div>
+        <span class="att-badge ${cls}">${arrow} ${Math.abs(a.pct)}%</span>
+      </div>`;
+  }).join("");
+
+  el.innerHTML = `
+    <div class="chart-card glass" style="grid-column:1/-1">
+      <h3>Eng samarali postlar — savdoga ta'siri bo'yicha</h3>
+      <div class="csub">Barcha brendlar postlari, savdoga ijobiy ta'siri bo'yicha tartiblangan. Yuqoridagilar — kelajakda takrorlash uchun eng yaxshi format.</div>
+      <div class="rank-list">${rows}</div>
+    </div>`;
+}
+
 // ---- 🏢 Filiallar (har biri alohida, kunlik/haftalik/oylik) ----
 // Barcha filiallar ro'yxati (BRANDS dan), har biri qaysi brendga tegishli
 function allDepts() {
@@ -702,6 +825,8 @@ function rerender() {
   renderRevenueChart();
   renderCorrelation();
   renderAttribution();
+  renderHalo();
+  renderPostRanking();
   renderDelivery();
   renderFiliallar();
   renderDishes();

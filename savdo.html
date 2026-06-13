@@ -118,6 +118,24 @@
   .att-cap { font-size:12.5px; color:var(--muted); margin-top:7px; line-height:1.45; }
   .att-detail { display:flex; gap:16px; margin-top:8px; font-size:11.5px; color:var(--muted); flex-wrap:wrap; }
   .att-detail b { color:var(--ink); font-weight:600; }
+  .halo-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:11px; margin:6px 0 14px; }
+  .halo-kpi { background:var(--fill); border-radius:13px; padding:15px 12px; text-align:center; }
+  .halo-num { font-size:25px; font-weight:700; letter-spacing:-.6px; }
+  .halo-up { color:#1F8F43; } .halo-down { color:#D70015; } .halo-flat { color:var(--muted); }
+  .halo-lbl { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.3; }
+  .halo-best { background:rgba(255,149,0,.1); border-radius:12px; padding:12px 14px; font-size:13px; color:var(--ink); line-height:1.5; }
+  .halo-best b { font-weight:700; }
+  .halo-best-cap { font-size:11.5px; color:var(--muted); margin-top:4px; }
+  .halo-note { font-size:11.5px; color:var(--muted); margin-top:11px; line-height:1.5; }
+  .rank-list { display:flex; flex-direction:column; gap:8px; margin-top:6px; }
+  .rank-row { display:flex; align-items:center; gap:11px; padding:9px 4px; border-bottom:1px solid var(--sep); }
+  .rank-row:last-child { border-bottom:none; }
+  .rank-n { width:24px; height:24px; flex-shrink:0; border-radius:7px; background:var(--fill); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--muted); }
+  .rank-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .rank-mid { flex:1; min-width:0; }
+  .rank-cap { font-size:13px; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .rank-sub { font-size:11px; color:var(--muted); margin-top:2px; }
+  @media (max-width:600px){ .halo-grid{grid-template-columns:1fr 1fr 1fr;gap:6px} .halo-num{font-size:19px} }
   .foot { text-align:center; color:var(--faint); font-size:11.5px; margin-top:26px; }
 </style>
 </head>
@@ -168,6 +186,12 @@
 
   <div class="section-title">🎯 Post atributsiyasi <span style="font-size:13px;font-weight:500;opacity:.7;">— qaysi post savdoga ta'sir qildi</span></div>
   <div class="two-col" id="attribution"></div>
+
+  <div class="section-title">🌊 Halo effekti <span style="font-size:13px;font-weight:500;opacity:.7;">— postlar butun savdoga ta'siri</span></div>
+  <div class="two-col" id="halo"></div>
+
+  <div class="section-title">🏆 Postlar reytingi <span style="font-size:13px;font-weight:500;opacity:.7;">— eng samarali formatlar</span></div>
+  <div class="two-col" id="postRank"></div>
 
   <div class="section-title">🛵 Dostavka vs Zal <span style="font-size:13px;font-weight:500;opacity:.7;">— buyurtma turi bo'yicha</span></div>
   <div id="deliveryWrap"></div>
