@@ -54,13 +54,14 @@
   .app.stat-ig .chip{background:var(--blue)} .app.stat-ig .go{color:var(--blue)}
   .app.reja .chip{background:var(--orange)} .app.reja .go{color:var(--orange)}
   .app.savdo .chip{background:var(--green)} .app.savdo .go{color:var(--green)}
+  .app.ekran .chip{background:#AF52DE} .app.ekran .go{color:#AF52DE}
 
   .hint{padding:15px 18px;margin-top:13px;font-size:12.5px;line-height:1.55;color:var(--muted);
     display:flex;gap:11px;align-items:flex-start}
   .hint .i{font-size:18px}
   .hint b{color:var(--ink);font-weight:600 !important}
   .foot{text-align:center;color:var(--faint);font-size:11.5px;margin-top:22px;letter-spacing:-.1px}
-  @media (min-width:620px){ .apps{grid-template-columns:1fr 1fr} .app.savdo{grid-column:1/-1} .stats{grid-template-columns:repeat(4,1fr)} }
+  @media (min-width:620px){ .apps{grid-template-columns:1fr 1fr}  .stats{grid-template-columns:repeat(4,1fr)} }
 </style>
 </head>
 <body>
@@ -93,6 +94,11 @@
     <a class="app glass savdo" href="savdo.html">
       <div class="row"><div class="chip">💰</div><h3>Savdo</h3></div>
       <p>iiko'dan jonli savdo: tushum, cheklar, o'rtacha chek, TOP taomlar va Marketing↔Savdo bog'liqligi.</p>
+      <span class="go">Ochish <span>→</span></span>
+    </a>
+    <a class="app glass ekran" href="ekran.html">
+      <div class="row"><div class="chip">📺</div><h3>Ekran</h3></div>
+      <p>Restoran televizorlari uchun menyu va e'lon tablosi — har filial uchun alohida havola, bir joydan boshqariladi.</p>
       <span class="go">Ochish <span>→</span></span>
     </a>
   </div>

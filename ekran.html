@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RestoPulse — Ekran boshqaruvi</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="theme-color" content="#F2F2F7">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="app_guard.js"></script>
+<style>
+  :root{
+    --bg:#F2F2F7; --card:#FFFFFF; --ink:#1C1C1E; --muted:rgba(60,60,67,.6); --faint:rgba(60,60,67,.35);
+    --sep:rgba(60,60,67,.12); --fill:rgba(118,118,128,.12);
+    --tv:#AF52DE; --good:#34C759; --bad:#FF3B30;
+    --sf:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text',Inter,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--sf);color:var(--ink);min-height:100vh;background:var(--bg);
+    overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:26px 18px 60px}
+  .glass{background:var(--card);border-radius:18px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 6px 20px rgba(0,0,0,.04)}
+
+  .hero{padding:22px 24px;display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+  .hero-logo{width:56px;height:56px;border-radius:14px;flex-shrink:0;font-size:26px;
+    background:var(--tv);display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 18px rgba(175,82,222,.3)}
+  .hero h1{font-size:24px;font-weight:700;letter-spacing:-.55px}
+  .hero p{color:var(--muted);font-size:13px;margin-top:3px;letter-spacing:-.1px}
+
+  .info-banner{padding:15px 20px;margin-bottom:14px;display:flex;gap:11px;align-items:flex-start;
+    font-size:13.5px;line-height:1.6;letter-spacing:-.1px}
+  .info-banner .i{font-size:19px;flex-shrink:0}
+  .info-banner b{font-weight:600}
+  .info-banner.tip{background:#F3ECFB}
+  code{background:var(--fill);padding:1px 7px;border-radius:6px;font-size:12.5px;word-break:break-all}
+
+  .section-title{display:flex;align-items:center;gap:9px;margin:24px 6px 12px;
+    font-size:18px;font-weight:700;letter-spacing:-.4px}
+
+  .branch{padding:20px 22px;margin-bottom:13px}
+  .branch-head{display:flex;align-items:center;gap:13px;margin-bottom:15px}
+  .branch-ava{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:19px;font-weight:700;flex-shrink:0}
+  .branch-head h3{font-size:18px;font-weight:600;letter-spacing:-.35px}
+  .branch-head .st{font-size:12px;color:var(--muted);margin-top:2px}
+  .branch-head .st.on{color:var(--good);font-weight:600}
+
+  .row{margin-bottom:13px}
+  .row label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:6px}
+  .row input,.row select{width:100%;border:none;background:var(--fill);border-radius:11px;
+    padding:12px 14px;font-family:inherit;font-size:14px;color:var(--ink);outline:none;
+    transition:box-shadow .2s,background .2s}
+  .row input:focus{background:#fff;box-shadow:0 0 0 2px var(--tv) inset}
+  .row .hint{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.5}
+
+  .tv-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:6px}
+  .btn{border:none;cursor:pointer;padding:11px 18px;border-radius:12px;font-family:inherit;
+    font-size:14px;font-weight:600;letter-spacing:-.2px;transition:transform .15s,opacity .2s;
+    display:flex;align-items:center;gap:7px;text-decoration:none}
+  .btn:hover{transform:translateY(-1px)}
+  .btn:active{transform:scale(.98);opacity:.9}
+  .btn-tv{color:#fff;background:var(--tv);box-shadow:0 5px 16px rgba(175,82,222,.3)}
+  .btn-ghost{color:var(--ink);background:var(--fill)}
+  .btn-copy.done{background:var(--good)!important;color:#fff!important}
+
+  .preview{margin-top:14px;border-radius:13px;overflow:hidden;border:1px solid var(--sep);
+    background:#000;aspect-ratio:16/9;position:relative}
+  .preview iframe{position:absolute;inset:0;width:100%;height:100%;border:none;
+    transform:scale(1);transform-origin:0 0}
+  .preview .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    color:rgba(255,255,255,.5);font-size:13px;text-align:center;padding:20px;line-height:1.6}
+
+  .save-bar{position:sticky;bottom:0;background:rgba(242,242,247,.85);backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);padding:14px 0;margin-top:18px;border-top:1px solid var(--sep);
+    display:flex;gap:11px;align-items:center;flex-wrap:wrap}
+  .save-bar .msg{font-size:13px;color:var(--muted);flex:1;min-width:160px}
+
+  .json-box{margin-top:8px}
+  .json-box textarea{width:100%;min-height:120px;border:none;background:#1C1C1E;color:#E9E9EB;
+    border-radius:13px;padding:14px;font-family:'SF Mono',ui-monospace,monospace;font-size:12px;
+    line-height:1.6;outline:none;resize:vertical}
+
+  .foot{text-align:center;color:var(--faint);font-size:11.5px;margin-top:26px}
+  .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(80px);
+    background:rgba(28,28,30,.92);color:#fff;padding:12px 22px;border-radius:13px;
+    font-size:14px;font-weight:500;transition:transform .3s,opacity .3s;z-index:99;opacity:0;pointer-events:none}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+  @media (max-width:600px){.hero h1{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero glass">
+    <div class="hero-logo">📺</div>
+    <div>
+      <h1>Ekran boshqaruvi</h1>
+      <p>Restoran televizorlari uchun menyu va e'lon havolalari</p>
+    </div>
+  </div>
+
+  <div class="info-banner glass tip">
+    <span class="i">💡</span>
+    <div>
+      <b>Qanday ishlaydi:</b> har filial uchun televizorda ochiladigan havolani belgilang.
+      Televizor brauzerida o'sha havolani bir marta oching — u parolsiz, to'liq ekранda ishlaydi va o'zi yangilanib turadi.
+      Bitta havolani <b>bir nechta televizorga</b> qo'yaverish mumkin.
+    </div>
+  </div>
+
+  <div class="section-title">🏢 Filiallar ekrani</div>
+  <div id="branches"></div>
+
+  <div class="info-banner glass" style="margin-top:14px">
+    <span class="i">📂</span>
+    <div>
+      Tayyor menyu sahifalari shu saytda: Eddo menyusi — <code id="eddoUrl">.../menyu/eddo/</code>.
+      Yangi menyu yoki aksiya sahifasi kerak bo'lsa, ayting — qo'shib beramiz.
+    </div>
+  </div>
+
+  <div class="save-bar">
+    <button class="btn btn-tv" onclick="saqlash()">💾 O'zgarishlarni saqlash</button>
+    <span class="msg" id="saveMsg">O'zgartirishdan keyin saqlang — keyin GitHub'ga yuklang</span>
+  </div>
+
+  <details style="margin-top:18px">
+    <summary style="cursor:pointer;font-size:13px;color:var(--muted);font-weight:600">⚙️ Texnik: ekran.json (ko'chirib yuklash uchun)</summary>
+    <div class="json-box">
+      <p style="font-size:12px;color:var(--muted);margin:10px 0 6px;line-height:1.5">Saqlagandan keyin quyidagi matnni nusxalab, <code>ekran.json</code> fayliga joylang (yoki "Faylni yuklab olish" tugmasi):</p>
+      <textarea id="jsonOut" readonly></textarea>
+      <div class="tv-actions">
+        <button class="btn btn-ghost btn-copy" onclick="nusxa()">📋 JSON nusxa olish</button>
+        <button class="btn btn-ghost" onclick="yuklab()">⬇️ ekran.json yuklab olish</button>
+      </div>
+    </div>
+  </details>
+
+  <div class="foot">RestoPulse · Ekran boshqaruvi</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Filiallar (RestoPulse standart) — har biri uchun ekran havolasi
+const FILIALLAR = [
+  { id: "eddo",        nom: "Eddo",              rang: "#f9b234", harf: "E" },
+  { id: "benison_mc",  nom: "Benison MegaCenter",rang: "#ff7a59", harf: "B" },
+  { id: "benison_oila",nom: "Benison Oila",      rang: "#ff7a59", harf: "B" },
+  { id: "smart_city",  nom: "Smart City",        rang: "#ff7a59", harf: "S" },
+  { id: "mazzona",     nom: "Mazzona",           rang: "#2bb3a3", harf: "M" },
+];
+
+// Sayt ildizi (havolalarni to'liq ko'rsatish uchun)
+const ROOT = location.href.replace(/ekran\.html.*$/, "");
+document.getElementById("eddoUrl").textContent = ROOT + "menyu/eddo/";
+
+let DATA = {}; // { filial_id: { havola, nom } }
+
+async function yukla() {
+  try {
+    const r = await fetch("ekran.json?v=" + Date.now());
+    if (r.ok) DATA = await r.json();
+  } catch (e) { DATA = {}; }
+  // Eddo uchun standart havola (agar bo'sh bo'lsa)
+  if (!DATA.eddo || !DATA.eddo.havola) {
+    DATA.eddo = { havola: ROOT + "menyu/eddo/", nom: "Eddo menyu" };
+  }
+  render();
+}
+
+function esc(t){return String(t||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+function render() {
+  const box = document.getElementById("branches");
+  box.innerHTML = FILIALLAR.map(f => {
+    const d = DATA[f.id] || {};
+    const havola = d.havola || "";
+    const on = !!havola;
+    return `
+      <div class="branch glass">
+        <div class="branch-head">
+          <div class="branch-ava" style="background:${f.rang}">${f.harf}</div>
+          <div style="flex:1">
+            <h3>${esc(f.nom)}</h3>
+            <div class="st ${on ? "on" : ""}">${on ? "✅ Havola o'rnatilgan" : "⚪ Havola yo'q"}</div>
+          </div>
+        </div>
+        <div class="row">
+          <label>Ekran havolasi (televizorda ochiladigan)</label>
+          <input type="text" id="h_${f.id}" value="${esc(havola)}"
+                 placeholder="${ROOT}menyu/eddo/  yoki boshqa havola"
+                 oninput="ozgartir('${f.id}', this.value)">
+          <div class="hint">Bu havolani televizor brauzerida oching. Bo'sh qoldirsangiz — ekran o'chiq hisoblanadi.</div>
+        </div>
+        <div class="tv-actions">
+          ${on ? `<a class="btn btn-tv" href="${esc(havola)}" target="_blank">▶️ Ochib ko'rish</a>` : ""}
+          ${on ? `<button class="btn btn-ghost btn-copy" onclick="nusxaHavola('${f.id}', this)">📋 Havola nusxa</button>` : ""}
+          <button class="btn btn-ghost" onclick="eddoHavola('${f.id}')">📋 Eddo menyu havolasini qo'yish</button>
+        </div>
+        ${on ? `<div class="preview"><iframe src="${esc(havola)}" loading="lazy" scrolling="no" title="${esc(f.nom)} ekrani"></iframe></div>` : `<div class="preview"><div class="ph">Havola qo'shilsa, shu yerda ko'rinishi chiqadi</div></div>`}
+      </div>`;
+  }).join("");
+}
+
+function ozgartir(id, val) {
+  DATA[id] = DATA[id] || {};
+  DATA[id].havola = val.trim();
+  document.getElementById("saveMsg").textContent = "O'zgarish bor — saqlashni unutmang ⚠️";
+}
+
+function eddoHavola(id) {
+  const url = ROOT + "menyu/eddo/";
+  DATA[id] = DATA[id] || {};
+  DATA[id].havola = url;
+  render();
+  toast("Eddo menyu havolasi qo'yildi");
+  document.getElementById("saveMsg").textContent = "O'zgarish bor — saqlashni unutmang ⚠️";
+}
+
+function nusxaHavola(id, btn) {
+  const url = (DATA[id] && DATA[id].havola) || "";
+  navigator.clipboard.writeText(url).then(() => {
+    btn.classList.add("done"); btn.textContent = "✅ Nusxalandi";
+    setTimeout(() => { btn.classList.remove("done"); btn.textContent = "📋 Havola nusxa"; }, 1600);
+  });
+}
+
+function jsonMatn() { return JSON.stringify(DATA, null, 2); }
+
+function saqlash() {
+  document.getElementById("jsonOut").value = jsonMatn();
+  document.getElementById("saveMsg").textContent = "✅ Tayyor — pastdagi ⚙️ bo'limdan JSON'ni oling yoki faylni yuklab oling";
+  toast("Saqlandi — endi ekran.json'ni yangilang");
+  // ⚙️ details ochilsin
+  const det = document.querySelector("details"); if (det) det.open = true;
+}
+
+function nusxa() {
+  const t = document.getElementById("jsonOut");
+  t.value = jsonMatn();
+  navigator.clipboard.writeText(t.value).then(() => {
+    const b = document.querySelector(".btn-copy");
+    toast("JSON nusxalandi");
+  });
+}
+
+function yuklab() {
+  const blob = new Blob([jsonMatn()], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "ekran.json";
+  a.click();
+  toast("ekran.json yuklab olindi");
+}
+
+let toastT;
+function toast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.classList.add("show");
+  clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("show"), 2200);
+}
+
+yukla();
+</script>
+</body>
+</html>
