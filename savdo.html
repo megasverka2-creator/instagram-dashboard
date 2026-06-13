@@ -118,6 +118,16 @@
   .att-cap { font-size:12.5px; color:var(--muted); margin-top:7px; line-height:1.45; }
   .att-detail { display:flex; gap:16px; margin-top:8px; font-size:11.5px; color:var(--muted); flex-wrap:wrap; }
   .att-detail b { color:var(--ink); font-weight:600; }
+  .tabbar { display:flex; gap:4px; padding:4px; margin:18px 0 6px; background:rgba(118,118,128,.12);
+    border-radius:13px; position:sticky; top:8px; z-index:20; overflow-x:auto;
+    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
+  .tab { flex:1; min-width:max-content; border:none; cursor:pointer; padding:10px 16px; border-radius:10px;
+    font-family:inherit; font-size:13.5px; font-weight:500; color:var(--ink); background:transparent;
+    transition:all .2s; letter-spacing:-.2px; white-space:nowrap; }
+  .tab.active { background:#fff; font-weight:600; box-shadow:0 1px 2px rgba(0,0,0,.08),0 3px 8px rgba(0,0,0,.06); }
+  .tab-pane { display:none; animation:fadeIn .25s ease; }
+  .tab-pane.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
   .halo-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:11px; margin:6px 0 14px; }
   .halo-kpi { background:var(--fill); border-radius:13px; padding:15px 12px; text-align:center; }
   .halo-num { font-size:25px; font-weight:700; letter-spacing:-.6px; }
@@ -160,47 +170,66 @@
     <button class="per" data-period="all">Hammasi</button>
   </div>
 
-  <div class="section-title">📈 Umumiy (tanlangan davr)</div>
-  <div class="kpi-grid" id="summary"></div>
-
-  <div class="section-title">🏪 Brendlar</div>
-  <div class="brand-grid" id="brands"></div>
-
-  <div class="section-title">🏢 Filiallar <span style="font-size:13px;font-weight:500;opacity:.7;">— har biri alohida</span></div>
-  <div class="fil-seg" id="filSeg">
-    <button class="fseg active" data-gran="kunlik">Kunlik</button>
-    <button class="fseg" data-gran="haftalik">Haftalik</button>
-    <button class="fseg" data-gran="oylik">Oylik</button>
-  </div>
-  <div class="brand-grid" id="filiallar"></div>
-
-  <div class="section-title">📊 Dinamika</div>
-  <div class="chart-card glass">
-    <h3>Kunlik tushum</h3>
-    <div class="csub">Brendlar bo'yicha, mln so'mda</div>
-    <div class="chart-box"><canvas id="chartRevenue"></canvas></div>
+  <div class="tabbar" id="tabbar">
+    <button class="tab active" data-tab="umumiy">📊 Umumiy</button>
+    <button class="tab" data-tab="filiallar">🏢 Filiallar</button>
+    <button class="tab" data-tab="marketing">🎯 Marketing</button>
+    <button class="tab" data-tab="taomlar">🍽 Taomlar</button>
   </div>
 
-  <div class="section-title">🔗 Marketing ↔ Savdo</div>
-  <div class="two-col" id="corrCharts"></div>
+  <!-- TAB: Umumiy -->
+  <div class="tab-pane active" data-pane="umumiy">
+    <div class="section-title">📈 Umumiy (tanlangan davr)</div>
+    <div class="kpi-grid" id="summary"></div>
 
-  <div class="section-title">🎯 Post atributsiyasi <span style="font-size:13px;font-weight:500;opacity:.7;">— qaysi post savdoga ta'sir qildi</span></div>
-  <div class="two-col" id="attribution"></div>
+    <div class="section-title">🏪 Brendlar</div>
+    <div class="brand-grid" id="brands"></div>
 
-  <div class="section-title">🌊 Halo effekti <span style="font-size:13px;font-weight:500;opacity:.7;">— postlar butun savdoga ta'siri</span></div>
-  <div class="two-col" id="halo"></div>
+    <div class="section-title">📊 Dinamika</div>
+    <div class="chart-card glass">
+      <h3>Kunlik tushum</h3>
+      <div class="csub">Brendlar bo'yicha, mln so'mda</div>
+      <div class="chart-box"><canvas id="chartRevenue"></canvas></div>
+    </div>
+  </div>
 
-  <div class="section-title">🏆 Postlar reytingi <span style="font-size:13px;font-weight:500;opacity:.7;">— eng samarali formatlar</span></div>
-  <div class="two-col" id="postRank"></div>
+  <!-- TAB: Filiallar -->
+  <div class="tab-pane" data-pane="filiallar">
+    <div class="section-title">🏢 Filiallar <span style="font-size:13px;font-weight:500;opacity:.7;">— har biri alohida</span></div>
+    <div class="fil-seg" id="filSeg">
+      <button class="fseg active" data-gran="kunlik">Kunlik</button>
+      <button class="fseg" data-gran="haftalik">Haftalik</button>
+      <button class="fseg" data-gran="oylik">Oylik</button>
+    </div>
+    <div class="brand-grid" id="filiallar"></div>
+  </div>
 
-  <div class="section-title">🛵 Dostavka vs Zal <span style="font-size:13px;font-weight:500;opacity:.7;">— buyurtma turi bo'yicha</span></div>
-  <div id="deliveryWrap"></div>
+  <!-- TAB: Marketing -->
+  <div class="tab-pane" data-pane="marketing">
+    <div class="section-title">🔗 Marketing ↔ Savdo</div>
+    <div class="two-col" id="corrCharts"></div>
 
-  <div class="section-title">🍽 Eng ko'p sotilgan taomlar (7 kun)</div>
-  <div class="brand-grid" id="dishes"></div>
+    <div class="section-title">🎯 Post atributsiyasi <span style="font-size:13px;font-weight:500;opacity:.7;">— qaysi post savdoga ta'sir qildi</span></div>
+    <div class="two-col" id="attribution"></div>
 
-  <div class="section-title">💡 Reklama nomzodlari — qimmatli, lekin kam sotilyapti</div>
-  <div class="brand-grid" id="opps"></div>
+    <div class="section-title">🌊 Halo effekti <span style="font-size:13px;font-weight:500;opacity:.7;">— postlar butun savdoga ta'siri</span></div>
+    <div class="two-col" id="halo"></div>
+
+    <div class="section-title">🏆 Postlar reytingi <span style="font-size:13px;font-weight:500;opacity:.7;">— eng samarali formatlar</span></div>
+    <div class="two-col" id="postRank"></div>
+  </div>
+
+  <!-- TAB: Taomlar -->
+  <div class="tab-pane" data-pane="taomlar">
+    <div class="section-title">🛵 Dostavka vs Zal <span style="font-size:13px;font-weight:500;opacity:.7;">— buyurtma turi bo'yicha</span></div>
+    <div id="deliveryWrap"></div>
+
+    <div class="section-title">🍽 Eng ko'p sotilgan taomlar (7 kun)</div>
+    <div class="brand-grid" id="dishes"></div>
+
+    <div class="section-title">💡 Reklama nomzodlari — qimmatli, lekin kam sotilyapti</div>
+    <div class="brand-grid" id="opps"></div>
+  </div>
 
   <div class="foot">RestoPulse · Savdo ma'lumotlari har kuni iiko'dan avtomatik yangilanadi</div>
 </div>

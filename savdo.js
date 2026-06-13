@@ -909,6 +909,21 @@ async function loadData() {
       renderFiliallar();
     });
   });
+  // Tab almashtirish
+  document.querySelectorAll(".tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tab = btn.dataset.tab;
+      document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll(".tab-pane").forEach(p => {
+        p.classList.toggle("active", p.dataset.pane === tab);
+      });
+      // Yashirin div'da chizilmagan grafiklarni qayta render qilamiz
+      if (tab === "umumiy") renderRevenueChart();
+      if (tab === "marketing") renderCorrelation();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
   if (!SAVDO.length) {
     document.getElementById("summary").innerHTML =
       `<div class="glass empty" style="grid-column:1/-1">Savdo ma'lumotlari hali yo'q — Actions'da "iiko savdo yig'ish"ni ishga tushiring.</div>`;
