@@ -127,6 +127,112 @@
     return lines.join("\n");
   }
 
+  // --- Kunlik kontekst (bitta kun + oldingi kunlar bilan solishtirish) ---
+  function buildDailyContext(targetDate) {
+    const lines = [];
+    const all = (window.SAVDO || []).slice().sort((a, b) => a.date.localeCompare(b.date));
+    if (!all.length) return "Ma'lumot yo'q";
+
+    const idx = all.findIndex(d => d.date === targetDate);
+    if (idx < 0) return "Bu kun uchun ma'lumot yo'q";
+    const day = all[idx];
+
+    // Oldingi 7 kun o'rtachasi (solishtirish uchun)
+    const prev = all.slice(Math.max(0, idx - 7), idx);
+    const dow = new Date(targetDate + "T00:00:00").toLocaleDateString("ru-RU", { weekday: "long" });
+    lines.push(`=== KUNLIK TAHLIL: ${targetDate} (${dow}) ===`);
+
+    function sumDay(d, depFilter) {
+      let rev = 0, chk = 0;
+      Object.entries(d.departments || {}).forEach(([dep, v]) => {
+        if (depFilter && !depFilter(dep)) return;
+        rev += v.revenue || 0; chk += v.checks || 0;
+      });
+      return { rev, chk };
+    }
+
+    // Umumiy
+    const td = sumDay(day);
+    const prevAvg = prev.length ? prev.reduce((s, d) => s + sumDay(d).rev, 0) / prev.length : 0;
+    const diff = prevAvg > 0 ? Math.round((td.rev - prevAvg) / prevAvg * 100) : null;
+    lines.push(`\n--- UMUMIY ---`);
+    lines.push(`Bu kun tushum: ${mln(td.rev)}, cheklar: ${fmt(td.chk)}, o'rtacha chek: ${fmt(td.chk ? Math.round(td.rev / td.chk) : 0)} so'm`);
+    lines.push(`Oldingi 7 kun o'rtacha: ${mln(prevAvg)}/kun`);
+    if (diff !== null) lines.push(`Farq: ${diff > 0 ? "+" : ""}${diff}% (o'rtachaga nisbatan)`);
+
+    // Filiallar
+    if (typeof allDepts === "function") {
+      lines.push(`\n--- FILIALLAR (bu kun) ---`);
+      allDepts().forEach(({ dep }) => {
+        const v = (day.departments || {})[dep];
+        if (!v || !v.revenue) return;
+        const prevDepAvg = prev.length ? prev.reduce((s, d) => s + ((d.departments || {})[dep] || {}).revenue || 0, 0) / prev.length : 0;
+        const dd = prevDepAvg > 0 ? Math.round((v.revenue - prevDepAvg) / prevDepAvg * 100) : null;
+        lines.push(`${dep}: ${mln(v.revenue)}, cheklar ${fmt(v.checks || 0)}${dd !== null ? ` (o'rtachaga nisbatan ${dd > 0 ? "+" : ""}${dd}%)` : ""}`);
+      });
+    }
+
+    // Buyurtma turlari (bu kun)
+    if (window.TURLAR && Array.isArray(window.TURLAR)) {
+      const td2 = TURLAR.find(t => t.date === targetDate);
+      if (td2) {
+        let dost = 0, zal = 0, olib = 0;
+        Object.values(td2.departments || {}).forEach(node => {
+          Object.entries(node).forEach(([kind, v]) => {
+            const r = v.revenue || 0;
+            if (kind === "dostavka") dost += r; else if (kind === "olib_ketish") olib += r; else zal += r;
+          });
+        });
+        const tot = dost + zal + olib;
+        if (tot > 0) {
+          lines.push(`\n--- BUYURTMA TURLARI (bu kun) ---`);
+          lines.push(`Dostavka: ${mln(dost)} (${Math.round(dost/tot*100)}%), Zal: ${mln(zal)} (${Math.round(zal/tot*100)}%), Olib ketish: ${mln(olib)} (${Math.round(olib/tot*100)}%)`);
+        }
+      }
+    }
+
+    // O'sha kuni IG post bo'lganmi
+    if (window.IG && window.BRANDS && window.BRAND_ORDER) {
+      const postsToday = [];
+      BRAND_ORDER.filter(k => BRANDS[k].ig).forEach(bk => {
+        if (typeof topPostsFor === "function") {
+          topPostsFor(bk, 50).forEach(p => {
+            if (p.date === targetDate) postsToday.push(`${BRANDS[bk].name}: "${(p.caption||'').slice(0,40)}" (${p.views ? fmt(p.views)+" ko'rish" : fmt(p.reach)+" qamrov"})`);
+          });
+        }
+      });
+      if (postsToday.length) {
+        lines.push(`\n--- BU KUNI INSTAGRAM POSTLARI ---`);
+        postsToday.forEach(p => lines.push(p));
+      }
+    }
+
+    return lines.join("\n");
+  }
+
+  function dailySystemPrompt() {
+    return `Sen RestoPulse savdo tahlilchisisan. Restoran brendlari (Benison, Eddo/Dieto, Mazzona) uchun BITTA KUN savdosini tahlil qilasan.
+
+Vazifang: o'sha kun qanday o'tganini, oldingi kunlarga nisbatan yaxshimi yomonmi, sababini va nima qilish kerakligini ayt.
+
+QOIDALAR:
+- O'zbek tilida, qisqa va aniq. Bu kunlik tezkor xulosa — uzun yozma.
+- Eng muhim 3-4 narsaga e'tibor ber.
+- Qaysi filial yaxshi/yomon ketdi, dostavka ulushi qanday, post bo'lsa ta'siri — shularni bog'la.
+- Hafta kunini hisobga ol (dam olish kuni savdo tabiiy yuqori/past bo'lishi mumkin).
+- Amaliy bo'l: "Smart City past" emas, "Smart City bugun -15%, ertaga e'tibor bering".
+
+JAVOB FORMATI (markdown, qisqa):
+## 📅 Bugungi xulosa
+(1-2 jumla: kun qanday o'tdi)
+
+## 📈 Asosiy nuqtalar
+- (3-4 ta qisqa nuqta: filiallar, dostavka, postlar)
+
+## 💡 Tavsiya
+(1-2 ta aniq harakat)`;
+  }
+
   // --- System prompt ---
   function systemPrompt() {
     return `Sen RestoPulse tizimining savdo va marketing tahlilchisisan. Zarafshon va Uchquduq shaharlaridagi restoran brendlari (Benison, Eddo/Dieto, Mazzona) uchun ishlaysan.
@@ -217,6 +323,74 @@ JAVOB FORMATI (markdown):
     return h;
   }
 
+  // --- Kunlik tahlilni ishga tushirish ---
+  async function runDailyAnalysis(targetDate) {
+    const out = document.getElementById("dailyOut");
+    const btn = document.getElementById("dailyBtn");
+    if (!out) return;
+
+    let key = getKey();
+    if (!key) {
+      const k = prompt("AI tahlil uchun Anthropic API kalitini kiriting (faqat shu brauzerda saqlanadi):");
+      if (!k) return;
+      setKey(k); key = k.trim();
+    }
+
+    const ctx = buildDailyContext(targetDate);
+    out.innerHTML = `<div class="an-loading">🧠 ${targetDate} kuni tahlil qilinmoqda…</div>`;
+    if (btn) { btn.disabled = true; btn.textContent = "⏳ Tahlil…"; }
+
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-api-key": key,
+          "anthropic-version": "2023-06-01",
+          "anthropic-dangerous-direct-browser-access": "true",
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          max_tokens: 1000,
+          system: dailySystemPrompt(),
+          messages: [{ role: "user", content: "Mana shu kunning ma'lumoti. Qisqa kunlik tahlil ber:\n\n" + ctx }],
+        }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message || "API xato");
+      const text = (data.content || []).filter(c => c.type === "text").map(c => c.text).join("\n");
+      out.innerHTML = `<div class="an-result">${mdToHtml(text)}</div>
+        <div class="an-foot">${targetDate} · AI kunlik tahlili</div>`;
+    } catch (e) {
+      out.innerHTML = `<div class="an-error">Xato: ${e.message}</div>`;
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = "✨ Kunni tahlil qil"; }
+    }
+  }
+
+  // Mavjud kunlarni select uchun ro'yxat
+  function availableDates() {
+    return (window.SAVDO || []).map(d => d.date).sort().reverse();
+  }
+
   // --- Tashqi interfeys ---
-  window.RP_Analyst = { run: runAnalysis, buildContext };
+  window.RP_Analyst = { run: runAnalysis, runDaily: runDailyAnalysis, buildContext, buildDailyContext, availableDates };
+
+  // Kun tanlash select'ini ma'lumot tayyor bo'lgach to'ldiramiz
+  function fillDates() {
+    const sel = document.getElementById("dailyDate");
+    if (!sel) return;
+    const dates = availableDates();
+    if (!dates.length) { setTimeout(fillDates, 600); return; }
+    sel.innerHTML = dates.slice(0, 60).map((d, i) => {
+      const dow = new Date(d + "T00:00:00").toLocaleDateString("ru-RU", { weekday: "short" });
+      const label = i === 0 ? `${d} (${dow}) — oxirgi` : `${d} (${dow})`;
+      return `<option value="${d}">${label}</option>`;
+    }).join("");
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => setTimeout(fillDates, 400));
+  } else {
+    setTimeout(fillDates, 400);
+  }
 })();

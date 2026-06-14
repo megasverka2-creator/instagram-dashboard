@@ -944,7 +944,7 @@ async function loadData() {
     window.BRAND_ORDER = BRAND_ORDER; window.PERIOD = PERIOD;
     window.periodDays = periodDays; window.brandDay = brandDay;
     window.allDepts = allDepts; window.depDay = depDay; window.depDostShare = depDostShare;
-    window.allPostAttributions = allPostAttributions;
+    window.allPostAttributions = allPostAttributions; window.topPostsFor = topPostsFor;
   }
   syncGlobals();
   // PERIOD o'zgarganda yangilash uchun rerender'ni o'rab olamiz
