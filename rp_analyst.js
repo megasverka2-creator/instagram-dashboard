@@ -15,6 +15,15 @@
   const fmt = n => (n || 0).toLocaleString("ru-RU");
   const mln = n => (Math.round((n || 0) / 100000) / 10).toLocaleString("ru-RU") + " mln";
 
+  // AI Jamoa sahifasi uchun "ishlamoqda" signali
+  function markBusy(agentId) {
+    try {
+      const b = JSON.parse(localStorage.getItem("rp_agent_busy") || "{}");
+      b[agentId] = Date.now();
+      localStorage.setItem("rp_agent_busy", JSON.stringify(b));
+    } catch (e) {}
+  }
+
   // --- Ma'lumotni AI uchun ixcham matn xulosaga aylantirish ---
   function buildContext() {
     const lines = [];
@@ -275,6 +284,7 @@ JAVOB FORMATI (markdown):
     }
 
     const ctx = buildContext();
+    markBusy("tahlil");
     out.innerHTML = `<div class="an-loading">🧠 AI butun savdo va marketing ma'lumotini tahlil qilmoqda…</div>`;
     if (btn) { btn.disabled = true; btn.textContent = "⏳ Tahlil qilinmoqda…"; }
 
@@ -296,6 +306,7 @@ JAVOB FORMATI (markdown):
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error.message || "API xato");
+      if (window.RP_Cost) RP_Cost.record("tahlil", data.usage);
       const text = (data.content || []).filter(c => c.type === "text").map(c => c.text).join("\n");
       out.innerHTML = `<div class="an-result">${mdToHtml(text)}</div>
         <div class="an-foot">AI tahlili · ${new Date().toLocaleString("ru-RU")} · ma'lumotga asoslangan, qaror sizniki</div>`;
@@ -337,6 +348,7 @@ JAVOB FORMATI (markdown):
     }
 
     const ctx = buildDailyContext(targetDate);
+    markBusy("kunlik");
     out.innerHTML = `<div class="an-loading">🧠 ${targetDate} kuni tahlil qilinmoqda…</div>`;
     if (btn) { btn.disabled = true; btn.textContent = "⏳ Tahlil…"; }
 
@@ -358,6 +370,7 @@ JAVOB FORMATI (markdown):
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error.message || "API xato");
+      if (window.RP_Cost) RP_Cost.record("kunlik", data.usage);
       const text = (data.content || []).filter(c => c.type === "text").map(c => c.text).join("\n");
       out.innerHTML = `<div class="an-result">${mdToHtml(text)}</div>
         <div class="an-foot">${targetDate} · AI kunlik tahlili</div>`;

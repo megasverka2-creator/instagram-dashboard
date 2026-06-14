@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="app_guard.js"></script>
+<script src="rp_cost.js"></script>
 <style>
   :root{
     --bg:#F2F2F7; --card:#FFFFFF; --ink:#1C1C1E; --muted:rgba(60,60,67,.6); --faint:rgba(60,60,67,.32);
@@ -67,6 +68,18 @@
   .agent-desc{font-size:13.5px;color:var(--ink);line-height:1.55}
   .agent-job{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:7px;padding-top:9px;border-top:1px solid var(--sep)}
   .agent-last{font-size:11.5px;color:var(--faint);margin-top:8px;display:flex;align-items:center;gap:5px}
+  .agent-pay{margin-top:9px;padding-top:9px;border-top:1px solid var(--sep);display:flex;flex-direction:column;gap:3px;
+    font-size:12px;color:var(--muted)}
+  .agent-pay b{color:#1F8F43;font-weight:700;font-size:13px}
+  .total-pay{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    padding:16px 20px;margin-bottom:18px}
+  .total-pay .tp-l{display:flex;align-items:center;gap:11px}
+  .total-pay .tp-icon{width:42px;height:42px;border-radius:12px;background:rgba(52,199,89,.14);
+    display:flex;align-items:center;justify-content:center;font-size:21px}
+  .total-pay h3{font-size:15px;font-weight:600}
+  .total-pay p{font-size:12px;color:var(--muted);margin-top:1px}
+  .total-pay .tp-amt{font-size:24px;font-weight:700;color:#1F8F43;letter-spacing:-.5px}
+  .total-pay .tp-note{font-size:11px;color:var(--faint);text-align:right;margin-top:1px}
 
   .foot{text-align:center;color:var(--faint);font-size:12px;margin-top:26px;line-height:1.6}
 </style>
@@ -149,6 +162,8 @@
     <span><span class="ldot active"></span> Yaqinda ishladi</span>
     <span><span class="ldot idle"></span> Dam olmoqda (navbatda)</span>
   </div>
+
+  <div class="total-pay glass" id="totalPay"></div>
 
   <div class="agents" id="agentCards"></div>
 
@@ -258,6 +273,12 @@ function drawAgent(a, state){
       <circle cx="${x+2}" cy="${deskY-74}" r="14" fill="${a.shirt}" opacity="0.14"/>
       <text x="${x+2}" y="${deskY-69}" font-size="15" text-anchor="middle">${a.emoji}</text>
     </g>
+    <!-- maosh yorlig'i (personaj tepasida) -->
+    <g filter="url(#soft)">
+      <rect x="${x-44}" y="${deskY-108}" width="92" height="24" rx="12" fill="#fff"/>
+      <text x="${x+2}" y="${deskY-95}" font-size="11" font-weight="700" fill="${a.shirt}" text-anchor="middle">${a.payLabel}</text>
+      <text x="${x+2}" y="${deskY-85.5}" font-size="7.5" fill="#8E8E93" text-anchor="middle">${a.paySub}</text>
+    </g>
     ${zzz}
     <g filter="url(#soft)">
       <rect x="${x-58}" y="${deskY-2}" width="116" height="13" rx="4" fill="url(#deskTop)"/>
@@ -291,11 +312,30 @@ async function render(){
       const t=new Date((status.reja||"").replace(" ","T"));
       if(!isNaN(t) && Date.now()-t < 12*3600*1000) state="active";
     }
+    // Maosh (xarajat)
+    let payLabel = "—", paySub = "Actions'da", cost = null;
+    if (window.RP_Cost && a.id !== "reja") {
+      cost = RP_Cost.get(a.id);
+      payLabel = RP_Cost.fmtUsd(cost.total || 0);
+      paySub = (cost.calls || 0) + " ta ish";
+    }
+    a.payLabel = payLabel; a.paySub = paySub;
     svg+=drawAgent(a,state);
+
     const stTxt = state==="busy"?"🟠 Ishlamoqda":(state==="active"?"🟢 Yaqinda ishladi":"⚪ Dam olmoqda");
     const desc = state==="busy"?a.busyText:a.idleText;
     let last="";
     if(a.id==="reja" && status.reja) last=`<div class="agent-last">🕐 Oxirgi ish: ${agoText(status.reja)}</div>`;
+    // Maosh qatori kartada
+    let payRow = "";
+    if (window.RP_Cost && a.id !== "reja" && cost) {
+      payRow = `<div class="agent-pay">
+        <span>💵 Sarflagani: <b>${RP_Cost.fmtUsd(cost.total||0)}</b></span>
+        <span>Bugun: ${RP_Cost.fmtUsd(cost.today||0)} · ${cost.calls||0} ta ish</span>
+      </div>`;
+    } else if (a.id === "reja") {
+      payRow = `<div class="agent-pay"><span>💵 Actions'da ishlaydi (xarajat alohida)</span></div>`;
+    }
     return `
       <div class="agent glass s-${state}">
         <div class="agent-top">
@@ -305,11 +345,31 @@ async function render(){
         </div>
         <div class="agent-desc">${desc}</div>
         <div class="agent-job">💼 ${a.job}</div>
+        ${payRow}
         ${last}
       </div>`;
   }).join("");
   document.getElementById("agentsLayer").innerHTML=svg;
   document.getElementById("agentCards").innerHTML=cards;
+  // Jami xarajat paneli
+  const tp = document.getElementById("totalPay");
+  if (tp && window.RP_Cost) {
+    const spent = RP_Cost.totalSpent();
+    const BALANCE = 5; // boshlang'ich $5
+    const qoldi = Math.max(0, BALANCE - spent);
+    tp.innerHTML = `
+      <div class="tp-l">
+        <div class="tp-icon">💵</div>
+        <div>
+          <h3>AI jamoa xarajati</h3>
+          <p>Barcha yordamchilar shu paytgacha sarflagan puli</p>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="tp-amt">${RP_Cost.fmtUsd(spent)}</div>
+        <div class="tp-note">$5 dan ~${RP_Cost.fmtUsd(qoldi)} qoldi (taxminiy)</div>
+      </div>`;
+  }
   const now=new Date();
   const hA=(now.getHours()%12)/12*360 + now.getMinutes()/60*30;
   const mA=now.getMinutes()/60*360;

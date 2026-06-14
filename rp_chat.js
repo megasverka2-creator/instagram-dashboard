@@ -322,6 +322,7 @@ QOIDALAR:
         return;
       }
       const reply = (data.content || []).filter(c => c.type === "text").map(c => c.text).join("\n").trim();
+      if (window.RP_Cost) RP_Cost.record("chat", data.usage);
       messages.push({ role: "assistant", content: reply });
       aiMsg(reply || "…");
     } catch (e) {
