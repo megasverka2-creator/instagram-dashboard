@@ -13,6 +13,7 @@
 <script src="app_guard.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
 <script src="savdo.js" defer></script>
+<script src="rp_analyst.js" defer></script>
 <style>
   :root {
     --bg:#F2F2F7; --card:#FFFFFF;
@@ -128,6 +129,32 @@
   .tab-pane { display:none; animation:fadeIn .25s ease; }
   .tab-pane.active { display:block; }
   @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
+  .ai-analyst { padding:20px 22px; margin-bottom:14px; }
+  .an-head { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .an-icon { width:46px; height:46px; flex-shrink:0; border-radius:13px; display:flex; align-items:center; justify-content:center;
+    font-size:23px; background:linear-gradient(135deg,#5856D6,#AF52DE); box-shadow:0 6px 18px rgba(88,86,214,.3); }
+  .an-title { flex:1; min-width:160px; }
+  .an-title h3 { font-size:17px; font-weight:700; letter-spacing:-.4px; }
+  .an-title p { font-size:12.5px; color:var(--muted); margin-top:2px; line-height:1.4; }
+  .an-btn { border:none; cursor:pointer; padding:11px 20px; border-radius:12px; font-family:inherit; font-size:14px;
+    font-weight:600; color:#fff; background:linear-gradient(135deg,#5856D6,#AF52DE); box-shadow:0 5px 16px rgba(88,86,214,.3);
+    transition:transform .15s,opacity .2s; }
+  .an-btn:hover { transform:translateY(-1px); }
+  .an-btn:active { transform:scale(.98); }
+  .an-btn:disabled { opacity:.6; cursor:default; transform:none; }
+  .an-loading { padding:22px 4px; color:var(--muted); font-size:14px; text-align:center; }
+  .an-result { margin-top:16px; padding-top:16px; border-top:1px solid var(--sep); }
+  .an-result h3 { font-size:15.5px; font-weight:700; margin:16px 0 8px; letter-spacing:-.3px; }
+  .an-result h3:first-child { margin-top:0; }
+  .an-result h4 { font-size:13.5px; font-weight:600; margin:12px 0 6px; color:var(--muted); }
+  .an-result p { font-size:13.5px; line-height:1.6; margin:7px 0; color:var(--ink); }
+  .an-result ul { margin:6px 0 6px 2px; padding:0; list-style:none; }
+  .an-result li { font-size:13.5px; line-height:1.55; padding:5px 0 5px 20px; position:relative; }
+  .an-result li:before { content:"•"; position:absolute; left:6px; color:#AF52DE; font-weight:700; }
+  .an-result b { font-weight:600; }
+  .an-foot { font-size:11px; color:var(--faint); margin-top:12px; text-align:center; }
+  .an-error { margin-top:14px; padding:14px; background:rgba(255,59,48,.08); border-radius:12px; font-size:13px; color:#D70015; line-height:1.5; }
+  .an-error a { color:#D70015; font-weight:600; }
   .halo-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:11px; margin:6px 0 14px; }
   .halo-kpi { background:var(--fill); border-radius:13px; padding:15px 12px; text-align:center; }
   .halo-num { font-size:25px; font-weight:700; letter-spacing:-.6px; }
@@ -168,6 +195,18 @@
     <button class="per active" data-period="7">7 kun</button>
     <button class="per" data-period="30">30 kun</button>
     <button class="per" data-period="all">Hammasi</button>
+  </div>
+
+  <div class="ai-analyst glass" id="analystCard">
+    <div class="an-head">
+      <div class="an-icon">🧠</div>
+      <div class="an-title">
+        <h3>AI Tahlilchi</h3>
+        <p>Savdo va marketingni birga tahlil qilib, xulosa va tavsiya beradi (tanlangan davr bo'yicha)</p>
+      </div>
+      <button class="an-btn" id="analystBtn" onclick="RP_Analyst.run()">✨ Tahlil qilish</button>
+    </div>
+    <div id="analystOut"></div>
   </div>
 
   <div class="tabbar" id="tabbar">

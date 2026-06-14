@@ -904,6 +904,7 @@ async function loadData() {
       document.querySelectorAll(".per").forEach(x => x.classList.remove("active"));
       btn.classList.add("active");
       PERIOD = btn.dataset.period;
+      window.PERIOD = PERIOD;
       rerender();
     });
   });
@@ -936,4 +937,17 @@ async function loadData() {
     return;
   }
   rerender();
+  // AI tahlilchi uchun global ma'lumotlarni ochamiz
+  function syncGlobals() {
+    window.SAVDO = SAVDO; window.TAOMLAR = TAOMLAR; window.TURLAR = TURLAR;
+    window.DISHDAY = DISHDAY; window.IG = IG; window.BRANDS = BRANDS;
+    window.BRAND_ORDER = BRAND_ORDER; window.PERIOD = PERIOD;
+    window.periodDays = periodDays; window.brandDay = brandDay;
+    window.allDepts = allDepts; window.depDay = depDay; window.depDostShare = depDostShare;
+    window.allPostAttributions = allPostAttributions;
+  }
+  syncGlobals();
+  // PERIOD o'zgarganda yangilash uchun rerender'ni o'rab olamiz
+  const _origRerender = rerender;
+  window.rerender = function () { _origRerender(); window.PERIOD = PERIOD; };
 })();
