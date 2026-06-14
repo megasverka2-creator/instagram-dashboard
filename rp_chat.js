@@ -290,6 +290,12 @@ QOIDALAR:
     messages.push({ role: "user", content: text });
     busy = true; $("rpcSend").disabled = true; typing(true);
     try {
+      // AI Jamoa sahifasi uchun "Studiya yordamchi ishlamoqda" signali
+      try {
+        const b = JSON.parse(localStorage.getItem("rp_agent_busy") || "{}");
+        b.chat = Date.now();
+        localStorage.setItem("rp_agent_busy", JSON.stringify(b));
+      } catch (e) {}
       const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
