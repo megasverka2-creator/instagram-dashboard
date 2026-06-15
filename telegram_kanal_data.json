@@ -73,5 +73,30 @@
         "azolar": 2775
       }
     }
+  },
+  {
+    "date": "2026-06-16",
+    "chats": {
+      "@benison_uz": {
+        "nom": "Benison kanal",
+        "turi": "kanal",
+        "azolar": 3102
+      },
+      "@eddo_kanal": {
+        "nom": "Eddo kanal",
+        "turi": "kanal",
+        "azolar": 792
+      },
+      "@benisonuz": {
+        "nom": "Benison guruh",
+        "turi": "guruh",
+        "azolar": 3741
+      },
+      "@eddo_uz": {
+        "nom": "Eddo guruh",
+        "turi": "guruh",
+        "azolar": 2767
+      }
+    }
   }
 ]
