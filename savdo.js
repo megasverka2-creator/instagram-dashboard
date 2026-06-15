@@ -309,6 +309,100 @@ function postAttribution(brandKey, post, revMap) {
   return { before: before.avg, after: after.avg, pct, beforeDays: before.days, afterDays: after.days };
 }
 
+// ---- 🍕 Taom-darajasida atributsiya (post → o'sha taom savdosi) ----
+// Bitta taomning kunlik savdo mapi (sana -> sum)
+function dishRevByDate(dishName) {
+  const map = {};
+  if (!DISHDAY || !DISHDAY.days) return map;
+  Object.entries(DISHDAY.days).forEach(([date, node]) => {
+    const d = node[dishName];
+    if (d) map[date] = d.sum || 0;
+  });
+  return map;
+}
+
+// Postni taomga bog'lash (post_taom.json kalit so'zlari bo'yicha)
+function postDishMatch(post, brandKey) {
+  if (!window.POST_TAOM || !POST_TAOM.bogliklar) return null;
+  const cap = (post.caption || "").toLowerCase();
+  for (const b of POST_TAOM.bogliklar) {
+    if (b.brend && b.brend !== brandKey) continue;
+    if (cap.includes((b.kalit || "").toLowerCase())) {
+      return b.taom; // iiko taom nomi
+    }
+  }
+  return null;
+}
+
+// Taom-darajasida atributsiya: shu taomli postlar
+function renderDishAttribution() {
+  const el = document.getElementById("dishAttribution");
+  if (!el) return;
+  if (!DISHDAY || !DISHDAY.days || !window.POST_TAOM) {
+    el.innerHTML = `<div class="glass empty">Taom ma'lumoti yoki bog'lash sozlamasi yuklanmoqda…</div>`;
+    return;
+  }
+
+  const targets = BRAND_ORDER.filter(k => BRANDS[k].ig);
+  let html = "";
+
+  targets.forEach(key => {
+    const b = BRANDS[key];
+    const posts = topPostsFor(key, 30); // ko'proq post tekshiramiz
+    // Faqat taomga bog'langan postlar
+    const matched = [];
+    posts.forEach(p => {
+      const dish = postDishMatch(p, key);
+      if (dish) matched.push({ post: p, dish });
+    });
+    if (!matched.length) return;
+
+    const cards = matched.slice(0, 5).map(({ post, dish }) => {
+      const dMap = dishRevByDate(dish);
+      const before = avgRevWindow(dMap, post.date, -7, -1);
+      const after = avgRevWindow(dMap, post.date, 1, 7);
+      const cap = post.caption ? (post.caption.length > 60 ? post.caption.slice(0, 60) + "…" : post.caption) : "(matnsiz)";
+      const metric = post.views ? fmt(post.views) + " ko'rish" : fmt(post.reach) + " qamrov";
+
+      let badge, detail;
+      if (!before || !after) {
+        badge = `<span class="att-badge att-na">ma'lumot yetarli emas</span>`;
+        detail = `<div class="att-detail">"${dish}" uchun post atrofida 7 kunlik savdo tarixi to'liq emas (tarix to'planmoqda)</div>`;
+      } else {
+        const pct = before.avg > 0 ? Math.round((after.avg - before.avg) / before.avg * 100) : null;
+        const cls = pct > 0 ? "att-up" : (pct < 0 ? "att-down" : "att-flat");
+        const arrow = pct > 0 ? "↑" : (pct < 0 ? "↓" : "→");
+        badge = `<span class="att-badge ${cls}">${arrow} ${pct === null ? "—" : Math.abs(pct) + "%"}</span>`;
+        detail = `<div class="att-detail">
+          <span>Oldidan: <b>${fmtMoney(Math.round(before.avg))}</b>/kun</span>
+          <span>Keyin: <b>${fmtMoney(Math.round(after.avg))}</b>/kun</span>
+        </div>`;
+      }
+      return `
+        <div class="att-post">
+          <div class="att-top">
+            <div class="att-meta">
+              <div class="att-date">🍕 ${dish}</div>
+              <div class="att-reach">${new Date(post.date).toLocaleDateString("ru-RU",{day:"2-digit",month:"short"})} · 👁 ${metric}</div>
+            </div>
+            ${badge}
+          </div>
+          <div class="att-cap">"${cap}"</div>
+          ${detail}
+        </div>`;
+    }).join("");
+
+    html += `
+      <div class="chart-card glass">
+        <h3>${b.name}: taom-darajasida</h3>
+        <div class="csub">Taom ko'rsatilgan postlar va <b>aynan o'sha taom</b> savdosi (post oldidan 7 kun → keyin 7 kun).</div>
+        <div class="att-list">${cards}</div>
+      </div>`;
+  });
+
+  el.innerHTML = html || `<div class="glass empty">Taomga bog'langan post topilmadi. Bog'lashni <b>post_taom.json</b>'da sozlang.</div>`;
+}
+
 function renderAttribution() {
   const el = document.getElementById("attribution");
   if (!el) return;
@@ -831,6 +925,7 @@ function rerender() {
   renderRevenueChart();
   renderCorrelation();
   renderAttribution();
+  renderDishAttribution();
   renderHalo();
   renderPostRanking();
   renderDelivery();
@@ -887,6 +982,7 @@ async function loadData() {
   TAOMLAR = await fetchEncrypted("savdo_taomlar.enc.json", "savdo_taomlar.json");
   TURLAR = await fetchEncrypted("savdo_turlar.enc.json", "savdo_turlar.json");
   DISHDAY = await fetchEncrypted("savdo_taom_kun.enc.json", "savdo_taom_kun.json");
+  try { const r = await fetch("post_taom.json?v=" + Date.now()); if (r.ok) window.POST_TAOM = await r.json(); } catch (e) {}
   try {
     const r = await fetch("instagram_data.json?v=" + Date.now());
     if (r.ok) IG = await r.json();

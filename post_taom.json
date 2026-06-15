@@ -1,0 +1,13 @@
+{
+  "_izoh": "Instagram postni iiko taomiga bog'lash. kalit = post matnida qidiriladigan so'z, qiymat = iiko'dagi aniq taom nomi. Postda kalit so'z topilsa, o'sha taom savdosi atributsiya uchun ishlatiladi.",
+  "bogliklar": [
+    { "kalit": "qurtoba", "taom": "Пицца булак", "brend": "benison" },
+    { "kalit": "marvarid", "taom": "Марварид", "brend": "benison" },
+    { "kalit": "shashlik", "taom": "Молотый шашлык", "brend": "benison" },
+    { "kalit": "lavash", "taom": "Тандыр лаваш", "brend": "eddo" },
+    { "kalit": "sendvich", "taom": "Клаб сендвич", "brend": "eddo" },
+    { "kalit": "hotdog", "taom": "Королевский ХотДог", "brend": "eddo" },
+    { "kalit": "somsa", "taom": "Товук сомса 1д", "brend": "mazzona" },
+    { "kalit": "tort", "taom": "Торт 155", "brend": "mazzona" }
+  ]
+}
