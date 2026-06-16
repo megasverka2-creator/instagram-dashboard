@@ -80,22 +80,22 @@
       "@benison_uz": {
         "nom": "Benison kanal",
         "turi": "kanal",
-        "azolar": 3102
+        "azolar": 3094
       },
       "@eddo_kanal": {
         "nom": "Eddo kanal",
         "turi": "kanal",
-        "azolar": 792
+        "azolar": 791
       },
       "@benisonuz": {
         "nom": "Benison guruh",
         "turi": "guruh",
-        "azolar": 3741
+        "azolar": 3748
       },
       "@eddo_uz": {
         "nom": "Eddo guruh",
         "turi": "guruh",
-        "azolar": 2767
+        "azolar": 2766
       }
     }
   }
