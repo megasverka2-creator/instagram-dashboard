@@ -149,6 +149,39 @@
     font-size:14px; font-weight:500; transition:transform .3s,opacity .3s; z-index:99; opacity:0; pointer-events:none; }
   .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
   @media (max-width:600px){ .hero h1{font-size:20px;} .hero .right{width:100%;} .plan-grid{grid-template-columns:1fr;} }
+  .smart-plan { padding:19px 21px; margin-bottom:14px; }
+  .sp-head { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .sp-icon { width:46px; height:46px; flex-shrink:0; border-radius:13px; display:flex; align-items:center; justify-content:center;
+    font-size:23px; background:linear-gradient(135deg,#5856D6,#AF52DE); box-shadow:0 6px 18px rgba(88,86,214,.3); }
+  .sp-title { flex:1; min-width:180px; }
+  .sp-title h3 { font-size:17px; font-weight:700; letter-spacing:-.4px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .sp-tag { font-size:10.5px; font-weight:600; padding:3px 9px; border-radius:7px; background:rgba(88,86,214,.14); color:#5856D6; letter-spacing:0; }
+  .sp-title p { font-size:12.5px; color:var(--muted); margin-top:3px; line-height:1.45; }
+  .btn-smart { border:none; cursor:pointer; padding:11px 20px; border-radius:12px; font-family:inherit; font-size:14px;
+    font-weight:600; color:#fff; background:linear-gradient(135deg,#5856D6,#AF52DE); box-shadow:0 5px 16px rgba(88,86,214,.3);
+    transition:transform .15s,opacity .2s; white-space:nowrap; }
+  .btn-smart:hover { transform:translateY(-1px); } .btn-smart:disabled { opacity:.6; cursor:default; transform:none; }
+  .sp-step { display:flex; align-items:center; gap:9px; padding:11px 0; font-size:13.5px; color:var(--muted); }
+  .sp-step.sp-done { color:#1F8F43; }
+  .sp-spin { width:15px; height:15px; border:2px solid rgba(88,86,214,.25); border-top-color:#5856D6; border-radius:50%;
+    animation:spin .7s linear infinite; flex-shrink:0; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .sp-flow { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin:14px 0 4px; padding-bottom:13px; border-bottom:1px solid var(--sep); }
+  .sp-badge { font-size:12.5px; font-weight:600; padding:5px 12px; border-radius:9px; background:rgba(52,199,89,.14); color:#1F8F43; }
+  .sp-arrow { color:#AF52DE; font-weight:700; font-size:16px; }
+  .sp-flow-note { font-size:11.5px; color:var(--faint); margin-left:4px; }
+  .sp-result { margin-top:14px; }
+  .sp-result h3 { font-size:15.5px; font-weight:700; margin:16px 0 8px; letter-spacing:-.3px; }
+  .sp-result h3:first-child { margin-top:0; }
+  .sp-result h4 { font-size:14px; font-weight:600; margin:13px 0 6px; color:#5856D6; }
+  .sp-result p { font-size:13.5px; line-height:1.6; margin:7px 0; }
+  .sp-result ul { margin:6px 0 6px 2px; padding:0; list-style:none; }
+  .sp-result li { font-size:13.5px; line-height:1.55; padding:5px 0 5px 20px; position:relative; }
+  .sp-result li:before { content:"•"; position:absolute; left:6px; color:#AF52DE; font-weight:700; }
+  .sp-result b { font-weight:600; }
+  .sp-foot { font-size:11px; color:var(--faint); margin-top:12px; text-align:center; }
+  .sp-error { margin-top:12px; padding:13px; background:rgba(255,59,48,.08); border-radius:11px; font-size:13px; color:#D70015; }
+  .sp-error a { color:#D70015; font-weight:600; }
 </style>
 </head>
 <body>
@@ -169,6 +202,18 @@
     <button class="tab active" data-acc="benison_uz"><span class="dot" style="background:var(--benison)"></span>Benison</button>
     <button class="tab" data-acc="dieto_uz"><span class="dot" style="background:var(--dieto)"></span>Dieto</button>
     <button class="tab" data-acc="eddo_uz"><span class="dot" style="background:var(--eddo)"></span>Eddo</button>
+  </div>
+
+  <div class="smart-plan glass" id="smartPlanCard">
+    <div class="sp-head">
+      <div class="sp-icon">🧠</div>
+      <div class="sp-title">
+        <h3>Aqlli reja <span class="sp-tag">AI hamkorlik</span></h3>
+        <p>Tahlilchi savdoni o'qiydi → eng zo'r taom/formatni topadi → Reja AI shunga asoslab reja yozadi</p>
+      </div>
+      <button class="btn btn-smart" id="smartPlanBtn" onclick="RP_SmartPlan.run()">🧠 Aqlli reja tuz</button>
+    </div>
+    <div id="smartPlanOut"></div>
   </div>
 
   <div id="demoBanner" class="info-banner glass" style="display:none;">
@@ -258,6 +303,8 @@
 </script>
 <script src="kontent_reja.js"></script>
 <script src="rp_chat.js"></script>
+<script src="rp_cost.js"></script>
+<script src="rp_smartplan.js"></script>
 <script>
 /* Ijro nazorati — mustaqil blok: reja sanalari vs haqiqiy chiqqan postlar */
 (async function () {
