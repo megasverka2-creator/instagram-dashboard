@@ -7376,5 +7376,845 @@
         ]
       }
     }
+  },
+  {
+    "collected_at": "2026-06-19T14:30:48.128094+00:00",
+    "date": "2026-06-19",
+    "token": {
+      "days_left": 49,
+      "expires_at": "2026-08-08",
+      "never": false
+    },
+    "accounts": {
+      "benison_uz": {
+        "username": "benison_uz",
+        "followers": 41225,
+        "media_count": 463,
+        "reach_7d": 11958,
+        "profile_views_7d": 362,
+        "engagement_rate": 0.65,
+        "avg_engagement": 268,
+        "reach_rate": 26.9,
+        "avg_reach": 11095,
+        "total_saved": 182,
+        "total_shares": 1404,
+        "by_type": {
+          "VIDEO": {
+            "count": 13,
+            "engagement": 4634,
+            "reach": 127621,
+            "avg_engagement": 356
+          },
+          "IMAGE": {
+            "count": 10,
+            "engagement": 1757,
+            "reach": 139655,
+            "avg_engagement": 176
+          },
+          "CAROUSEL_ALBUM": {
+            "count": 2,
+            "engagement": 317,
+            "reach": 10094,
+            "avg_engagement": 158
+          }
+        },
+        "demographics": {
+          "age_gender": {
+            "13-17 · F": 377,
+            "18-24 · F": 816,
+            "25-34 · F": 2850,
+            "35-44 · F": 1687,
+            "45-54 · F": 458,
+            "55-64 · F": 137,
+            "65+ · F": 56,
+            "13-17 · M": 580,
+            "18-24 · M": 1181,
+            "25-34 · M": 3773,
+            "35-44 · M": 2500,
+            "45-54 · M": 549,
+            "55-64 · M": 137,
+            "65+ · M": 49,
+            "13-17 · U": 2524,
+            "18-24 · U": 4345,
+            "25-34 · U": 10016,
+            "35-44 · U": 6086,
+            "45-54 · U": 1781,
+            "55-64 · U": 720,
+            "65+ · U": 595
+          },
+          "cities": {
+            "Zarafshan, Navoiy Region": 13765,
+            "Navoi, Navoiy Region": 2904,
+            "Khonobod, Andijan Region": 2588,
+            "Urgench, Xorazm Region": 1726,
+            "Tashkent, Tashkent Region": 1532,
+            "Samarkand, Samarqand Region": 1238,
+            "Gurlan, Xorazm Region": 967,
+            "Namangan, Namangan Region": 952
+          },
+          "countries": {
+            "UZ": 39282,
+            "RU": 722,
+            "KZ": 483,
+            "KG": 331,
+            "TJ": 161,
+            "TR": 91,
+            "TM": 22,
+            "KR": 14
+          }
+        },
+        "posts": [
+          {
+            "id": "17946449193015296",
+            "caption": "Benison menyusida siz kutgan, siz so‘ragan mazali yangiliklar! 😋🔥  Benisonga tashrif bu...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DZFqj6hsZ91/",
+            "timestamp": "2026-06-02T15:29:28+0000",
+            "likes": 385,
+            "comments": 10,
+            "saved": 79,
+            "shares": 454,
+            "reach": 82032,
+            "views": 136642,
+            "engagement": 928,
+            "post_er": 1.1
+          },
+          {
+            "id": "18121943377648444",
+            "caption": "😁😁  Benison bilan yaxshi kayfiyat doim hamrohingiz bo’lsin!😊",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYeynVksJ7Z/",
+            "timestamp": "2026-05-18T13:14:20+0000",
+            "likes": 689,
+            "comments": 42,
+            "saved": 4,
+            "shares": 69,
+            "reach": 14640,
+            "views": 21407,
+            "engagement": 804,
+            "post_er": 5.5
+          },
+          {
+            "id": "17888227509488592",
+            "caption": "Qaysi biri yutadi?!😎😁",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYISuEkRfKh/",
+            "timestamp": "2026-05-09T19:26:33+0000",
+            "likes": 668,
+            "comments": 21,
+            "saved": 15,
+            "shares": 97,
+            "reach": 16734,
+            "views": 25002,
+            "engagement": 801,
+            "post_er": 4.8
+          },
+          {
+            "id": "18101391785109678",
+            "caption": "Prank😂  Benison bilan yaxshi kayfiyat doim hamrohingiz bo’lsin!",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DZkTGsGsmZq/",
+            "timestamp": "2026-06-14T13:00:23+0000",
+            "likes": 616,
+            "comments": 44,
+            "saved": 12,
+            "shares": 64,
+            "reach": 13475,
+            "views": 21031,
+            "engagement": 736,
+            "post_er": 5.5
+          },
+          {
+            "id": "17928685584090922",
+            "caption": "😎😁",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYFJ79ashzy/",
+            "timestamp": "2026-05-08T14:12:10+0000",
+            "likes": 442,
+            "comments": 5,
+            "saved": 14,
+            "shares": 57,
+            "reach": 27534,
+            "views": 31485,
+            "engagement": 518,
+            "post_er": 1.9
+          },
+          {
+            "id": "18119251936777437",
+            "caption": "Yaxshi kayfiyat Benison bilan doim hamrohingiz bo’lsin😅😊",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DZSc8prsHRO/",
+            "timestamp": "2026-06-07T14:40:16+0000",
+            "likes": 337,
+            "comments": 32,
+            "saved": 5,
+            "shares": 128,
+            "reach": 15274,
+            "views": 28671,
+            "engagement": 502,
+            "post_er": 3.3
+          },
+          {
+            "id": "18530341081073898",
+            "caption": "Benison menyusida siz kutgan, siz so‘ragan mazali yangiliklar! 😋🔥  Endi menyumizda yang...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DZFsRGPsntc/",
+            "timestamp": "2026-06-02T15:43:11+0000",
+            "likes": 281,
+            "comments": 23,
+            "saved": 9,
+            "shares": 118,
+            "reach": 8679,
+            "views": 15438,
+            "engagement": 431,
+            "post_er": 5.0
+          },
+          {
+            "id": "17998693643765753",
+            "caption": "Marvarid shashlik!😋  Do‘stlar bilan yig‘ilishmi, oilaviy dasturxonmi — Benison bilan ka...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DYCceXfjHrH/",
+            "timestamp": "2026-05-07T12:56:22+0000",
+            "likes": 201,
+            "comments": 11,
+            "saved": 9,
+            "shares": 56,
+            "reach": 18538,
+            "views": 17020,
+            "engagement": 277,
+            "post_er": 1.5
+          },
+          {
+            "id": "18071496611695181",
+            "caption": "Benison menyusida mazali yangilik! 😋  Siz kutgan, siz so‘ragan yangi ta’mlardan biri — ...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DZU2ovIRo8V/",
+            "timestamp": "2026-06-08T13:02:24+0000",
+            "likes": 93,
+            "comments": 3,
+            "saved": 11,
+            "shares": 138,
+            "reach": 13471,
+            "views": 21784,
+            "engagement": 245,
+            "post_er": 1.8
+          },
+          {
+            "id": "18077577455254235",
+            "caption": "😁  “Bosh oshpazdan gap eshitgan oshpaz” filimi!😂  Benison bilan yaxshi kayfiyat doim ha...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DZcvSbQMjOl/",
+            "timestamp": "2026-06-11T14:34:33+0000",
+            "likes": 176,
+            "comments": 20,
+            "saved": 6,
+            "shares": 32,
+            "reach": 8956,
+            "views": 12923,
+            "engagement": 234,
+            "post_er": 2.6
+          }
+        ],
+        "recent_posts": [
+          {
+            "sana": "2026-06-15",
+            "vaqt": "18:12",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-14",
+            "vaqt": "18:00",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-13",
+            "vaqt": "19:39",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-06-12",
+            "vaqt": "17:58",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-12",
+            "vaqt": "16:37",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-11",
+            "vaqt": "19:34",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-08",
+            "vaqt": "18:02",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-06-07",
+            "vaqt": "19:40",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-05",
+            "vaqt": "17:40",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-02",
+            "vaqt": "20:43",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-02",
+            "vaqt": "20:29",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-06-01",
+            "vaqt": "10:20",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-30",
+            "vaqt": "16:56",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-29",
+            "vaqt": "14:21",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-29",
+            "vaqt": "14:10",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-27",
+            "vaqt": "02:37",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-25",
+            "vaqt": "17:30",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-18",
+            "vaqt": "18:14",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-18",
+            "vaqt": "17:03",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-17",
+            "vaqt": "15:13",
+            "type": "CAROUSEL_ALBUM"
+          },
+          {
+            "sana": "2026-05-13",
+            "vaqt": "18:25",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-12",
+            "vaqt": "16:20",
+            "type": "CAROUSEL_ALBUM"
+          },
+          {
+            "sana": "2026-05-10",
+            "vaqt": "00:26",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-08",
+            "vaqt": "19:12",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-07",
+            "vaqt": "17:56",
+            "type": "IMAGE"
+          }
+        ]
+      },
+      "dieto_uz": {
+        "username": "dieto_uz",
+        "followers": 417,
+        "media_count": 3,
+        "reach_7d": 52,
+        "profile_views_7d": 10,
+        "engagement_rate": 176.02,
+        "avg_engagement": 734,
+        "reach_rate": 3424.0,
+        "avg_reach": 14278,
+        "total_saved": 26,
+        "total_shares": 650,
+        "by_type": {
+          "VIDEO": {
+            "count": 3,
+            "engagement": 2203,
+            "reach": 42835,
+            "avg_engagement": 734
+          }
+        },
+        "demographics": {
+          "age_gender": {
+            "13-17 · F": 8,
+            "18-24 · F": 18,
+            "25-34 · F": 86,
+            "35-44 · F": 34,
+            "45-54 · F": 5,
+            "13-17 · M": 4,
+            "18-24 · M": 8,
+            "25-34 · M": 26,
+            "35-44 · M": 22,
+            "45-54 · M": 5,
+            "55-64 · M": 1,
+            "13-17 · U": 8,
+            "18-24 · U": 43,
+            "25-34 · U": 77,
+            "35-44 · U": 54,
+            "45-54 · U": 17,
+            "55-64 · U": 2
+          },
+          "cities": {
+            "Zarafshan, Navoiy Region": 233,
+            "Navoi, Navoiy Region": 51,
+            "Nurota, Navoiy Region": 31,
+            "Khonobod, Andijan Region": 25,
+            "Gurlan, Xorazm Region": 12,
+            "Urgench, Xorazm Region": 12,
+            "Turtkul, Karakalpakstan": 11,
+            "Namangan, Namangan Region": 5
+          },
+          "countries": {
+            "UZ": 414,
+            "RU": 3,
+            "KZ": 1
+          }
+        },
+        "posts": [
+          {
+            "id": "18075042761234975",
+            "caption": "Benison x Dietto! 🤝🍣 Endi sevimli sushingizdan bahramand bo’lish yanada osonlashdi. Ben...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DXynB0rsDT6/",
+            "timestamp": "2026-05-01T09:22:24+0000",
+            "likes": 581,
+            "comments": 26,
+            "saved": 17,
+            "shares": 369,
+            "reach": 17143,
+            "views": 32187,
+            "engagement": 993,
+            "post_er": 5.8
+          },
+          {
+            "id": "18099079828831515",
+            "caption": "Dieto bilan mazali tanaffus vaqti keldi! 🥗✨  Sog‘lom, tezkor va eng muhimi — hamyonbop ...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DXjEvdWjJZf/",
+            "timestamp": "2026-04-25T08:35:41+0000",
+            "likes": 579,
+            "comments": 34,
+            "saved": 6,
+            "shares": 242,
+            "reach": 14948,
+            "views": 28226,
+            "engagement": 861,
+            "post_er": 5.8
+          },
+          {
+            "id": "18010565966906987",
+            "caption": "Sizni va yaqinlaringizni Dietoda kutamiz!😊  📍 Bizning manzillar: • Zarafshon: Mo‘jizala...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DY_vW0EMMy9/",
+            "timestamp": "2026-05-31T08:14:29+0000",
+            "likes": 298,
+            "comments": 9,
+            "saved": 3,
+            "shares": 39,
+            "reach": 10744,
+            "views": 18720,
+            "engagement": 349,
+            "post_er": 3.2
+          }
+        ],
+        "recent_posts": [
+          {
+            "sana": "2026-05-31",
+            "vaqt": "13:14",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-01",
+            "vaqt": "14:22",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-04-25",
+            "vaqt": "13:35",
+            "type": "VIDEO"
+          }
+        ]
+      },
+      "eddo_uz": {
+        "username": "eddo_uz",
+        "followers": 38144,
+        "media_count": 277,
+        "reach_7d": 334,
+        "profile_views_7d": 156,
+        "engagement_rate": 0.6,
+        "avg_engagement": 229,
+        "reach_rate": 27.3,
+        "avg_reach": 10432,
+        "total_saved": 115,
+        "total_shares": 1971,
+        "by_type": {
+          "IMAGE": {
+            "count": 17,
+            "engagement": 3533,
+            "reach": 202577,
+            "avg_engagement": 208
+          },
+          "VIDEO": {
+            "count": 8,
+            "engagement": 2204,
+            "reach": 58225,
+            "avg_engagement": 276
+          }
+        },
+        "demographics": {
+          "age_gender": {
+            "13-17 · F": 294,
+            "18-24 · F": 638,
+            "25-34 · F": 2385,
+            "35-44 · F": 1527,
+            "45-54 · F": 438,
+            "55-64 · F": 143,
+            "65+ · F": 58,
+            "13-17 · M": 436,
+            "18-24 · M": 956,
+            "25-34 · M": 3353,
+            "35-44 · M": 2418,
+            "45-54 · M": 555,
+            "55-64 · M": 144,
+            "65+ · M": 46,
+            "13-17 · U": 1956,
+            "18-24 · U": 3666,
+            "25-34 · U": 9540,
+            "35-44 · U": 6248,
+            "45-54 · U": 1906,
+            "55-64 · U": 798,
+            "65+ · U": 646
+          },
+          "cities": {
+            "Zarafshan, Navoiy Region": 12969,
+            "Navoi, Navoiy Region": 3149,
+            "Khonobod, Andijan Region": 2427,
+            "Urgench, Xorazm Region": 1622,
+            "Tashkent, Tashkent Region": 1182,
+            "Samarkand, Samarqand Region": 1169,
+            "Namangan, Namangan Region": 897,
+            "Gurlan, Xorazm Region": 896
+          },
+          "countries": {
+            "UZ": 37039,
+            "RU": 512,
+            "KZ": 321,
+            "KG": 93,
+            "TR": 63,
+            "TJ": 47,
+            "GE": 9,
+            "KR": 6
+          }
+        },
+        "posts": [
+          {
+            "id": "18116199985743188",
+            "caption": "😍😅  Kimga jo’natishni o’zingiz bilasiz!😅",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DYFVzVrjLbw/",
+            "timestamp": "2026-05-08T15:55:52+0000",
+            "likes": 691,
+            "comments": 14,
+            "saved": 17,
+            "shares": 444,
+            "reach": 28644,
+            "views": 17518,
+            "engagement": 1166,
+            "post_er": 4.1
+          },
+          {
+            "id": "18052716710483289",
+            "caption": "🌙 RAMAZON BARAKASI — 8-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restora...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DVLm3LtjBUr/",
+            "timestamp": "2026-02-25T12:45:28+0000",
+            "likes": 163,
+            "comments": 2,
+            "saved": 17,
+            "shares": 244,
+            "reach": 37993,
+            "views": 81490,
+            "engagement": 426,
+            "post_er": 1.1
+          },
+          {
+            "id": "18062981738668440",
+            "caption": "🌙 RAMAZON BARAKASI — 22-KUN TAKLIFI  Maxsus taklifimiz — EDDО Fast Food restoranlaridan...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DVv6iWCjOtS/",
+            "timestamp": "2026-03-11T15:09:57+0000",
+            "likes": 156,
+            "comments": 7,
+            "saved": 11,
+            "shares": 207,
+            "reach": 23955,
+            "views": 43848,
+            "engagement": 381,
+            "post_er": 1.6
+          },
+          {
+            "id": "18136456735526815",
+            "caption": "😁😂  Eddo bilan yaxshi kayfiyat hamrohingiz bo’lsin!",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DX_1X72sAVV/",
+            "timestamp": "2026-05-06T12:36:11+0000",
+            "likes": 268,
+            "comments": 35,
+            "saved": 2,
+            "shares": 71,
+            "reach": 6858,
+            "views": 10889,
+            "engagement": 376,
+            "post_er": 5.5
+          },
+          {
+            "id": "18186667435363163",
+            "caption": "🌙 RAMAZON BARAKASI — 8-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restora...",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DVLmzltjJvA/",
+            "timestamp": "2026-02-25T12:44:56+0000",
+            "likes": 209,
+            "comments": 15,
+            "saved": 2,
+            "shares": 142,
+            "reach": 8148,
+            "views": 14471,
+            "engagement": 368,
+            "post_er": 4.5
+          },
+          {
+            "id": "18081865577531103",
+            "caption": "😢😂  Eddo bilan yaxshi kayfiyat doim hamrohingiz bo’lsin!😊",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DYhYSSDuYR0/",
+            "timestamp": "2026-05-19T13:15:00+0000",
+            "likes": 217,
+            "comments": 25,
+            "saved": 1,
+            "shares": 54,
+            "reach": 5187,
+            "views": 8046,
+            "engagement": 297,
+            "post_er": 5.7
+          },
+          {
+            "id": "17891955780514348",
+            "caption": "😁😁  Eddo bilan yaxshi kayfiyat doim hamrohingiz bo’lsin!",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DZaDp86sk5e/",
+            "timestamp": "2026-06-10T13:32:08+0000",
+            "likes": 222,
+            "comments": 11,
+            "saved": 10,
+            "shares": 42,
+            "reach": 9485,
+            "views": 14829,
+            "engagement": 285,
+            "post_er": 3.0
+          },
+          {
+            "id": "17858946579683812",
+            "caption": "Sizgachi Tandir lavashmi yoki Burger!?😁😊",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DW3vNw7DEsB/",
+            "timestamp": "2026-04-08T12:37:14+0000",
+            "likes": 238,
+            "comments": 22,
+            "saved": 5,
+            "shares": 12,
+            "reach": 8263,
+            "views": 13407,
+            "engagement": 277,
+            "post_er": 3.4
+          },
+          {
+            "id": "18076104614382489",
+            "caption": "🌙 RAMAZON BARAKASI — 9-KUN TAKLIFI!  Bugungi maxsus taklifimiz — EDDО Fast Food restora...",
+            "type": "IMAGE",
+            "permalink": "https://www.instagram.com/p/DVOUi7KDF2v/",
+            "timestamp": "2026-02-26T14:02:52+0000",
+            "likes": 98,
+            "comments": 5,
+            "saved": 8,
+            "shares": 154,
+            "reach": 13563,
+            "views": 28291,
+            "engagement": 265,
+            "post_er": 2.0
+          },
+          {
+            "id": "17942374068226556",
+            "caption": "Oshpazlarimiz och qolganda😢😁",
+            "type": "VIDEO",
+            "permalink": "https://www.instagram.com/reel/DZIFOo9s8aG/",
+            "timestamp": "2026-06-03T13:59:42+0000",
+            "likes": 213,
+            "comments": 16,
+            "saved": 3,
+            "shares": 22,
+            "reach": 10475,
+            "views": 18445,
+            "engagement": 254,
+            "post_er": 2.4
+          }
+        ],
+        "recent_posts": [
+          {
+            "sana": "2026-06-13",
+            "vaqt": "21:36",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-06-10",
+            "vaqt": "18:32",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-06-03",
+            "vaqt": "18:59",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-31",
+            "vaqt": "18:38",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-27",
+            "vaqt": "02:44",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-23",
+            "vaqt": "21:17",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-21",
+            "vaqt": "18:28",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-19",
+            "vaqt": "18:15",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-05-17",
+            "vaqt": "18:09",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-08",
+            "vaqt": "20:55",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-05-06",
+            "vaqt": "17:36",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-04-08",
+            "vaqt": "17:37",
+            "type": "VIDEO"
+          },
+          {
+            "sana": "2026-03-30",
+            "vaqt": "19:22",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-21",
+            "vaqt": "08:32",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-20",
+            "vaqt": "06:05",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-11",
+            "vaqt": "20:09",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-10",
+            "vaqt": "19:51",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-08",
+            "vaqt": "00:22",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-07",
+            "vaqt": "20:11",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-05",
+            "vaqt": "19:54",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-03-03",
+            "vaqt": "19:45",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-02-28",
+            "vaqt": "19:16",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-02-26",
+            "vaqt": "19:02",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-02-25",
+            "vaqt": "17:45",
+            "type": "IMAGE"
+          },
+          {
+            "sana": "2026-02-25",
+            "vaqt": "17:44",
+            "type": "VIDEO"
+          }
+        ]
+      }
+    }
   }
 ]
