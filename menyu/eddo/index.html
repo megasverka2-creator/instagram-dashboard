@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>EDDO — Menyu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+/* ===================================================================
+   EDDO — RESPONSIVE MENU BOARD
+   Bitta fayl. Build kerak emas. Telefon, kompyuter, monitor va barcha
+   smart TV'larga moslashadi (qora chiziqlarsiz). Rasmlar: ./images/
+   =================================================================== */
+
+:root{
+  --eddo-950:#2c0556; --eddo-900:#3a0a72; --eddo-800:#4b139b;
+  --eddo-700:#5d1fbc; --eddo-600:#7a32d6; --eddo-500:#9a52e6;
+  --ink:#2c0a52; --inksoft:#7a5aa6;
+  --gold-400:#ffd60a; --gold-500:#ffc400; --gold-600:#f5a300;
+  --card-radius:1.7em;
+}
+
+*{box-sizing:border-box; -webkit-font-smoothing:antialiased; margin:0; padding:0;}
+html,body{height:100%; width:100%; background:var(--eddo-950); overflow:hidden;}
+body{font-family:'Nunito',system-ui,sans-serif; color:#fff;}
+.display{font-family:'Fredoka','Nunito',sans-serif;}
+
+/* Fluid root unit — slideshow mode scales the whole layout to the screen.
+   On 1080p ≈ 15px, on 4K bigger, on a laptop smaller. No fixed aspect. */
+body{font-size:clamp(8px, calc(0.42vw + 0.62vh), 26px);}
+
+/* ----------------------------------------------------------- background */
+.bg{position:fixed; inset:0; overflow:hidden; background:var(--eddo-800); z-index:-1;}
+.blob{position:absolute; border-radius:50%; filter:blur(120px);}
+.blob.b1{top:-20%; left:-10%; height:80%; width:70%;
+  background:radial-gradient(circle,#9a52e6 0%,rgba(154,82,230,0) 70%); animation:drift 26s ease-in-out infinite;}
+.blob.b2{top:28%; right:-15%; height:90%; width:70%; filter:blur(130px);
+  background:radial-gradient(circle,#5d1fbc 0%,rgba(93,31,188,0) 70%); animation:drift2 32s ease-in-out infinite;}
+.blob.b3{bottom:-25%; left:18%; height:70%; width:60%;
+  background:radial-gradient(circle,#7a32d6 0%,rgba(122,50,214,0) 70%); animation:drift 26s ease-in-out infinite;}
+.blob.b4{top:-10%; left:50%; transform:translateX(-50%); height:38%; width:55%; filter:blur(140px); opacity:.2;
+  background:radial-gradient(circle,#ffd60a 0%,rgba(255,214,10,0) 70%);}
+.dots{position:absolute; inset:0; opacity:.05;
+  background-image:radial-gradient(#fff 1.4px,transparent 1.4px); background-size:46px 46px;}
+.grain{position:absolute; inset:0; opacity:.05; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");}
+
+@keyframes drift{0%{transform:translate(0,0) scale(1)}33%{transform:translate(6%,-4%) scale(1.08)}66%{transform:translate(-5%,5%) scale(.96)}100%{transform:translate(0,0) scale(1)}}
+@keyframes drift2{0%{transform:translate(0,0) scale(1.05)}50%{transform:translate(-7%,6%) scale(.92)}100%{transform:translate(0,0) scale(1.05)}}
+@keyframes float{0%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(2deg)}100%{transform:translateY(0) rotate(-2deg)}}
+@keyframes halo{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.85;transform:scale(1.05)}}
+@keyframes rise{from{opacity:0; transform:translateY(2.6em) scale(.95)} to{opacity:1; transform:translateY(0) scale(1)}}
+@keyframes slidein{from{opacity:0; transform:translateX(4.5em)} to{opacity:1; transform:translateX(0)}}
+.float{animation:float 5.5s ease-in-out infinite; will-change:transform;}
+
+/* ----------------------------------------------------------- app shell */
+#app{position:fixed; inset:0; display:flex; flex-direction:column;}
+
+/* ---- top bar (logo + clock) ---- */
+.topbar{display:flex; align-items:center; justify-content:space-between;
+  padding:clamp(.8rem,2.6vh,2.6rem) clamp(1rem,3.6vw,4.6rem) 0;}
+.brand{display:flex; align-items:center; gap:1em;}
+.logo{position:relative; display:grid; place-items:center; height:2.7em; width:2.7em;
+  border-radius:.5em; background:linear-gradient(135deg,var(--gold-400),var(--gold-600));
+  box-shadow:0 14px 38px rgba(245,163,0,.5); color:var(--eddo-900);
+  font-family:'Fredoka'; font-weight:700; font-size:1.6em; line-height:1;}
+.logo-dot{position:absolute; top:-.18em; right:-.18em; height:.5em; width:.5em; border-radius:50%; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,.2);}
+.brand-name{font-family:'Fredoka'; font-weight:700; font-size:3.3em; line-height:.9; text-transform:lowercase; letter-spacing:-.02em;}
+.brand-tag{margin-top:.25em; font-weight:800; font-size:1.2em; letter-spacing:.42em; color:var(--gold-400);}
+.clock{text-align:right;}
+.time{display:flex; align-items:flex-end; justify-content:flex-end; gap:.18em; font-family:'Fredoka'; font-weight:600; line-height:.9;}
+.time .hm{font-size:4em;}
+.time .ss{font-size:1.7em; color:var(--gold-400); margin-bottom:.18em;}
+.date{margin-top:.3em; font-weight:700; font-size:1.4em; color:rgba(255,255,255,.7); text-transform:capitalize;}
+
+/* ---- stage / pages ---- */
+.stage{position:relative; flex:1; min-height:0;}
+.page{position:absolute; inset:0; display:flex; flex-direction:column;
+  padding:clamp(.6rem,1.6vh,2rem) clamp(1rem,3.6vw,4.6rem) clamp(.6rem,1.4vh,1.6rem);
+  opacity:0; visibility:hidden; pointer-events:none;}
+.page.active{opacity:1; visibility:visible; pointer-events:auto; animation:slidein .6s cubic-bezier(.4,0,.2,1);}
+
+.page-head{flex:none; margin-bottom:clamp(.5rem,1.4vh,1.4rem);}
+.kicker{font-weight:900; font-size:1.3em; letter-spacing:.4em; color:var(--gold-400);}
+.title{display:flex; align-items:center; margin-top:.15em; font-family:'Fredoka'; font-weight:700; font-size:3.5em; line-height:1;}
+.title-tick{margin-left:.5em; display:inline-block; height:.18em; width:1.4em; border-radius:999px; background:var(--gold-400);}
+
+.page-body{flex:1; min-height:0; display:flex;}
+
+/* ---- grids ---- */
+.grid{display:grid; gap:clamp(.6rem,1.4vh,1.5rem); width:100%; grid-auto-rows:1fr;}
+.cols2{grid-template-columns:repeat(2,1fr);}
+.cols3{grid-template-columns:repeat(3,1fr);}
+.snacks-wrap{display:flex; flex-direction:column; width:100%; gap:clamp(.6rem,1.4vh,1.4rem);}
+.snacks-wrap .snack-grid{flex:1; min-height:0;}
+
+/* ---- card shell ---- */
+.card{position:relative; overflow:hidden; border-radius:var(--card-radius);
+  background:#fff; color:var(--ink); box-shadow:0 22px 50px -16px rgba(20,4,46,.65);
+  display:flex; flex-direction:column; min-height:0;
+  animation:rise .6s cubic-bezier(.2,.7,.3,1) both;}
+.page.active .card:nth-child(1){animation-delay:.30s}
+.page.active .card:nth-child(2){animation-delay:.38s}
+.page.active .card:nth-child(3){animation-delay:.46s}
+.page.active .card:nth-child(4){animation-delay:.54s}
+.page.active .card:nth-child(5){animation-delay:.62s}
+.page.active .card:nth-child(6){animation-delay:.70s}
+.card::after{content:""; position:absolute; inset:0; border-radius:var(--card-radius);
+  box-shadow:inset 0 0 0 1px rgba(44,10,82,.05); pointer-events:none;}
+.card.featured::before{content:""; position:absolute; inset:0; border-radius:var(--card-radius);
+  background:linear-gradient(135deg,rgba(255,214,10,.55),rgba(245,163,0,.25));
+  filter:blur(8px); animation:halo 4s ease-in-out infinite; z-index:0;}
+.card>*{position:relative; z-index:1;}
+
+/* shared bits */
+.cheese{font-size:.85em; line-height:1;}
+.chicken{display:inline-grid; place-items:center; width:1.55em; height:1.55em; border-radius:999px;
+  background:var(--gold-400); box-shadow:0 2px 6px rgba(0,0,0,.12); font-size:.78em; flex:none;}
+.ru{margin-top:.25em; font-weight:600; font-size:1.05em; color:var(--inksoft); line-height:1.1;}
+.disc{position:absolute; border-radius:50%; background:rgba(93,31,188,.08);}
+
+/* price rows */
+.prow{display:flex; align-items:baseline; justify-content:space-between; gap:.7em; padding:.12em 0;}
+.prow-l{display:flex; align-items:center; gap:.4em; min-width:0;}
+.prow-label{font-weight:700; font-size:1.25em; color:rgba(44,10,82,.85); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.prow-r{display:flex; align-items:baseline; gap:.7em; flex:none;}
+.pr-val{display:flex; align-items:baseline; gap:.2em; font-family:'Fredoka'; font-weight:700; font-size:1.4em; color:var(--ink); white-space:nowrap;}
+
+/* CATEGORY card (page 1) */
+.card.cat{flex-direction:row; align-items:stretch; gap:1em; padding:1.1em 1.4em;}
+.cat-main{display:flex; flex-direction:column; flex:1; min-width:0;}
+.cat-title{display:flex; align-items:center; gap:.4em; margin-bottom:.2em;}
+.cat-name{font-family:'Fredoka'; font-weight:700; font-size:2.45em; line-height:1; color:var(--ink);}
+.cat-name.sm{font-size:1.95em;}
+.cat-rows{flex:1; display:flex; flex-direction:column; justify-content:center;}
+.grp{margin-bottom:.35em;}
+.grp-head{display:flex; align-items:center; justify-content:space-between; gap:.5em; margin-bottom:.1em;}
+.grp-chip{display:flex; align-items:center; gap:.4em;}
+.chip{display:inline-block; background:var(--gold-400); color:var(--ink); border-radius:.35em;
+  padding:.12em .6em; font-weight:800; font-size:1.1em;}
+.cat-img{flex:none; display:grid; place-items:center; width:clamp(6em,9vw,11em);}
+.cat-img img{max-width:100%; max-height:100%; object-fit:contain; filter:drop-shadow(0 12px 18px rgba(0,0,0,.24));}
+
+/* SNACK card (page 2) */
+.card.snack{padding:1.1em 1.3em;}
+.snack-title{display:flex; align-items:center; gap:.4em;}
+.snack-body{margin-top:.4em; flex:1; display:flex; align-items:center; gap:1em; min-height:0;}
+.snack-img{position:relative; flex:none; display:grid; place-items:center; width:clamp(4.5em,7vw,8.5em); aspect-ratio:1;}
+.snack-img .disc{height:88%; width:88%;}
+.snack-img img{position:relative; max-width:100%; max-height:100%; object-fit:contain; filter:drop-shadow(0 12px 18px rgba(0,0,0,.24));}
+.snack-emoji{flex:none; font-size:3em; line-height:1;}
+.snack-rows{flex:1; min-width:0;}
+.drinks{display:flex; flex-direction:column; gap:.25em;}
+.drink{display:flex; align-items:baseline; gap:.5em;}
+.drink-l{font-weight:700; font-size:1.2em; color:var(--ink);}
+.drink-s{font-weight:600; font-size:1.05em; color:var(--inksoft);}
+
+/* SAUCE strip (page 2) */
+.card.sauces{flex:none; flex-direction:row; align-items:center; gap:1.4em; padding:.8em 1.5em;}
+.sauces-head{flex:none; display:flex; flex-direction:column;}
+.sauces-head .cat-name{font-size:2.1em;}
+.sauces-sub{margin-top:.15em; font-weight:800; font-size:1.05em; letter-spacing:.04em; color:var(--inksoft);}
+.sauces-list{flex:1; display:flex; align-items:center; justify-content:space-around; gap:.6em; flex-wrap:wrap;}
+.sauce{display:flex; flex-direction:column; align-items:center; gap:.25em;}
+.sauce-img{height:3.4em; width:3.4em; object-fit:contain; animation-delay:calc(var(--i) * .35s);}
+.sauce-name{font-weight:700; font-size:1.25em; color:var(--ink);}
+.sauce-price{background:var(--gold-400); color:var(--ink); border-radius:999px; padding:.15em .9em;
+  font-family:'Fredoka'; font-weight:700; font-size:1.25em; box-shadow:0 4px 10px rgba(0,0,0,.1);}
+
+/* COMBO card (pages 3 & 6) */
+.card.combo{flex-direction:row; align-items:stretch; gap:.8em; padding:1.1em 1.5em;}
+.combo-main{display:flex; flex-direction:column; flex:1; min-width:0;}
+.combo-name{font-family:'Fredoka'; font-weight:700; font-size:2.3em; line-height:1; color:var(--ink);}
+.combo-items{flex:1; display:flex; flex-direction:column; justify-content:center; gap:.25em; margin-top:.4em;}
+.ci{display:flex; align-items:center; gap:.55em; font-weight:700; font-size:1.2em; color:rgba(44,10,82,.8);}
+.ci .dot{flex:none; height:.45em; width:.45em; border-radius:999px; background:var(--gold-500);}
+.combo-badge{align-self:flex-start; margin-top:.5em; display:flex; align-items:baseline; gap:.4em;
+  border-radius:.7em; padding:.3em 1.1em; background:linear-gradient(135deg,var(--gold-400),var(--gold-500));
+  box-shadow:0 12px 26px -6px rgba(245,163,0,.7);}
+.combo-price{font-family:'Fredoka'; font-weight:700; font-size:2.5em; line-height:1; color:var(--ink);}
+.combo-cur{font-weight:800; font-size:1.25em; color:rgba(44,10,82,.7);}
+.combo-media{flex:none; display:grid; place-items:center; width:clamp(7em,13vw,16em);}
+.combo-media img{max-width:100%; max-height:100%; object-fit:contain; filter:drop-shadow(0 12px 18px rgba(0,0,0,.24));}
+.combo-emojis{display:flex; gap:.2em; font-size:2.6em; line-height:1;}
+.combo-emojis .float{animation-delay:calc(var(--i) * .4s);}
+
+/* PIZZA card (pages 4 & 5) */
+.card.pizza{flex-direction:row; align-items:center; gap:1em; padding:1.1em 1.2em;}
+.pizza-img{position:relative; flex:none; display:grid; place-items:center; width:clamp(6em,11vw,14em); aspect-ratio:1;}
+.pizza-img .disc{height:96%; width:96%;}
+.pizza-img img{position:relative; max-width:94%; max-height:94%; object-fit:contain; filter:drop-shadow(0 12px 18px rgba(0,0,0,.24));}
+.pizza-main{flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center;}
+.pizza-name{font-family:'Fredoka'; font-weight:700; font-size:2.1em; line-height:1.05; color:var(--ink);}
+.sizes{margin-top:.6em; display:flex; flex-direction:column; gap:.45em;}
+.size{display:flex; align-items:center; justify-content:space-between; border-radius:.55em; padding:.35em .8em; background:rgba(44,10,82,.06);}
+.size.hot{background:var(--gold-400); box-shadow:0 6px 16px -6px rgba(245,163,0,.7);}
+.size-l{font-weight:800; font-size:1.05em; letter-spacing:.02em; color:var(--inksoft);}
+.size.hot .size-l{color:rgba(44,10,82,.7);}
+.size-p{font-family:'Fredoka'; font-weight:700; font-size:1.75em; line-height:1; color:var(--ink);}
+
+/* ---- progress bar (slideshow only) ---- */
+.progress{flex:none; display:flex; align-items:center; gap:.8em;
+  padding:0 clamp(1rem,3.6vw,4.6rem) clamp(.8rem,2.4vh,2.4rem);}
+.seg{position:relative; flex:1; height:.65em; border-radius:999px; overflow:hidden; background:rgba(255,255,255,.15);}
+.seg.done::after{content:""; position:absolute; inset:0; border-radius:999px; background:rgba(255,214,10,.85);}
+.seg .fill{position:absolute; inset:0 auto 0 0; width:0; border-radius:999px;
+  background:linear-gradient(90deg,var(--gold-400),var(--gold-600));}
+.seg.active .fill{animation:fillbar linear forwards;}
+@keyframes fillbar{from{width:0}to{width:100%}}
+.count{margin-left:.6em; font-family:'Fredoka'; font-weight:600; font-size:1.6em;
+  font-variant-numeric:tabular-nums; color:rgba(255,255,255,.8);}
+.count .sep{color:rgba(255,255,255,.35);}
+
+/* ===================================================================
+   PHONE / NARROW  →  scrollable full menu (no letterbox, no rotation)
+   =================================================================== */
+@media (max-width:820px){
+  html,body{overflow-x:hidden; overflow-y:auto; height:auto; min-height:100%;}
+  body{font-size:clamp(14px,4.3vw,19px);}
+  #app{position:static; min-height:100%;}
+  .topbar{position:sticky; top:0; z-index:60; padding:.7rem 1rem;
+    background:rgba(44,5,86,.86); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    box-shadow:0 8px 24px rgba(0,0,0,.25);}
+  .logo{font-size:1.25em;} .brand-name{font-size:2em;} .brand-tag{font-size:.85em; letter-spacing:.3em;}
+  .time .hm{font-size:2.3em;} .time .ss{font-size:1.1em;} .date{font-size:.95em;}
+
+  .stage{position:static; flex:none;}
+  .page{position:static; inset:auto; opacity:1!important; visibility:visible!important;
+    pointer-events:auto; animation:none; padding:1.4rem 1rem .4rem;}
+  .page-head{margin-bottom:.9rem;}
+  .title{font-size:2.4em;} .kicker{font-size:1em; letter-spacing:.32em;}
+
+  .page-body{display:block;}
+  .grid{grid-template-columns:1fr!important; height:auto; grid-auto-rows:auto; gap:.9rem;}
+  .snacks-wrap{gap:.9rem;}
+  .card{min-height:0;}
+
+  .cat-img{width:clamp(5em,22vw,8em);}
+  .snack-img{width:clamp(4.2em,18vw,6.5em);}
+  .pizza-img{width:clamp(6em,30vw,9em);}
+  .combo-media{width:clamp(7em,30vw,11em);}
+
+  .card.sauces{flex-wrap:wrap; justify-content:center; gap:1em;}
+  .sauces-head{width:100%; align-items:center; text-align:center;}
+  .sauces-list{width:100%;}
+
+  .progress{display:none;}
+}
+
+/* extra-small phones → single column everywhere */
+@media (max-width:559px){
+  .card.cat, .card.combo{flex-direction:column; align-items:stretch; gap:1em;}
+  .card.cat{padding:1.1em;}
+  .cat-img, .combo-media{width:100%; height:8.5em; max-height:8.5em; overflow:hidden; margin:0 auto;}
+  .cat-img img, .combo-media img{height:8.5em; max-height:8.5em; width:auto; max-width:100%; object-fit:contain; animation:none;}
+  .combo-media{order:-1; margin-bottom:.2em;}
+  .combo-emojis{justify-content:center;}
+}
+
+/* accessibility */
+:focus-visible{outline:3px solid var(--gold-400); outline-offset:3px;}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important; transition:none!important;}
+  .page{opacity:1!important; visibility:visible!important;}
+}
+</style>
+</head>
+<body>
+<div class="bg">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
+  <div class="dots"></div><div class="grain"></div>
+</div>
+
+<div id="app">
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo display">e<span class="logo-dot"></span></div>
+      <div>
+        <div class="brand-name display" id="brand"></div>
+        <div class="brand-tag" id="tag"></div>
+      </div>
+    </div>
+    <div class="clock">
+      <div class="time display"><span class="hm" id="hm">--:--</span><span class="ss" id="ss">00</span></div>
+      <div class="date" id="date"></div>
+    </div>
+  </div>
+
+  <div class="stage" id="stage"></div>
+
+  <div class="progress" id="progress"></div>
+</div>
+
+<script>
+/* ====================  MENU DATA  ====================
+   Narx/nom/tarkibni shu yerdan o'zgartiring.
+   price: raqam (so'm). cheese:true -> 🧀, chicken:true -> 🐔
+   prices: [36000, {v:39000, cheese:true}]  -> 2 narx (2-si pishloqli) */
+const CONFIG = { brand:'eddo', tagline:'FAST FOOD', currency:"so'm", pageDurationMs:10000 };
+
+const PAGES = [
+  { id:'asosiy', kicker:'MENYU · 01', title:'Lavash · Burger · Hot-dog · Donar', layout:'categories',
+    cards:[
+      { name:'Lavash', img:'/images/lavash.png', emoji:'🌯', groups:[
+        { label:'Standart', rows:[
+          { label:'odatiy', prices:[36000,{v:39000,cheese:true}] },
+          { label:'kids', prices:[29000,{v:32000,cheese:true}] } ] },
+        { label:'Tandir', rows:[
+          { label:'odatiy', prices:[38000,{v:41000,cheese:true}] },
+          { label:'kids', prices:[30000,{v:33000,cheese:true}] } ] },
+        { label:'Sezar', chicken:true, rows:[ { label:'', prices:[{v:34000,cheese:true}] } ] } ] },
+      { name:'Burger', img:'/images/burger.png', emoji:'🍔', rows:[
+        { label:'Gamburger', prices:[29000] },
+        { label:'Chizburger', cheese:true, prices:[32000] },
+        { label:'Dablburger', prices:[40000] },
+        { label:'Dablchizburger', cheese:true, prices:[43000] } ] },
+      { name:'Hot-dog', img:'/images/hotdog.png', emoji:'🌭', rows:[
+        { label:'Kids hot-dog', prices:[11000] },
+        { label:'Oddiy hot-dog', prices:[17000] },
+        { label:'Shohona hot-dog', prices:[21000] },
+        { label:'Chicken hot-dog', chicken:true, prices:[21000] },
+        { label:'Kebab hot-dog', prices:[30000] } ] },
+      { name:'Donar', img:'/images/donar.png', emoji:'🥙', rows:[
+        { label:'Donar', prices:[32000] },
+        { label:'Donar', cheese:true, prices:[35000] },
+        { label:'Donar (tarelkada)', prices:[39000] } ] },
+    ] },
+
+  { id:'snek', kicker:'MENYU · 02', title:'Snek & Ichimlik', layout:'snacks',
+    cards:[
+      { name:'Klab Sendvich', img:'/images/klab.png', emoji:'🥪', chicken:true, rows:[{ label:'sendvich', prices:[33000] }] },
+      { name:'Xaggi', img:'/images/xaggi.png', emoji:'🌯', rows:[
+        { label:'Xaggi', prices:[35000] },
+        { label:'Xaggi', cheese:true, prices:[38000] } ] },
+      { name:'Fri', img:'/images/fri.png', emoji:'🍟', rows:[{ label:'120 gr', prices:[15000] }] },
+      { name:'Naggetslar', img:'/images/naggets.png', emoji:'🍗', chicken:true, rows:[
+        { label:'120 gr', prices:[17000] },
+        { label:'300 gr', prices:[41000] } ] },
+      { name:'Qahva', emoji:'☕', rows:[
+        { label:'Qora', prices:[5000] },
+        { label:'3 tasi 1 da', prices:[5000] } ] },
+      { name:'Salqin ichimliklar', emoji:'🥤', drinks:[
+        { label:'Pepsi', sizes:['0.5L','1L','1.5L'] },
+        { label:'Coca Cola', sizes:['0.5L','1L','1.5L'] },
+        { label:'Lipton', sizes:['0.5L','1L','1.5L'] },
+        { label:'Mineral suv', sizes:['0.5L','1L','1.5L'] } ] },
+    ],
+    sauces:{ title:'Souslar', price:5000, items:[
+      { name:'eddo', img:'/images/sous-eddo.png', emoji:'🥫' },
+      { name:'sarimsoqli', img:'/images/sous-sarimsoqli.png', emoji:'🧄' },
+      { name:'ketchup', img:'/images/sous-ketchup.png', emoji:'🍅' },
+      { name:'chili', img:'/images/sous-chili.png', emoji:'🌶️' },
+      { name:'mayonez', img:'/images/sous-mayonez.png', emoji:'🥚' } ] } },
+
+  { id:'kombo', kicker:'MENYU · 03', title:'Kombo Takliflar', layout:'combos', cols:3, rows:2,
+    cards:[
+      { name:'Kombo Lavash', img:'/images/kombo-lavash.png', emojis:['🌯','🍟','🥤'], price:52000, featured:true, items:['Lavash','Pepsi 0.5l','Naggets 50gr','Fri 50gr','Sous'] },
+      { name:'Kombo Burger', img:'/images/kombo-burger.png', emojis:['🍔','🍟','🥤'], price:44000, items:['Gamburger','Pepsi 0.5l','Naggets 50gr','Fri 50gr','Sous'] },
+      { name:'Kombo Klab', img:'/images/kombo-klab.png', emojis:['🥪','🍟','🥤'], price:48000, items:['Sendvich','Pepsi 0.5l','Naggets 50gr','Fri 50gr','Sous'] },
+      { name:'Kombo Donar', img:'/images/kombo-donar.png', emojis:['🥙','🍟','🥤'], price:46000, items:['Donar','Pepsi 0.5l','Naggets 50gr','Fri 50gr','Sous'] },
+      { name:'Kombo Snek', img:'/images/kombo-snek.png', emojis:['🍗','🍟','🥤'], price:28000, items:['Naggets 120gr','Pepsi 0.5l','Fri 50gr','Sous'] },
+      { name:'Kombo Kids', img:'/images/kombo-kids.png', emojis:['🌭','🍟','🧃'], price:24000, items:['Hot-dog Kids','Sok 0.25l','Naggets 50gr','Fri 50gr','Sous'] },
+    ] },
+
+  { id:'pitsa-1', kicker:'PITSA · 04', title:'Pitsalar — I', layout:'pizzas', cols:3, rows:2,
+    cards:[
+      { name:'Pitsa Margarita', img:'/images/margarita.png', ru:'Пицца Маргарита', emoji:'🍕', sizes:[{label:'30 sm',price:42000},{label:'35 sm',price:52000}] },
+      { name:'Pepperoni', img:'/images/pepperoni.png', ru:'Пепперони', emoji:'🍕', featured:true, sizes:[{label:'30 sm',price:54000},{label:'35 sm',price:69000}] },
+      { name:'Kebab pitsa', img:'/images/kebab.png', ru:'Пицца кебаб', emoji:'🍕', sizes:[{label:'30 sm',price:56000},{label:'35 sm',price:68000}] },
+      { name:'Tovuqli pitsa', img:'/images/tovuqli.png', ru:'Куриная пицца', emoji:'🍕', sizes:[{label:'30 sm',price:52000},{label:'35 sm',price:67000}] },
+      { name:'Pitsa 50/50', img:'/images/50-50.png', ru:'Пицца 50/50', emoji:'🍕', sizes:[{label:'30 sm',price:55000},{label:'35 sm',price:70000}] },
+      { name:'Julen pitsa', img:'/images/julen.png', ru:'Жульен с курицей и грибами', emoji:'🍕', sizes:[{label:'30 sm',price:62000},{label:'35 sm',price:77000}] },
+    ] },
+
+  { id:'pitsa-2', kicker:'PITSA · 05', title:'Pitsalar — II', layout:'pizzas', cols:3, rows:2,
+    cards:[
+      { name:'Birlashma', img:'/images/birlashma.png', ru:'Комбинированная', emoji:'🍕', sizes:[{label:'30 sm',price:62000},{label:'35 sm',price:76000}] },
+      { name:'Pitsa 4 mavsum', img:'/images/4-mavsum.png', ru:'Пицца 4 сезона', emoji:'🍕', sizes:[{label:'30 sm',price:63000},{label:'35 sm',price:79000}] },
+      { name:'Pitsa Assorti', img:'/images/assorti.png', ru:'Пицца Ассорти', emoji:'🍕', sizes:[{label:'30 sm',price:63000},{label:'35 sm',price:79000}] },
+      { name:'Donar pitsa', img:'/images/donar-pitsa.png', ru:'Донар пицца', emoji:'🍕', sizes:[{label:'30 sm',price:63000},{label:'35 sm',price:79000}] },
+      { name:'Shefdan kombo', img:'/images/shefdan.png', ru:'Комбо от шефа', emoji:'🍕', featured:true, sizes:[{label:'30 sm',price:74000},{label:'35 sm',price:91000}] },
+      { name:"Go'shtli pitsa", img:'/images/goshtli.png', ru:'Мясная пицца с грибами', emoji:'🍕', sizes:[{label:'30 sm',price:75000},{label:'35 sm',price:92000}] },
+    ] },
+
+  { id:'pitsa-kombo', kicker:'PITSA · 06', title:'Pitsa Kombolar', layout:'combos', cols:2, rows:2,
+    cards:[
+      { name:'Kombo Bolajon', img:'/images/kombo-bolajon.png', ru:'Комбо Болажон', emojis:['🍕','🍟','🥤'], price:79000, items:['Pepperoni (30sm)','Naggets 50gr','Pepsi 1l','Fri 50gr','Sous'] },
+      { name:'Kombo Mazza', img:'/images/kombo-mazza.png', ru:'Комбо Мазза', emojis:['🍕','🍟','🥤'], price:77000, items:['Tovuqli pitsa (30sm)','Naggets 50gr','Pepsi 1l','Fri 50gr','Sous'] },
+      { name:'Kombo Sevimli', img:'/images/kombo-sevimli.png', ru:'Комбо Севимли', emojis:['🍕','🍟','🥤'], price:87000, featured:true, items:['Donar pitsa (30sm)','Naggets 50gr','Pepsi 1l','Fri 50gr','Sous'] },
+      { name:"Kombo Do'stlar", img:'/images/kombo-dostlar.png', ru:'Комбо Дустлар', emojis:['🍕','🍟','🥤'], price:87000, items:['Assorti pitsa (30sm)','Naggets 50gr','Pepsi 1l','Fri 50gr','Sous'] },
+    ] },
+];
+
+/* ====================  HELPERS  ==================== */
+const UZ_MONTHS=['yanvar','fevral','mart','aprel','may','iyun','iyul','avgust','sentabr','oktabr','noyabr','dekabr'];
+const UZ_DAYS=['Yakshanba','Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
+const fmt=n=> typeof n==='number' ? n.toLocaleString('ru-RU').replace(/[\u00a0,]/g,' ') : n;
+const isImage=v=> typeof v==='string' && /[./]/.test(v);
+const imgSrc=p=> p ? p.replace(/^\//,'') : '';
+const CHEESE='<span class="cheese">🧀</span>';
+const CHICK='<span class="chicken">🐔</span>';
+
+function priceVals(prices){
+  return prices.map(p=>{
+    const v=typeof p==='object'?p.v:p, ch=typeof p==='object'&&p.cheese;
+    return `<span class="pr-val">${ch?CHEESE:''}${fmt(v)}</span>`;
+  }).join('');
+}
+function priceRow(r){
+  return `<div class="prow"><div class="prow-l"><span class="prow-label">${r.label}</span>${r.cheese?CHEESE:''}${r.chicken?CHICK:''}</div><div class="prow-r">${priceVals(r.prices)}</div></div>`;
+}
+
+/* ----- card renderers ----- */
+function categoryCard(c){
+  let body;
+  if(c.groups){
+    body=c.groups.map(g=>{
+      const inline=g.rows.length===1 && g.rows[0].label==='';
+      const chip=`<div class="grp-chip"><span class="chip">${g.label}</span>${g.chicken?CHICK:''}</div>`;
+      if(inline) return `<div class="grp"><div class="grp-head">${chip}<div class="prow-r">${priceVals(g.rows[0].prices)}</div></div></div>`;
+      return `<div class="grp"><div class="grp-head">${chip}</div>${g.rows.map(priceRow).join('')}</div>`;
+    }).join('');
+  } else body=c.rows.map(priceRow).join('');
+  const pic=isImage(c.img)?`<div class="cat-img"><img class="float" src="${imgSrc(c.img)}" alt=""></div>`:'';
+  return `<div class="card cat"><div class="cat-main"><div class="cat-title"><span class="cat-name">${c.name}</span>${c.chicken?CHICK:''}</div><div class="cat-rows">${body}</div></div>${pic}</div>`;
+}
+function snackCard(c){
+  let right=c.rows?c.rows.map(priceRow).join(''):'';
+  if(c.drinks) right+=`<div class="drinks">`+c.drinks.map(d=>`<div class="drink"><span class="drink-l">${d.label}</span><span class="drink-s">${d.sizes.join(' · ')}</span></div>`).join('')+`</div>`;
+  const media=isImage(c.img)?`<div class="snack-img"><span class="disc"></span><img class="float" src="${imgSrc(c.img)}" alt=""></div>`:`<div class="snack-emoji">${c.emoji||''}</div>`;
+  return `<div class="card snack"><div class="snack-title"><span class="cat-name sm">${c.name}</span>${c.chicken?CHICK:''}</div><div class="snack-body">${media}<div class="snack-rows">${right}</div></div></div>`;
+}
+function sauceStrip(s){
+  return `<div class="card sauces"><div class="sauces-head"><span class="cat-name">${s.title}</span><span class="sauces-sub">har biri</span></div><div class="sauces-list">${s.items.map((it,i)=>`<div class="sauce" style="--i:${i}"><img class="float sauce-img" src="${imgSrc(it.img)}" alt=""><span class="sauce-name">${it.name}</span><span class="sauce-price">${fmt(s.price)}</span></div>`).join('')}</div></div>`;
+}
+function comboCard(c){
+  const media=isImage(c.img)?`<img class="float" src="${imgSrc(c.img)}" alt="">`:`<div class="combo-emojis">${c.emojis.map((e,i)=>`<span class="float" style="--i:${i}">${e}</span>`).join('')}</div>`;
+  return `<div class="card combo${c.featured?' featured':''}"><div class="combo-main"><div class="combo-name">${c.name}</div>${c.ru?`<div class="ru">${c.ru}</div>`:''}<div class="combo-items">${c.items.map(it=>`<div class="ci"><span class="dot"></span><span>${it}</span></div>`).join('')}</div><div class="combo-badge"><span class="combo-price">${fmt(c.price)}</span><span class="combo-cur">${CONFIG.currency}</span></div></div><div class="combo-media">${media}</div></div>`;
+}
+function pizzaCard(c){
+  return `<div class="card pizza${c.featured?' featured':''}"><div class="pizza-img"><span class="disc"></span><img class="float" src="${imgSrc(c.img)}" alt=""></div><div class="pizza-main"><div class="pizza-name">${c.name}</div>${c.ru?`<div class="ru">${c.ru}</div>`:''}<div class="sizes">${c.sizes.map((s,i)=>{const hot=i===c.sizes.length-1;return `<div class="size${hot?' hot':''}"><span class="size-l">${s.label}</span><span class="size-p">${fmt(s.price)}</span></div>`;}).join('')}</div></div></div>`;
+}
+function pageBody(p){
+  if(p.layout==='categories') return `<div class="grid cols2">${p.cards.map(categoryCard).join('')}</div>`;
+  if(p.layout==='snacks') return `<div class="snacks-wrap"><div class="grid cols3 snack-grid">${p.cards.map(snackCard).join('')}</div>${sauceStrip(p.sauces)}</div>`;
+  if(p.layout==='combos') return `<div class="grid cols${p.cols} combo-grid">${p.cards.map(comboCard).join('')}</div>`;
+  if(p.layout==='pizzas') return `<div class="grid cols${p.cols} pizza-grid">${p.cards.map(pizzaCard).join('')}</div>`;
+  return '';
+}
+
+/* ====================  BUILD  ==================== */
+document.getElementById('brand').textContent=CONFIG.brand;
+document.getElementById('tag').textContent=CONFIG.tagline;
+
+const stage=document.getElementById('stage');
+stage.innerHTML=PAGES.map(p=>`<section class="page" data-id="${p.id}"><div class="page-head"><div class="kicker">${p.kicker}</div><h1 class="title display"><span>${p.title}</span><span class="title-tick"></span></h1></div><div class="page-body">${pageBody(p)}</div></section>`).join('');
+const pages=[...stage.querySelectorAll('.page')];
+
+const prog=document.getElementById('progress');
+prog.innerHTML=PAGES.map((_,i)=>`<div class="seg" data-i="${i}"><div class="fill"></div></div>`).join('')+`<div class="count"><span class="cur">01</span><span class="sep"> / ${String(PAGES.length).padStart(2,'0')}</span></div>`;
+const segs=[...prog.querySelectorAll('.seg')];
+const curEl=prog.querySelector('.cur');
+
+/* ====================  CLOCK  ==================== */
+function tick(){
+  const d=new Date(), p=n=>String(n).padStart(2,'0');
+  document.getElementById('hm').textContent=`${p(d.getHours())}:${p(d.getMinutes())}`;
+  document.getElementById('ss').textContent=p(d.getSeconds());
+  document.getElementById('date').textContent=`${d.getDate()}-${UZ_MONTHS[d.getMonth()]}, ${UZ_DAYS[d.getDay()]}`;
+}
+tick(); setInterval(tick,1000);
+
+/* ====================  SLIDESHOW (wide screens only)  ==================== */
+const slideMode=window.matchMedia('(min-width:821px)');
+let index=0, timer=null;
+const DUR=CONFIG.pageDurationMs;
+
+function show(i){
+  index=i;
+  pages.forEach((pg,k)=>pg.classList.toggle('active',k===i));
+  segs.forEach((s,k)=>{
+    s.classList.toggle('done',k<i);
+    s.classList.toggle('active',k===i);
+    const fill=s.querySelector('.fill');
+    fill.style.animation='none'; void fill.offsetWidth;
+    if(k===i) fill.style.animation=`fillbar ${DUR}ms linear forwards`;
+    else if(k<i) fill.style.width='100%'; else fill.style.width='0';
+  });
+  curEl.textContent=String(i+1).padStart(2,'0');
+}
+function start(){
+  stop();
+  show(index);
+  timer=setInterval(()=>show((index+1)%PAGES.length),DUR);
+}
+function stop(){ if(timer){clearInterval(timer); timer=null;} }
+
+function applyMode(){
+  if(slideMode.matches){ start(); }
+  else { stop(); pages.forEach(p=>p.classList.remove('active')); segs.forEach(s=>s.classList.remove('active','done')); }
+}
+slideMode.addEventListener('change',applyMode);
+applyMode();
+</script>
+</body>
+</html>
