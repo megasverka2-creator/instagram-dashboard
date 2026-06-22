@@ -1,9 +1,9 @@
 {
-  "updated": "2026-06-15 18:54",
+  "updated": "2026-06-22 18:33",
   "counts": {
-    "benison_uz": 125,
-    "dieto_uz": 5,
-    "eddo_uz": 28
+    "benison_uz": 136,
+    "dieto_uz": 0,
+    "eddo_uz": 10
   },
   "analysis": {
     "accounts": {
@@ -13,93 +13,65 @@
           "salbiy": 5,
           "neytral": 10
         },
-        "xulosa": "Mijozlar Benison jamoasining kulgili va ijodiy kontent (prank, film parcha)laridan juda mamnun — aksariyat izohlarda ijobiy his-tuyg'ular va qiziqish seziladi. Restoran atmosferasi va jamoaning xursandchiligi alohida ta'riflanmoqda. Salbiy izohlar deyarli yo'q, lekin bir-ikki izohda 'nima uchun aldaysiz' kabi engil norozilik bor.",
+        "xulosa": "Mijozlarning katta qismi xizmat ko'rsatish sifati va xodimlarning muomalasidan juda mamnun — ayniqsa Uchquduq Smart City filiali bo'yicha ijobiy izohlar ko'p. Bitta ochiq salbiy izoh ovqat sifatiga tegishli bo'lib, bu e'tiborni talab qiladi. Prank kontent ham yuqori qiziqish uyg'otgan va kulgi/ijobiy reaktsiyalar bilan qabul qilingan.",
         "javobsiz": [
           {
-            "username": "noma'lum_1",
-            "izoh": "Нимага алдайсиз",
+            "username": "@",
+            "izoh": "Бемани овкатлари.",
             "turi": "shikoyat",
-            "javob": "Salom! 😊 Sizni aldashni aslo niyat qilmadik — bu shunchaki yaxshi kayfiyat uchun qilingan qiziqarli prank edi 🎭 Keyingi safar Benisonga tashrif buyursangiz, sizni haqiqiy iliq kutib olish kutmoqda! 🔥"
+            "javob": "Salom! 🙏 Fikringiz uchun rahmat — biz har bir mijozimizning fikrini jiddiy qabul qilamiz. Qaysi taom yoki xizmat sizni qoniqtirmadi, bilsak, yaxshilanish uchun harakat qilamiz. Iltimos, batafsil ma'lumot uchun bizga 📞 55-510-80-08 raqamiga qo'ng'iroq qiling yoki Direct'ga yozing — muammoni birgalikda hal qilamiz! ❤️"
           },
           {
-            "username": "noma'lum_2",
+            "username": "@",
+            "izoh": "Shu qizni muomalasi juda ham yaxshi, chaqqon ishlaydi. 👏",
+            "turi": "savol",
+            "javob": "Rahmat, bu so'zlar uchun! 🥰 Xodimimizga sizning maqtovingizni albatta yetkazamiz — bu bizning jamoamiz uchun katta rag'bat! Sizni yana ko'rishdan xursand bo'lamiz, Benison'da doim xush kelibsiz! 🔥🙌"
+          },
+          {
+            "username": "@",
+            "izoh": "Смарт🔥обслуживаниесі күшті уақытында дайын болады.",
+            "turi": "savol",
+            "javob": "Рахмет! 🙏🔥 Уақытылы қызмет көрсету — біздің басты мақсатымыз. Сізді қайта көруге қуаныштымыз, Benison'ға қош келдіңіз! 😍"
+          },
+          {
+            "username": "@",
+            "izoh": "??????????🤔🤔🤔🤔🤔🤔",
+            "turi": "savol",
+            "javob": "Salom! 😊 Biror savolingiz bormi? Biz yordam berishga doim tayyormiz! 🙌 Savolaringiz uchun Direct'ga yozing yoki 📞 55-510-80-08 raqamiga qo'ng'iroq qiling — tez javob beramiz! ❤️"
+          },
+          {
+            "username": "@",
             "izoh": "3 secund blaa oka PIN qlin",
             "turi": "savol",
-            "javob": "Salom! 😄 Albatta, eng zo'r momentni PIN qilib qo'yamiz — taklif uchun rahmat! 📌🔥"
-          },
-          {
-            "username": "noma'lum_3",
-            "izoh": "Moxito ichottisanmi?",
-            "turi": "savol",
-            "javob": "Salom! 😊 Ha, bizda mazali sovuq ichimliklar bor! Batafsil ma'lumot uchun +998 55 510 80 08 raqamiga qo'ng'iroq qiling yoki Direct'ga yozing 🍹❄️"
-          },
-          {
-            "username": "noma'lum_4",
-            "izoh": "Хар бирига объяснять килиш узок вактга кетади start деган жойидан куйинг тшундизми? Бошкаттан Go",
-            "turi": "savol",
-            "javob": "Salom! 😊 Maslahat uchun katta rahmat! 🙏 Keyingi postlarda hisobga olamiz — shunday takliflar bizni yanada yaxshilashga undaydi 💪🔥"
-          },
-          {
-            "username": "noma'lum_5",
-            "izoh": "Trenerofkadan keyin tolka taaarxuuun",
-            "turi": "savol",
-            "javob": "Salom! 😄 To'g'ri aytasiz — mashqdan keyin Benisonda taroq bilan yangilanish kerak 😂🌿 Menyumizda sog'lom va mazali taomlar ham bor, keling tanishtiramiz! 📍 Manzil uchun Direct'ga yozing yoki +998 55 510 80 08 📞"
-          }
-        ]
-      },
-      "dieto_uz": {
-        "kayfiyat": {
-          "ijobiy": 60,
-          "salbiy": 0,
-          "neytral": 40
-        },
-        "xulosa": "Izohlar soni juda kam (5 ta) bo'lib, asosan neytral reaktsiyalar (emoji) ko'p. Bir izohda yetkazib berish (dostavka) haqida savol berilgan — bu muhim lid hisoblanadi. Benison x Dieto hamkorligi ham qiziqish uyg'otmoqda.",
-        "javobsiz": [
-          {
-            "username": "noma'lum_6",
-            "izoh": "Dastafka bormi",
-            "turi": "lid",
-            "javob": "Salom! 😊 Yetkazib berish xizmati haqida to'liq ma'lumot olish uchun +998 55 510 80 08 raqamiga qo'ng'iroq qiling yoki Direct'ga yozing — sizga tezda javob beramiz! 🛵🍱"
+            "javob": "Salom! 😄 Pinlash so'rovingizni ko'rdik — qiziqish uchun rahmat! 🙏 Agar qo'shimcha savollaringiz bo'lsa, Direct'ga yozing yoki 📞 55-510-80-08 ga qo'ng'iroq qiling, yordam berishdan xursand bo'lamiz! 🔥"
           }
         ]
       },
       "eddo_uz": {
         "kayfiyat": {
-          "ijobiy": 75,
-          "salbiy": 5,
-          "neytral": 20
+          "ijobiy": 30,
+          "salbiy": 20,
+          "neytral": 50
         },
-        "xulosa": "Mijozlar Eddo jamoasining kulgili va o'ziga xos kontent (oshpazlar, pitsa)laridan zavqlanmoqda — ko'plab ijobiy va kulgili izohlor bor. Bir izohda buyurtmalar kechikishi haqida kinoya bilan savol berilgan — bu e'tiborni talab qiladi. Umuman olganda, restoran bilan muloqot do'stona va samimiy.",
+        "xulosa": "Eddo izohlari asosan neytral va ko'p qismi shaxsiy muloqot yoki ichki hazil tarzidagi izohlardan iborat. Bitta jiddiy shikoyat — pizza ta'mi va sifatiga oid — e'tiborni talab qiladi. Shuningdek, ish vaqti haqida savol javobsiz qolgan, bu potentsial mijozni yo'qotish xavfini tug'diradi.",
         "javobsiz": [
           {
-            "username": "noma'lum_7",
-            "izoh": "Shu uchun zakazlar kech qoladmi",
-            "turi": "shikoyat",
-            "javob": "Salom! 😊 Ha, bu safar oshpazlarimiz o'zlari ham ozgina uxlab qoldi 😄 Lekin buyurtmangiz doimo o'z vaqtida yetkazilishiga kafolat beramiz! Muammo bo'lsa — +998 55 510 80 08 ga zang qiling, tezda hal qilamiz 💪🔥"
-          },
-          {
-            "username": "noma'lum_8",
-            "izoh": "achigan narsa beriah jinoyat buganda bulardila lkn",
-            "turi": "shikoyat",
-            "javob": "Salom! 😊 Bizda mahsulot sifati birinchi o'rinda turadi — hech qachon muddati o'tgan narsa berilmaydi ✅ Agar biror muammo bo'lsa, +998 55 510 80 08 raqamiga murojaat qiling, darhol ko'rib chiqamiz 🙏"
-          },
-          {
-            "username": "noma'lum_9",
-            "izoh": "Oka birinci oqatga qarab yeganizda zor ciqardi",
+            "username": "@",
+            "izoh": "еддо нечгача очик болади айтворилар",
             "turi": "savol",
-            "javob": "Salom! 😄 Taklif uchun katta rahmat — keyingi safar shunday qilamiz 😂🍽️ Bizning to'liq menyuni ko'rish uchun Direct'ga yozing yoki +998 55 510 80 08 ga qo'ng'iroq qiling! 🔥"
+            "javob": "Salom! 😊 Qiziqishingiz uchun rahmat! Ish vaqtimiz haqida to'liq ma'lumot olish uchun 📞 55-510-80-08 raqamiga qo'ng'iroq qiling yoki Direct'ga yozing — tez javob beramiz! Eddo'da sizni ko'rishdan xursand bo'lamiz! 🎉"
           },
           {
-            "username": "noma'lum_10",
+            "username": "@",
+            "izoh": "Shunaqa yomon tami pitsani borib yedik achitqi tam keladi sirdan  arzon qo'lbola sirga òxshiydi narxini ko'tarsaylayam tamini qaytariyla iltimos",
+            "turi": "shikoyat",
+            "javob": "Salom! 🙏 Fikringiz uchun samimiy rahmat — bu bizga juda muhim! Pizza ta'mi siz kutgan darajada bo'lmagani uchun uzr so'raymiz 😔 Muammoni to'g'rilash uchun darhol oshpazlarimizga yetkazamiz. Iltimos, batafsil gaplashish uchun 📞 55-510-80-08 ga qo'ng'iroq qiling yoki Direct'ga yozing — sizni qoniqtirishga harakat qilamiz! ❤️"
+          },
+          {
+            "username": "@",
             "izoh": "yoqot buni😂",
-            "turi": "shikoyat",
-            "javob": "Salom! 😄 Bu video kulgili bo'lsa-da, tushunchalaringizni hurmat qilamiz — fikr-mulohazangiz uchun rahmat! Keyingi kontentda hisobga olamiz 🙏😊"
-          },
-          {
-            "username": "noma'lum_11",
-            "izoh": "Sunnat legenda😂",
             "turi": "savol",
-            "javob": "Salom! 😂 Ha, Sunnat aka haqiqiy legenda — kelgan safaringizda o'zingiz ham guvoh bo'lasiz! Bizni kutamiz 🔥🍕"
+            "javob": "Salom! 😄 Izohingiz uchun rahmat! Agar biror taklif yoki savolingiz bo'lsa, Direct'ga yozing yoki 📞 55-510-80-08 ga qo'ng'iroq qiling — doim yordam berishga tayyormiz! 🔥"
           }
         ]
       }
