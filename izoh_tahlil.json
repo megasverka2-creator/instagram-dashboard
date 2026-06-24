@@ -1,77 +1,89 @@
 {
-  "updated": "2026-06-22 18:33",
+  "updated": "2026-06-24 07:26",
   "counts": {
-    "benison_uz": 136,
+    "benison_uz": 221,
     "dieto_uz": 0,
-    "eddo_uz": 10
+    "eddo_uz": 23
   },
   "analysis": {
     "accounts": {
       "benison_uz": {
         "kayfiyat": {
-          "ijobiy": 85,
-          "salbiy": 5,
-          "neytral": 10
+          "ijobiy": 65,
+          "salbiy": 10,
+          "neytral": 25
         },
-        "xulosa": "Mijozlarning katta qismi xizmat ko'rsatish sifati va xodimlarning muomalasidan juda mamnun — ayniqsa Uchquduq Smart City filiali bo'yicha ijobiy izohlar ko'p. Bitta ochiq salbiy izoh ovqat sifatiga tegishli bo'lib, bu e'tiborni talab qiladi. Prank kontent ham yuqori qiziqish uyg'otgan va kulgi/ijobiy reaktsiyalar bilan qabul qilingan.",
+        "xulosa": "Aksariyat izohlar O'zbekiston vs Portugaliya o'yini bilan bog'liq bo'lib, auditoriya faol ishtirok etib taxminlarini yozgan — bu postlar yaxshi engagement yaratgan. Ko'pchilik Portugaliyaning g'alabasini taxmin qilgan va o'yin natijasini hazil bilan muhokama qilgan. Restoran haqida bevosita izoh deyarli yo'q, lekin aksiyaga jalb qiluvchi kontent auditoriyani faollashtirganini ko'rsatadi.",
         "javobsiz": [
           {
-            "username": "@",
-            "izoh": "Бемани овкатлари.",
-            "turi": "shikoyat",
-            "javob": "Salom! 🙏 Fikringiz uchun rahmat — biz har bir mijozimizning fikrini jiddiy qabul qilamiz. Qaysi taom yoki xizmat sizni qoniqtirmadi, bilsak, yaxshilanish uchun harakat qilamiz. Iltimos, batafsil ma'lumot uchun bizga 📞 55-510-80-08 raqamiga qo'ng'iroq qiling yoki Direct'ga yozing — muammoni birgalikda hal qilamiz! ❤️"
+            "username": "акша пакша бермисиндер ма...",
+            "izoh": "акша пакша бермисиндер ма точный счет тапкан адамга😂😂",
+            "turi": "savol",
+            "javob": "Haha, ajoyib savol! 😄 Konkurs shartlari haqida batafsil ma'lumot uchun Direct'ga yozing yoki 55-510-80-08 raqamiga qo'ng'iroq qiling — xursand qilamiz! 🔥🎉"
           },
           {
-            "username": "@",
-            "izoh": "Shu qizni muomalasi juda ham yaxshi, chaqqon ishlaydi. 👏",
+            "username": "Булар мана мазза килиб...",
+            "izoh": "Булар мана мазза килиб овкатланяпти каментда халк бир бири билан айтишиб етибди 😂😂😂",
             "turi": "savol",
-            "javob": "Rahmat, bu so'zlar uchun! 🥰 Xodimimizga sizning maqtovingizni albatta yetkazamiz — bu bizning jamoamiz uchun katta rag'bat! Sizni yana ko'rishdan xursand bo'lamiz, Benison'da doim xush kelibsiz! 🔥🙌"
+            "javob": "Siz ham kelib mazali ovqat yeb, o'yinni bizda tomosha qiling — kayfiyat ikki barobar bo'ladi! 😄🍽️ Bron uchun Direct yoki 55-510-80-08 📞"
           },
           {
-            "username": "@",
-            "izoh": "Смарт🔥обслуживаниесі күшті уақытында дайын болады.",
+            "username": "Osh yegincjoʻvir baloni yesin",
+            "izoh": "Osh yegincjoʻvir baloni yesin",
             "turi": "savol",
-            "javob": "Рахмет! 🙏🔥 Уақытылы қызмет көрсету — біздің басты мақсатымыз. Сізді қайта көруге қуаныштымыз, Benison'ға қош келдіңіз! 😍"
+            "javob": "Oshimiz doim tayyor, kelishni kuting! 😄🍲 Bron va manzil uchun Direct'ga yozing yoki 55-510-80-08 ga qo'ng'iroq qiling 📞"
           },
           {
-            "username": "@",
-            "izoh": "??????????🤔🤔🤔🤔🤔🤔",
-            "turi": "savol",
-            "javob": "Salom! 😊 Biror savolingiz bormi? Biz yordam berishga doim tayyormiz! 🙌 Savolaringiz uchun Direct'ga yozing yoki 📞 55-510-80-08 raqamiga qo'ng'iroq qiling — tez javob beramiz! ❤️"
+            "username": "Partugalyaliklar videodagi...",
+            "izoh": "Partugalyaliklar videodagi shotlani koʻrib qotib kulyaptida🤣",
+            "turi": "neytral",
+            "javob": "Ha, o'yin qiziqarli kechdi! 😄🔥 Keyingi o'yinni ham bizda birga tomosha qilamiz — joy band qilish uchun Direct yoki 55-510-80-08 📞🎉"
           },
           {
-            "username": "@",
-            "izoh": "3 secund blaa oka PIN qlin",
+            "username": "Qatka qarap fol ochgandela...",
+            "izoh": "Qatka qarap fol ochgandela 3 1 5 0 boldku kotlarenga qarap fol ochtelami😮",
             "turi": "savol",
-            "javob": "Salom! 😄 Pinlash so'rovingizni ko'rdik — qiziqish uchun rahmat! 🙏 Agar qo'shimcha savollaringiz bo'lsa, Direct'ga yozing yoki 📞 55-510-80-08 ga qo'ng'iroq qiling, yordam berishdan xursand bo'lamiz! 🔥"
+            "javob": "O'yin haqiqatan ham keskin kechdi-da! 😄⚽ Keyingi matchni Benison'da tomosha qiling — atmosfera zo'r bo'ladi! Bron uchun Direct yoki 55-510-80-08 📞🔥"
           }
         ]
       },
       "eddo_uz": {
         "kayfiyat": {
-          "ijobiy": 30,
+          "ijobiy": 45,
           "salbiy": 20,
-          "neytral": 50
+          "neytral": 35
         },
-        "xulosa": "Eddo izohlari asosan neytral va ko'p qismi shaxsiy muloqot yoki ichki hazil tarzidagi izohlardan iborat. Bitta jiddiy shikoyat — pizza ta'mi va sifatiga oid — e'tiborni talab qiladi. Shuningdek, ish vaqti haqida savol javobsiz qolgan, bu potentsial mijozni yo'qotish xavfini tug'diradi.",
+        "xulosa": "Eddo sahifasida ham futbol mavzusidagi postlar katta qismni egallagan va auditoriya faol ishtiroki kuzatilgan. Biroq muhim muammo bor: bir mijoz pizza sifati va ta'mi haqida aniq shikoyat qoldirgan (achitqi hidi, arzon sirs), bu javobsiz qolishi brend obro'siga zarar yetkazishi mumkin. Shuningdek, ish vaqti haqida savol ham javobsiz qolgan.",
         "javobsiz": [
           {
-            "username": "@",
+            "username": "Shunaqa yomon tami pitsani...",
+            "izoh": "Shunaqa yomon tami pitsani borib yedik achitqi tam keladi sirdan arzon qo'lbola sirga òxshiydi narxini ko'tarsaylayam tamini qaytariyla iltimos",
+            "turi": "shikoyat",
+            "javob": "Hurmatli mehmon, fikr-mulohazangiz uchun rahmat 🙏 Bunday tajriba kechirganingiz bizni xafa qildi. Sifat bizning asosiy ustuvorligimiz — muammoni tezda hal qilish uchun iltimos Direct'ga yozing yoki 55-510-80-08 ga qo'ng'iroq qiling, sizni eshitamiz! ❤️"
+          },
+          {
+            "username": "еддо нечгача очик болади...",
             "izoh": "еддо нечгача очик болади айтворилар",
             "turi": "savol",
-            "javob": "Salom! 😊 Qiziqishingiz uchun rahmat! Ish vaqtimiz haqida to'liq ma'lumot olish uchun 📞 55-510-80-08 raqamiga qo'ng'iroq qiling yoki Direct'ga yozing — tez javob beramiz! Eddo'da sizni ko'rishdan xursand bo'lamiz! 🎉"
+            "javob": "Salom! 😊 Ish vaqtimiz haqida batafsil ma'lumot olish uchun Direct'ga yozing yoki 55-510-80-08 ga qo'ng'iroq qiling — yordam beramiz! 📞🔥"
           },
           {
-            "username": "@",
-            "izoh": "Shunaqa yomon tami pitsani borib yedik achitqi tam keladi sirdan  arzon qo'lbola sirga òxshiydi narxini ko'tarsaylayam tamini qaytariyla iltimos",
-            "turi": "shikoyat",
-            "javob": "Salom! 🙏 Fikringiz uchun samimiy rahmat — bu bizga juda muhim! Pizza ta'mi siz kutgan darajada bo'lmagani uchun uzr so'raymiz 😔 Muammoni to'g'rilash uchun darhol oshpazlarimizga yetkazamiz. Iltimos, batafsil gaplashish uchun 📞 55-510-80-08 ga qo'ng'iroq qiling yoki Direct'ga yozing — sizni qoniqtirishga harakat qilamiz! ❤️"
-          },
-          {
-            "username": "@",
-            "izoh": "yoqot buni😂",
+            "username": "Нешеде басталады?",
+            "izoh": "Нешеде басталады?",
             "turi": "savol",
-            "javob": "Salom! 😄 Izohingiz uchun rahmat! Agar biror taklif yoki savolingiz bo'lsa, Direct'ga yozing yoki 📞 55-510-80-08 ga qo'ng'iroq qiling — doim yordam berishga tayyormiz! 🔥"
+            "javob": "Salom! 😊 Soat va tafsilotlar uchun Direct'ga yozing yoki 55-510-80-08 ga qo'ng'iroq qiling — aniq javob beramiz! 📞"
+          },
+          {
+            "username": "Беда пресс сотилади",
+            "izoh": "Беда пресс сотилади",
+            "turi": "lid",
+            "javob": "Salom! 😄 Bizga Direct'ga yozing yoki 55-510-80-08 ga qo'ng'iroq qiling — batafsil ma'lumot beramiz! 🔥"
+          },
+          {
+            "username": "Butun Oʻzbekiston duvoda...",
+            "izoh": "Butun Oʻzbekiston duvoda boʻlsa Ranaldo ham hechkim emas Allohim qoʻllasin ilohim 🤲🤲🤲🤲🫶",
+            "turi": "neytral",
+            "javob": "Omin! 🤲❤️ Milliy jamoamizga birga qo'llab-quvvatlaylik — keyingi o'yinni Eddo'da birga tomosha qilamiz! 🇺🇿🔥"
           }
         ]
       }
