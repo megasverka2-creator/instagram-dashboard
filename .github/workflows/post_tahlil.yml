@@ -1,0 +1,35 @@
+name: AI post-tahlilchi
+
+on:
+  schedule:
+    # Har kuni UTC 05:17 = Toshkent 10:17 (Instagram yig'ilishidan keyin)
+    - cron: '17 5 * * *'
+  workflow_dispatch:  # qo'lda ham ishga tushirish mumkin
+
+permissions:
+  contents: write
+
+jobs:
+  tahlil:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodni olish
+        uses: actions/checkout@v4
+
+      - name: Python o'rnatish
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Postlarni baholash
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python3 post_tahlilchi.py
+
+      - name: Natijani saqlash (commit)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          [ -f post_tahlil.json ] && git add post_tahlil.json || true
+          git diff --staged --quiet || git commit -m "AI post-tahlili yangilandi ($(date +%Y-%m-%d))"
+          git push

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RestoPulse — Post tahlili</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="theme-color" content="#F2F2F7">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="app_guard.js"></script>
+<style>
+  :root {
+    --bg:#F2F2F7; --card:#FFFFFF;
+    --ink:#1C1C1E; --muted:rgba(60,60,67,.6); --faint:rgba(60,60,67,.35);
+    --sep:rgba(60,60,67,.12); --fill:rgba(118,118,128,.12);
+    --good:#34C759; --mid:#FF9500; --bad:#FF3B30;
+    --benison:#ff7a59; --eddo:#f9b234; --dieto:#8a5cf6; --mazzona:#2bb3a3;
+    --sf:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text',Inter,sans-serif;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:var(--sf); color:var(--ink); min-height:100vh; overflow-x:hidden;
+    background:var(--bg); -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1000px; margin:0 auto; padding:26px 18px 60px; }
+  .glass { background:var(--card); border:none; border-radius:18px;
+    box-shadow:0 1px 2px rgba(0,0,0,.04),0 6px 20px rgba(0,0,0,.04); }
+
+  .hero { padding:22px 24px; display:flex; align-items:center; gap:16px; margin-bottom:16px; flex-wrap:wrap; }
+  .hero-logo { width:56px; height:56px; border-radius:14px; flex-shrink:0; font-size:26px;
+    background:var(--mid); display:flex; align-items:center; justify-content:center;
+    box-shadow:0 6px 18px rgba(255,149,0,.3); }
+  .hero h1 { font-size:24px; font-weight:700; letter-spacing:-.55px; }
+  .hero p { color:var(--muted); font-size:13px; margin-top:3px; letter-spacing:-.1px; }
+  .hero .upd { margin-left:auto; text-align:right; background:var(--fill); padding:9px 15px; border-radius:13px; }
+  .hero .upd small { display:block; color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:.5px; font-weight:500; }
+  .hero .upd b { font-size:15px; font-weight:700; color:var(--mid); font-variant-numeric:tabular-nums; }
+
+  .tabs { display:flex; gap:4px; padding:4px; margin-bottom:18px; width:fit-content;
+    background:rgba(118,118,128,.12); border-radius:12px; }
+  .tabs button { border:none; cursor:pointer; padding:8px 16px; border-radius:9px; font-size:13px;
+    font-weight:500; color:var(--ink); background:transparent; font-family:inherit; transition:all .2s; letter-spacing:-.2px; }
+  .tabs button.active { background:#fff; font-weight:600; box-shadow:0 1px 2px rgba(0,0,0,.08),0 3px 8px rgba(0,0,0,.06); }
+
+  .card { padding:18px 20px; margin-bottom:13px; }
+  .card-top { display:flex; align-items:flex-start; gap:14px; }
+  .score { width:54px; height:54px; border-radius:14px; flex-shrink:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; color:#fff; font-weight:700; }
+  .score b { font-size:21px; line-height:1; letter-spacing:-.5px; }
+  .score small { font-size:9px; opacity:.85; margin-top:1px; }
+  .card-head { flex:1; min-width:0; }
+  .card-head .line1 { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .acc-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+  .acc-name { font-weight:700; font-size:15px; letter-spacing:-.3px; }
+  .badge { font-size:11px; font-weight:600; padding:2px 8px; border-radius:7px; background:var(--fill); color:var(--muted); }
+  .badge.k { background:rgba(52,199,89,.14); color:#1f8f3e; }
+  .badge.o { background:rgba(255,149,0,.16); color:#b86a00; }
+  .badge.z { background:rgba(255,59,48,.14); color:#c4291f; }
+  .card-head .meta { color:var(--muted); font-size:12.5px; margin-top:4px; letter-spacing:-.1px; }
+  .card-head .nums { color:var(--faint); font-size:12px; margin-top:3px; font-variant-numeric:tabular-nums; }
+  .ai { margin-top:13px; padding-top:13px; border-top:1px solid var(--sep); display:grid; gap:9px; }
+  .ai .row { display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.45; letter-spacing:-.1px; }
+  .ai .row .ic { flex-shrink:0; font-size:14px; margin-top:1px; }
+  .ai .row .tx b { font-weight:600; }
+  .ai .tavsiya { background:var(--fill); border-radius:11px; padding:10px 12px; }
+  .link { display:inline-flex; align-items:center; gap:5px; margin-top:11px; font-size:12.5px;
+    color:#0a84ff; text-decoration:none; font-weight:500; }
+
+  .empty { padding:50px 24px; text-align:center; color:var(--muted); }
+  .empty .em { font-size:34px; margin-bottom:12px; }
+  .empty p { font-size:14px; line-height:1.5; max-width:420px; margin:0 auto; }
+  .sub-head { margin:22px 6px 10px; font-size:13px; font-weight:600; color:var(--muted);
+    text-transform:uppercase; letter-spacing:.4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero glass">
+    <div class="hero-logo">📊</div>
+    <div>
+      <h1>Post tahlili</h1>
+      <p>Har post AI tomonidan baholanadi — yutuq, kamchilik, tavsiya</p>
+    </div>
+    <div class="upd">
+      <small>Yangilandi</small>
+      <b id="upd">—</b>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="ro'yxat"></div>
+</div>
+
+<script>
+const META = {
+  benison_uz: { nom:"Benison", rang:"var(--benison)" },
+  eddo_uz:    { nom:"Eddo",    rang:"var(--eddo)" },
+  dieto_uz:   { nom:"Dieto",   rang:"var(--dieto)" },
+  mazzona_uz: { nom:"Mazzona", rang:"var(--mazzona)" },
+};
+const TIP = { VIDEO:"Video", IMAGE:"Rasm", CAROUSEL_ALBUM:"Karusel" };
+let DATA = [], FILTER = "all";
+
+function scoreColor(b){
+  if (b >= 7) return "var(--good)";
+  if (b >= 4) return "var(--mid)";
+  return "var(--bad)";
+}
+function darajaClass(d){
+  if (!d) return "";
+  d = d.toLowerCase();
+  if (d.indexOf("kuch") === 0) return "k";
+  if (d.indexOf("o") === 0) return "o";
+  return "z";
+}
+function esc(s){ return (s||"").replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+
+function card(p){
+  const m = META[p.akkaunt] || { nom:p.akkaunt_nom || p.akkaunt, rang:"var(--muted)" };
+  const num = n => (n==null ? "—" : Number(n).toLocaleString("ru-RU"));
+  return `
+  <div class="card glass">
+    <div class="card-top">
+      <div class="score" style="background:${scoreColor(p.baho)}">
+        <b>${p.baho ?? "—"}</b><small>10 dan</small>
+      </div>
+      <div class="card-head">
+        <div class="line1">
+          <span class="acc-dot" style="background:${m.rang}"></span>
+          <span class="acc-name">${esc(m.nom)}</span>
+          <span class="badge">${TIP[p.type] || p.type}</span>
+          <span class="badge ${darajaClass(p.daraja)}">${esc(p.daraja || "")}</span>
+        </div>
+        <div class="meta">${esc(p.kun || "")}, ${esc(p.sana)} ${esc(p.vaqt || "")}</div>
+        <div class="nums">Qamrov ${num(p.reach)} · Faollik ${num(p.engagement)} · ER ${p.post_er ?? "—"}%</div>
+      </div>
+    </div>
+    <div class="ai">
+      <div class="row"><span class="ic">✅</span><span class="tx"><b>Yutuq:</b> ${esc(p.yutuq)}</span></div>
+      <div class="row"><span class="ic">⚠️</span><span class="tx"><b>Kamchilik:</b> ${esc(p.kamchilik)}</span></div>
+      <div class="row tavsiya"><span class="ic">💡</span><span class="tx"><b>Tavsiya:</b> ${esc(p.tavsiya)}</span></div>
+    </div>
+    ${p.permalink ? `<a class="link" href="${p.permalink}" target="_blank" rel="noopener">Postni ochish ↗</a>` : ""}
+  </div>`;
+}
+
+function chizish(){
+  const box = document.getElementById("ro'yxat");
+  let list = DATA.slice();
+  if (FILTER !== "all") list = list.filter(p => p.akkaunt === FILTER);
+  if (!list.length){
+    box.innerHTML = `<div class="empty glass">
+      <div class="em">⏳</div>
+      <p>Hali baholangan post yo'q. Post chiqib, ko'rsatkichlari barqarorlashgach
+      (taxminan 2 kundan keyin) AI uni avtomatik baholaydi va shu yerda ko'rinadi.</p>
+    </div>`;
+    return;
+  }
+  // sana bo'yicha guruhlash (oy)
+  box.innerHTML = list.map(card).join("");
+}
+
+function tabsChiz(){
+  const accs = [...new Set(DATA.map(p => p.akkaunt))];
+  const t = document.getElementById("tabs");
+  const btns = [`<button data-f="all" class="active">Hammasi</button>`]
+    .concat(accs.map(a => `<button data-f="${a}">${(META[a]||{}).nom || a}</button>`));
+  t.innerHTML = btns.join("");
+  t.querySelectorAll("button").forEach(b => b.onclick = () => {
+    t.querySelectorAll("button").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    FILTER = b.dataset.f;
+    chizish();
+  });
+}
+
+fetch("post_tahlil.json?t=" + Date.now())
+  .then(r => r.ok ? r.json() : null)
+  .then(d => {
+    DATA = (d && d.postlar) ? d.postlar : [];
+    document.getElementById("upd").textContent = (d && d.yangilangan) ? d.yangilangan.split(" ")[0] : "—";
+    tabsChiz();
+    chizish();
+  })
+  .catch(() => { DATA = []; chizish(); });
+</script>
+</body>
+</html>
