@@ -491,5 +491,138 @@
         ]
       }
     }
+  },
+  {
+    "generated_at": "2026-06-15 18:58",
+    "data_date": "2026-06-14",
+    "model": "claude-sonnet-4-6",
+    "accounts": {
+      "benison_uz": {
+        "insight": "VIDEO format Benisonда eng yuqori engagement beradi (o'rtacha 332 vs IMAGE 154) — hazilona, kayfiyatli videolar 800+ engagement olgan; Ассорти va assortiment taomlar reklama nomzodi sifatida alohida e'tibor talab qiladi.",
+        "review": "O'tgan haftadan faqat 1 ta post chiqqan (2026-06-11, VIDEO, eng=219) — rejalangan 4 postdan bittasi bajarilgan; natija o'rtacha (reach 8310), lekin hazilona uslub to'g'ri yo'nalishda. Qolgan 3 post chiqmagan — shu haftada tezlikni oshirish va har kuni/ikki kunda post chiqarish ustuvorlik.",
+        "plan": [
+          {
+            "day": "Dushanba",
+            "time": "15:29",
+            "type": "VIDEO",
+            "theme": "Ассорти Миллий — yashirin xazina taqdimoti",
+            "why": "Reklama nomzodi: haftada atigi 11 dona sotilgan, lekin auditoriya bilmaydi — 'sinab ko'rganmisiz?' formati + VIDEO eng yuqori engagement beradi; 15:29 eng yaxshi post bilan bir xil vaqt.",
+            "caption": "Sinab ko'rganmisiz?! 🤫🔥\n\nBenison menyusidagi eng katta SIR — Ассорти Миллий!\nTo'rt-oltita kishi uchun mo'ljallangan bu ulkan dasturxon hali ko'pchilikka sir bo'lib qolmoqda 😮\n\nOilang bilan keling — bir tatib ko'ring!\n📍 Barcha Benison filiallarida\n🕙 10:00 — 22:30\n\n#benison #benisonuz #zarafshon #uchquduq #milliytaomlar",
+            "sana": "2026-06-15"
+          },
+          {
+            "day": "Chorshanba",
+            "time": "13:14",
+            "type": "VIDEO",
+            "theme": "Molotiy vs Kuskoviy shashlik battle — hazilona duel davomi",
+            "why": "Eng yuqori engagement olgan VIDEO postlar hazilona, 'kim yutadi?' formatida — bu seriyaning davomi auditoriya e'tiborini tortadi; 13:14 isbotlangan vaqt.",
+            "caption": "Jang davom etyapti!😎😁\n\nMolotiy mi? Kuskoviy mi? 🥩🔥\nBenisonda bu savol hali javobsiz...\n\nSen qaysi tarafdasiz? Kommentga yoz! 👇\n📍 Barcha Benison filiallarida kutamiz\n🚀 Yetkazib berish: @Benisonuzbot\n\n#benison #shashlik #zarafshon #benisonuz #uchquduq",
+            "sana": "2026-06-17"
+          },
+          {
+            "day": "Juma",
+            "time": "14:40",
+            "type": "VIDEO",
+            "theme": "Juma kayfiyati — Tandir lavash tayyorlanishi",
+            "why": "Tandir lavash TOP sotuvlar orasida — yuqori traffic mahsulot; Juma kunlari kayfiyatli kontent yaxshi ishlaydi, 14:40 Benison uchun isbotlangan soat.",
+            "caption": "Juma — Benison kuni! 😋🎉\n\nTandir lavaш issiq, hidli, to'la lazzat... 🫓🔥\nHafta oxirini eng yaxshi taom bilan yoping!\n\nOilangizni olib keling yoki buyurtma bering 👇\n📞 55-510-80-08 | 🤖 @Benisonuzbot\n🕙 10:00 — 22:30\n\n#benison #tandirlavash #juma #zarafshon #benisonuz",
+            "sana": "2026-06-19"
+          },
+          {
+            "day": "Yakshanba",
+            "time": "13:00",
+            "type": "VIDEO",
+            "theme": "Ассорти Мангал — katta davra uchun taklif (yashirin xazina №2)",
+            "why": "Ассорти Мангал haftada atigi 6 dona sotilgan — eng kam sotiluvchi nomzod; Yakshanba oilaviy kun, katta davra taklifi mos; VIDEO formatda tayyorlanish jarayoni ko'rsatilsa yaxshi ishlaydi.",
+            "caption": "Katta davra — katta dasturxon! 🍢🔥\n\nBenison Ассорти Мангал — to'rt-oltita kishi uchun yaratilgan ulug'vor assortiment!\nHar kim o'z sevimli taomini topadi 😍\n\nYakshanba oilangiz bilan Benisonga marhamat! 🤗\n📍 Zarafshon va Uchquduqdagi barcha filiallar\n🕙 10:00 — 22:30\n\n#benison #assortimangal #yakshanba #zarafshon #benisonuz",
+            "sana": "2026-06-21"
+          }
+        ]
+      },
+      "dieto_uz": {
+        "insight": "Dieto kichik akkaunt (418 follower) lekin engagement rate 174% — har post organik katta reach olayapti; VIDEO format yagona ishlayotgan format; ertalabki vaqt (08:14–09:22) isbotlangan eng samarali soat.",
+        "review": "O'tgan haftadan Dieto uchun hech qanday post chiqmagan — rejadan 4 post bajarilmay qolgan. Dieto uchun muntazamlik eng muhim muammo, shu haftada kamida 3 post chiqarish shart.",
+        "plan": [
+          {
+            "day": "Seshanba",
+            "time": "08:35",
+            "type": "VIDEO",
+            "theme": "Ertalabki sog'lom nonushta — vitrina ko'rinishi",
+            "why": "Eng yaxshi post 08:35 da chiqqan (eng=861); vitrina ko'rsatish formati Dieto'ning asosiy afzalligini — tezlik va tayyor ovqatni — vizual tushuntiradi.",
+            "caption": "Sog'lom kun — sog'lom boshlanish! 🥗✨\n\nDietoga kiring — vitrinadan o'zingizga yoqqanini tanlang va ketavering!\nKutish yo'q. Navbat yo'q. Faqat mazali va foydali taom 😊\n\n📍 Zarafshon: Mo'jizalar maydonchasi\n📍 Uchquduq: Smart City, 3-qavat\n\n#dieto #dietouz #sog'lomovqat #zarafshon #tezovqat",
+            "sana": "2026-06-16"
+          },
+          {
+            "day": "Chorshanba",
+            "time": "08:20",
+            "type": "VIDEO",
+            "theme": "Ofis tushlik tanaffuzi — tez, foydali, hamyonbop",
+            "why": "Ofis xodimlari Dieto'ning asosiy auditoriyasi — tushlik vaqti uchun kontent; ertalabki/kunduzgi chiqish reach ni oshiradi.",
+            "caption": "Tushlik tanaffuzi 12 daqiqada! ⏱️🥗\n\nOfis, ish, qayta ish... Lekin ovqat ham foydali bo'lsin!\nDietoda hamma narsa tayyor — siz faqat tanlab olasiz 😌\n\nBugun tushlikni Dieto bilan o'tkazing!\n📍 Zarafshon: Mo'jizalar maydonchasi\n📍 Uchquduq: Smart City, 3-qavat\n\n#dieto #tushlik #sog'lomovqat #zarafshon #dietouz",
+            "sana": "2026-06-17"
+          },
+          {
+            "day": "Juma",
+            "time": "08:30",
+            "type": "VIDEO",
+            "theme": "Hafta sonu oldidan foydali tanlov — salatlar vitrinasi",
+            "why": "Juma kuni kontent hafta davomida eng yuqori reach oladi; salatlar vitrinasini ko'rsatish Dieto formatini yangi auditoriyaga tushuntiradi.",
+            "caption": "Hafta oxiri keldi — yaxshi tanlov bilan yoping! 🌟\n\nDieto salatlar vitrinasi — rang-barang, foydali, o'ta mazali 🥗\nHar birini o'zing tanla, o'zing ol!\n\nZarafshon yoki Uchquduqda — siz yonimizdasiz 😊\n📍 Mo'jizalar maydonchasi | Smart City 3-qavat\n\n#dieto #salat #juma #foydali #dietouz",
+            "sana": "2026-06-19"
+          },
+          {
+            "day": "Yakshanba",
+            "time": "09:00",
+            "type": "VIDEO",
+            "theme": "Dieto nima? — yangi auditoriya uchun tanitish",
+            "why": "Eng ko'p reach olgan post (17094) yangi auditoriyaga yo'naltirilgan edi — Yakshanba kuni reach yuqori, tanitish videosi yangi followerlarga ko'rinadi.",
+            "caption": "Dieto nima? 🤔✨\n\nTayyor, foydali va mazali taomlar — maxsus vitrinalarda!\nKirasiz → Tanlab olasiz → Chiqasiz 😁\nKutish yo'q, navbat yo'q!\n\nZarafshon va Uchquduqda siz uchun doim tayyor 🥗\n📍 Zarafshon: Mo'jizalar maydonchasi\n📍 Uchquduq: Smart City, 3-qavat\n\n#dieto #dietouz #sog'lomturmush #zarafshon #uchquduq",
+            "sana": "2026-06-21"
+          }
+        ]
+      },
+      "eddo_uz": {
+        "insight": "IMAGE format Eddo uchun ham yaxshi ishlaydi (208 engagement), VIDEO ham o'sib bormoqda (272); hazilona tag-a-friend va kayfiyat kontent eng yuqori natija bergan; Комбо takliflari reklama nomzodi sifatida kombo-awareness oshirish kerak.",
+        "review": "O'tgan haftadan 1 ta VIDEO post chiqqan (2026-06-10, eng=273, reach=8900) — bu Eddo uchun yaxshi natija va kayfiyatli uslub ishlayapti. Lekin rejalangan 4 postdan faqat 1 tasi bajarilgan — shu haftada chastotani oshirish shart.",
+        "plan": [
+          {
+            "day": "Dushanba",
+            "time": "15:55",
+            "type": "IMAGE",
+            "theme": "Yashirin xazina — Комбо Севимли taqdimoti",
+            "why": "Комбо Севимли haftada atigi 11 dona sotilgan — reklama nomzodi; 15:55 Eddo uchun eng yaxshi IMAGE vaqti (1168 engagement olgan post).",
+            "caption": "Sinab ko'rganmisiz?! 😍🔥\n\nEddo Комбо Севимли — hammasi bir joyda!\nBurger + ichimlik + qo'shimcha... to'liq to'yimli set 😋\n\nBugun birini buyurtma qiling — afsuslantirmaydi!\n🚀 Yetkazib berish: @Benisonuzbot | 📞 55-510-80-08\n🕙 10:00 — 23:00\n\n#eddo #eddouz #kombo #zarafshon #fastfud",
+            "sana": "2026-06-15"
+          },
+          {
+            "day": "Chorshanba",
+            "time": "15:55",
+            "type": "IMAGE",
+            "theme": "Tag-a-friend — 'Kim bilan Eddo'ga borasiz?'",
+            "why": "Eng yuqori engagement olgan IMAGE post (1168) 'kimga jo'natishni bilasiz' formatida edi — tag-a-friend mexanizmi reach ni organik oshiradi.",
+            "caption": "Do'stingni tag qil — Eddo'ga borasizmi?! 😅😁\n\nLavash, burger, hotdog... hammasi tayyor, faqat do'st kerak 😄\nKimni olib borasiz — pastga yozing! 👇\n\n📍 Zarafshon va Uchquduqdagi barcha Eddo filiallari\n🕙 10:00 — 23:00\n\n#eddo #eddouz #tagafriend #zarafshon #uchquduq",
+            "sana": "2026-06-17"
+          },
+          {
+            "day": "Juma",
+            "time": "12:40",
+            "type": "VIDEO",
+            "theme": "Juma kayfiyati — Tandir lavash hazilona video",
+            "why": "Tandir lavash TOP sotuvchi mahsulot — yuqori traffic; Juma kayfiyatli VIDEO kontent Eddo'da 272+ engagement olgan; VIDEO format o'sib bormoqda.",
+            "caption": "Juma ham Eddo bilan boshqa bo'ladi! 😁🎉\n\nIssiq tandir lavash, to'la lazzat... 🫓🔥\nHaftaning eng zo'r kuni — eng zo'r taom bilan!\n\nEddo'ga keling yoki yetkazib oling 🚀\n📞 55-510-80-08 | @Benisonuzbot\n🕙 10:00 — 23:00\n\n#eddo #tandirlavash #juma #eddouz #zarafshon",
+            "sana": "2026-06-19"
+          },
+          {
+            "day": "Yakshanba",
+            "time": "13:15",
+            "type": "VIDEO",
+            "theme": "Комбо Дустлар — do'stlar uchun yakshanba taklifi",
+            "why": "Комбо Дустлар haftada 9 dona — eng kam sotilgan kombo; Yakshanba do'stlar bilan chiqish kuni — kombo awareness uchun eng mos vaqt; VIDEO format Eddo'da o'sib bormoqda.",
+            "caption": "Do'stlar bilan Yakshanba = Eddo Комбо Дустлар! 😎🍔\n\nIkkita do'st, bitta ulkan set — burger, lavash, hamma narsa! 🤩\nYakshanba sho'xligini Eddo bilan boshlang!\n\n📍 Barcha Eddo filiallarida\n🚀 @Benisonuzbot | 📞 55-510-80-08\n\n#eddo #eddouz #kombo #dostlar #zarafshon",
+            "sana": "2026-06-21"
+          }
+        ]
+      }
+    }
   }
 ]
