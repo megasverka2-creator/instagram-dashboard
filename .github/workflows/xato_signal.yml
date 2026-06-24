@@ -1,0 +1,40 @@
+name: Xato signali
+
+# Kuzatilayotgan workflowlardan biri XATO bilan tugasa,
+# jamoa Telegram chatiga ogohlantirish yuboradi.
+# Boshqa workflowlarga tegmaydi — ular tugagach o'zi ishga tushadi.
+
+on:
+  workflow_run:
+    workflows:
+      - "Instagram ma'lumot yig'ish"
+      - "iiko savdo yig'ish"
+      - "AI kontent reja"
+      - "Mijozlar ovozi"
+      - "Telegram xabarchi"
+      - "Telegram kanal statistika"
+      - "AI post-tahlilchi"
+      - "Tashqi tetik (dispetcher)"
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+jobs:
+  signal:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Telegram ogohlantirish
+        env:
+          T: ${{ secrets.TELEGRAM_TOKEN }}
+          C: ${{ secrets.TELEGRAM_CHAT_ID }}
+          NOM: ${{ github.event.workflow_run.name }}
+          URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          MATN="⚠️ RestoPulse ogohlantirish — '$NOM' workflow XATO bilan tugadi. Ma'lumot yangilanmagan bo'lishi mumkin. Tekshiring: $URL"
+          curl -s "https://api.telegram.org/bot$T/sendMessage" \
+            --data-urlencode "chat_id=$C" \
+            --data-urlencode "text=$MATN" > /dev/null
+          echo "Ogohlantirish yuborildi: $NOM"

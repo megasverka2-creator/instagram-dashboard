@@ -22,8 +22,11 @@ API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 TG_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
 TG_CHAT = os.environ.get("TELEGRAM_CHAT_ID", "")
 
+SAVDO_PAROL = os.environ.get("SAVDO_PAROL", "")  # shifrlash kaliti (sayt paroli)
+import shifr
+
 BASE = os.path.dirname(os.path.abspath(__file__))
-OUT_FILE = os.path.join(BASE, "izoh_tahlil.json")
+OUT_FILE = os.path.join(BASE, "izoh_tahlil.enc.json")  # endi SHIFRLANGAN saqlanadi
 SITE = "https://megasverka2-creator.github.io/instagram-dashboard"
 
 ACCOUNTS = {
@@ -223,13 +226,16 @@ def main():
         print("  XATO: AI tahlilini o'qib bo'lmadi")
         sys.exit(1)
 
-    with open(OUT_FILE, "w", encoding="utf-8") as f:
-        json.dump({
-            "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "counts": counts,
-            "analysis": analysis,
-        }, f, ensure_ascii=False, indent=2)
-    print(f"  Saqlandi: {OUT_FILE}")
+    data = {
+        "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "counts": counts,
+        "analysis": analysis,
+    }
+    if SAVDO_PAROL:
+        shifr.save_encrypted(OUT_FILE, data, SAVDO_PAROL)
+        print(f"  Saqlandi (shifrlangan): {OUT_FILE}")
+    else:
+        print("  OGOHLANTIRISH: SAVDO_PAROL yo'q — fayl saqlanmadi (Telegram baribir yuboriladi)")
 
     tg_send(build_report(analysis, counts))
     print("=== Tugadi ===\n")

@@ -21,18 +21,24 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Shifrlash kutubxonasi
+        run: pip install cryptography
+
       - name: Izohlarni tahlil qilish
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SAVDO_PAROL: ${{ secrets.SAVDO_PAROL }}
         run: python izoh_agent.py
 
-      - name: Natijani saqlash
+      - name: Natijani saqlash (shifrlangan)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          [ -f izoh_tahlil.json ] && git add izoh_tahlil.json || true
+          # Eski ochiq fayl repo'da bo'lsa — o'chiramiz (maxfiylik)
+          git rm --quiet --ignore-unmatch izoh_tahlil.json || true
+          [ -f izoh_tahlil.enc.json ] && git add izoh_tahlil.enc.json || true
           git diff --staged --quiet || git commit -m "Mijozlar ovozi yangilandi ($(date +%Y-%m-%d))"
           git push
