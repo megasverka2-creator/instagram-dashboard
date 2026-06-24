@@ -1,0 +1,60 @@
+name: Tashqi tetik (dispetcher)
+
+# Bu workflow boshqa workflowlarni ISHONCHLI ishga tushiradi.
+# Uni tashqi soat (cron-job.org) "kunlik" yoki "haftalik" rejimda turtadi.
+# workflow_dispatch GitHub'ning kechikadigan jadvaliga bog'liq emas — darrov ishlaydi.
+
+on:
+  workflow_dispatch:
+    inputs:
+      rejim:
+        description: "Qaysi to'plamni ishga tushirish"
+        type: choice
+        default: kunlik
+        options:
+          - kunlik
+          - haftalik
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  tetik:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Workflowlarni ketma-ket ishga tushirish
+        env:
+          GH_TOKEN: ${{ secrets.TETIK_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          rejim="${{ inputs.rejim }}"
+          echo "Rejim: $rejim"
+
+          ishga() {
+            echo "→ $1 ishga tushyapti..."
+            gh workflow run "$1" --repo "$REPO" --ref main \
+              && echo "  ✓ yuborildi" \
+              || echo "  ! ogohlantirish: $1 yuborilmadi"
+          }
+
+          if [ "$rejim" = "haftalik" ]; then
+            ishga kontent_ai.yml
+            sleep 120
+            ishga izoh.yml
+          else
+            # 1) Ma'lumot yig'uvchilar (ketma-ket, push to'qnashmasligi uchun)
+            ishga collect.yml
+            sleep 90
+            ishga savdo.yml
+            sleep 90
+            ishga telegram_kanal.yml
+            sleep 90
+            # 2) Tahlil — yangi Instagram ma'lumotiga tayanadi
+            ishga post_tahlil.yml
+            sleep 90
+            # 3) Telegram eslatma/xulosa — eng oxirida, yangi raqamlar bilan
+            ishga telegram.yml
+          fi
+
+          echo "Hammasi yuborildi."
