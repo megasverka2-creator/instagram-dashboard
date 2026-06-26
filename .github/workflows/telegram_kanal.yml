@@ -2,9 +2,10 @@ name: Telegram kanal statistika
 
 # Har kuni avtomatik + qo'lda (rejim tanlash bilan)
 on:
-  schedule:
-    # Har kuni UTC 04:15 da (Toshkent ~09:15)
-    - cron: '15 4 * * *'
+  # >>> TASHQI TETIK (cron-job.org) ishlatilgani uchun jadval O'CHIRILDI. Qaytarish: pastdagi # belgilarni olib tashlang. <<<
+  # schedule:
+  #   # Har kuni UTC 04:15 da (Toshkent ~09:15)
+  #   - cron: '15 4 * * *'
   workflow_dispatch:
     inputs:
       rejim:

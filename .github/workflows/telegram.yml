@@ -1,9 +1,10 @@
 name: Telegram xabarchi
 
 on:
-  schedule:
-    # Har kuni UTC 03:30 = Toshkent 08:30
-    - cron: '30 3 * * *'
+  # >>> TASHQI TETIK (cron-job.org) ishlatilgani uchun jadval O'CHIRILDI. Qaytarish: pastdagi # belgilarni olib tashlang. <<<
+  # schedule:
+  #   # Har kuni UTC 03:30 = Toshkent 08:30
+  #   - cron: '30 3 * * *'
   workflow_dispatch:
     inputs:
       rejim:

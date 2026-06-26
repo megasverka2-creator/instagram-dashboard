@@ -1,9 +1,10 @@
 name: AI post-tahlilchi
 
 on:
-  schedule:
-    # Har kuni UTC 05:17 = Toshkent 10:17 (Instagram yig'ilishidan keyin)
-    - cron: '17 5 * * *'
+  # >>> TASHQI TETIK (cron-job.org) ishlatilgani uchun jadval O'CHIRILDI. Qaytarish: pastdagi # belgilarni olib tashlang. <<<
+  # schedule:
+  #   # Har kuni UTC 05:17 = Toshkent 10:17 (Instagram yig'ilishidan keyin)
+  #   - cron: '17 5 * * *'
   workflow_dispatch:  # qo'lda ham ishga tushirish mumkin
 
 permissions:

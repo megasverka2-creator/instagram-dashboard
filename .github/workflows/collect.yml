@@ -2,9 +2,10 @@ name: Instagram ma'lumot yig'ish
 
 # Har kuni avtomatik ishga tushadi + qo'lda ham ishga tushirish mumkin
 on:
-  schedule:
-    # Har kuni UTC 04:00 da (Toshkent vaqti bilan ~09:00)
-    - cron: '0 4 * * *'
+  # >>> TASHQI TETIK (cron-job.org) ishlatilgani uchun jadval O'CHIRILDI. Qaytarish: pastdagi # belgilarni olib tashlang. <<<
+  # schedule:
+  #   # Har kuni UTC 04:00 da (Toshkent vaqti bilan ~09:00)
+  #   - cron: '0 4 * * *'
   workflow_dispatch:   # "Run workflow" tugmasi bilan qo'lda ishga tushirish
 
 permissions:

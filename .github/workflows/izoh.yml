@@ -1,9 +1,10 @@
 name: Mijozlar ovozi
 
 on:
-  schedule:
-    # Har dushanba UTC 02:45 = Toshkent 07:45 (haftalik xulosadan oldin)
-    - cron: '45 2 * * 1'
+  # >>> TASHQI TETIK (cron-job.org) ishlatilgani uchun jadval O'CHIRILDI. Qaytarish: pastdagi # belgilarni olib tashlang. <<<
+  # schedule:
+  #   # Har dushanba UTC 02:45 = Toshkent 07:45 (haftalik xulosadan oldin)
+  #   - cron: '45 2 * * 1'
   workflow_dispatch:
 
 permissions:

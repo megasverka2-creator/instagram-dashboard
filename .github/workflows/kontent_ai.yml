@@ -1,9 +1,10 @@
 name: AI kontent reja
 
 on:
-  schedule:
-    # Har dushanba UTC 03:00 = Toshkent 08:00
-    - cron: '0 3 * * 1'
+  # >>> TASHQI TETIK (cron-job.org) ishlatilgani uchun jadval O'CHIRILDI. Qaytarish: pastdagi # belgilarni olib tashlang. <<<
+  # schedule:
+  #   # Har dushanba UTC 03:00 = Toshkent 08:00
+  #   - cron: '0 3 * * 1'
   workflow_dispatch:  # qo'lda ham ishga tushirish mumkin
 
 permissions:
