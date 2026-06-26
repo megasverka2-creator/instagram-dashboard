@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="app_guard.js"></script>
+<script src="rp_shifr.js"></script>
 <style>
   :root {
     --bg:#F2F2F7; --card:#FFFFFF;
@@ -175,8 +176,7 @@ function tabsChiz(){
   });
 }
 
-fetch("post_tahlil.json?t=" + Date.now())
-  .then(r => r.ok ? r.json() : null)
+fetchEncrypted("post_tahlil.enc.json", "post_tahlil.json")
   .then(d => {
     DATA = (d && d.postlar) ? d.postlar : [];
     document.getElementById("upd").textContent = (d && d.yangilangan) ? d.yangilangan.split(" ")[0] : "—";

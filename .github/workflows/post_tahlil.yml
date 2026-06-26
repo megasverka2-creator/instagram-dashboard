@@ -22,15 +22,21 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Shifrlash kutubxonasi
+        run: pip install cryptography
+
       - name: Postlarni baholash
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SAVDO_PAROL: ${{ secrets.SAVDO_PAROL }}
         run: python3 post_tahlilchi.py
 
-      - name: Natijani saqlash (commit)
+      - name: Natijani saqlash (shifrlangan)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          [ -f post_tahlil.json ] && git add post_tahlil.json || true
+          # Eski ochiq fayl bo'lsa repodan va saytdan o'chiramiz (maxfiylik)
+          git rm --quiet --ignore-unmatch post_tahlil.json || true
+          [ -f post_tahlil.enc.json ] && git add post_tahlil.enc.json || true
           git diff --staged --quiet || git commit -m "AI post-tahlili yangilandi ($(date +%Y-%m-%d))"
           git push

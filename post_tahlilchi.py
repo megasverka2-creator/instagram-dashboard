@@ -38,7 +38,10 @@ API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE, "instagram_data.json")
-OUT_FILE = os.path.join(BASE, "post_tahlil.json")
+OUT_FILE = os.path.join(BASE, "post_tahlil.enc.json")   # endi SHIFRLANGAN saqlanadi
+OLD_PLAIN = os.path.join(BASE, "post_tahlil.json")       # eski ochiq fayl (o'tish davri)
+SAVDO_PAROL = os.environ.get("SAVDO_PAROL", "")          # shifrlash kaliti (sayt paroli)
+import shifr
 
 # Akkaunt nomlari (dashboard.js bilan bir xil)
 ACC_NOM = {
@@ -154,13 +157,16 @@ def main():
     # Avval baholangan postlar
     natijalar = []
     done_ids = set()
-    if os.path.exists(OUT_FILE):
+    prev = shifr.load_encrypted(OUT_FILE, SAVDO_PAROL) if SAVDO_PAROL else None
+    if prev is None and os.path.exists(OLD_PLAIN):
+        # Ko'chish davri: hali shifrlangan fayl yo'q — eski ochiqdan o'qib olamiz (bir martalik)
         try:
-            prev = json.load(open(OUT_FILE, encoding="utf-8"))
-            natijalar = prev.get("postlar", [])
-            done_ids = {x["id"] for x in natijalar}
+            prev = json.load(open(OLD_PLAIN, encoding="utf-8"))
         except Exception:
-            pass
+            prev = None
+    if prev:
+        natijalar = prev.get("postlar", [])
+        done_ids = {x["id"] for x in natijalar}
     print(f"Avval baholangan: {len(done_ids)} ta")
 
     # Nomzodlarni yig'amiz
@@ -240,8 +246,11 @@ def main():
         "yangilangan": datetime.now().strftime("%Y-%m-%d %H:%M"),
         "postlar": natijalar,
     }
-    json.dump(out, open(OUT_FILE, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-    print(f"\nTayyor: {yangi} ta yangi post baholandi. Jami: {len(natijalar)} ta.")
+    if SAVDO_PAROL:
+        shifr.save_encrypted(OUT_FILE, out, SAVDO_PAROL)
+        print(f"\nTayyor: {yangi} ta yangi post baholandi. Jami: {len(natijalar)} ta. (shifrlangan)")
+    else:
+        print("\nOGOHLANTIRISH: SAVDO_PAROL yo'q — fayl saqlanmadi.")
 
 
 if __name__ == "__main__":
