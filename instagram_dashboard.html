@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="app_guard.js"></script>
+<script src="rp_shifr.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
@@ -232,8 +233,7 @@ window.addEventListener("load", async function () {
   const fmt = n => Math.round(n).toLocaleString("ru-RU").replace(/,/g, " ");
   let data = null;
   try {
-    const r = await fetch("telegram_kanal_data.json?v=" + Date.now());
-    if (r.ok) data = await r.json();
+    data = await fetchEncrypted("telegram_kanal_data.enc.json", "telegram_kanal_data.json");
   } catch (e) {}
 
   if (!data || !data.length) {

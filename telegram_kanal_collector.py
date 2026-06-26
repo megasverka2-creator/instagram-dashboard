@@ -31,6 +31,9 @@ REJIM = os.environ.get("REJIM", "yigish").strip().lower()
 
 KANALLAR_FAYL = "tg_kanallar.json"
 DATA_FAYL = "telegram_kanal_data.json"
+ENC_FAYL = "telegram_kanal_data.enc.json"        # endi SHIFRLANGAN saqlanadi
+SAVDO_PAROL = os.environ.get("SAVDO_PAROL", "")  # shifrlash kaliti (sayt paroli)
+import shifr
 
 # Toshkent vaqti (UTC+5)
 TOSHKENT = timezone(timedelta(hours=5))
@@ -155,15 +158,21 @@ def yigish():
         print("  Hech qaysi chatdan ma'lumot olinmadi.")
         sys.exit(1)
 
-    data = oqi_json(DATA_FAYL, [])
+    # Eski tarixni o'qish: avval shifrlangan, bo'lmasa ko'chish davri uchun ochiq fayl
+    data = shifr.load_encrypted(ENC_FAYL, SAVDO_PAROL) if SAVDO_PAROL else None
+    if data is None:
+        data = oqi_json(DATA_FAYL, [])
     # Bugungi yozuv bor bo'lsa — yangilaymiz (qayta ishga tushirishda dublikat bo'lmasin)
     data = [d for d in data if d.get("date") != BUGUN]
     data.append(bugungi)
     data.sort(key=lambda d: d.get("date", ""))
     # Maksimum 400 kunlik tarix
     data = data[-400:]
-    yoz_json(DATA_FAYL, data)
-    print(f"\n  Saqlandi: {DATA_FAYL} ({len(data)} kunlik yozuv)")
+    if SAVDO_PAROL:
+        shifr.save_encrypted(ENC_FAYL, data, SAVDO_PAROL)
+        print(f"\n  Saqlandi (shifrlangan): {ENC_FAYL} ({len(data)} kunlik yozuv)")
+    else:
+        print("\n  OGOHLANTIRISH: SAVDO_PAROL yo'q — fayl saqlanmadi.")
 
 
 if __name__ == "__main__":
