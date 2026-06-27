@@ -31,11 +31,13 @@ jobs:
           SAVDO_PAROL: ${{ secrets.SAVDO_PAROL }}
         run: python kontent_ai_generator.py
 
-      - name: Natijani saqlash (commit)
+      - name: Natijani saqlash (shifrlangan)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add kontent_reja_ai.json
-          [ -f kontent_reja_arxiv.json ] && git add kontent_reja_arxiv.json || true
+          # Eski ochiq fayllarni repodan/saytdan o'chiramiz (maxfiylik)
+          git rm --quiet --ignore-unmatch kontent_reja_ai.json kontent_reja_arxiv.json || true
+          [ -f kontent_reja_ai.enc.json ] && git add kontent_reja_ai.enc.json || true
+          [ -f kontent_reja_arxiv.enc.json ] && git add kontent_reja_arxiv.enc.json || true
           git diff --staged --quiet || git commit -m "AI kontent reja yangilandi ($(date +%Y-%m-%d))"
           git push

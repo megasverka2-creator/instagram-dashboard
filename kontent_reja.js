@@ -509,11 +509,8 @@ async function loadData() {
 
   // 2) AI tuzgan reja (bo'lsa)
   try {
-    const res = await fetch("kontent_reja_ai.json?v=" + Date.now());
-    if (res.ok) {
-      const ai = await res.json();
-      if (ai && ai.accounts) { AI_PLAN = ai; MODE = "ai"; }
-    }
+    const ai = await fetchEncrypted("kontent_reja_ai.enc.json", "kontent_reja_ai.json");
+    if (ai && ai.accounts) { AI_PLAN = ai; MODE = "ai"; }
   } catch(e) { /* AI reja yo'q — shablon rejimda davom */ }
 }
 

@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="app_guard.js"></script>
+<script src="rp_shifr.js"></script>
 
 <style>
   :root {
@@ -321,12 +322,11 @@
   }
 
   try {
-    const [planR, igR] = await Promise.all([
-      fetch("kontent_reja_ai.json?v=" + Date.now()),
+    const [plan, igR] = await Promise.all([
+      fetchEncrypted("kontent_reja_ai.enc.json", "kontent_reja_ai.json"),
       fetch("instagram_data.json?v=" + Date.now()),
     ]);
-    if (!planR.ok || !igR.ok) throw new Error("fayl yo'q");
-    const plan = await planR.json();
+    if (!plan || !igR.ok) throw new Error("fayl yo'q");
     const ig = await igR.json();
     const igLast = ig[ig.length - 1] || {};
     const today = bugunISO();

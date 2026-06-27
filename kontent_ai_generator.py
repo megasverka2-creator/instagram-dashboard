@@ -63,6 +63,26 @@ API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 BASE = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE, "instagram_data.json")
 OUT_FILE = os.path.join(BASE, "kontent_reja_ai.json")
+ENC_FILE = os.path.join(BASE, "kontent_reja_ai.enc.json")        # endi SHIFRLANGAN
+ARXIV_FILE = os.path.join(BASE, "kontent_reja_arxiv.json")
+ARXIV_ENC = os.path.join(BASE, "kontent_reja_arxiv.enc.json")    # arxiv ham shifrlangan
+SAVDO_PAROL = os.environ.get("SAVDO_PAROL", "")
+import shifr
+
+
+def _load_reja():
+    """Joriy AI rejani o'qish: avval shifrlangan, bo'lmasa eski ochiq (ko'chish davri)."""
+    if SAVDO_PAROL:
+        d = shifr.load_encrypted(ENC_FILE, SAVDO_PAROL)
+        if d is not None:
+            return d
+    if os.path.exists(OUT_FILE):
+        try:
+            with open(OUT_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return None
 
 
 # =============================================================
@@ -117,10 +137,9 @@ def last_week_review(snapshot):
     sections = []
 
     # 1) O'tgan AI reja (bo'lsa)
-    if os.path.exists(OUT_FILE):
+    prev = _load_reja()
+    if prev:
         try:
-            with open(OUT_FILE, "r", encoding="utf-8") as f:
-                prev = json.load(f)
             lines = [f"O'TGAN HAFTA REJASI (sen tuzgansan, {prev.get('generated_at', '?')}):"]
             for key, v in prev.get("accounts", {}).items():
                 items = [f"{p.get('day')} {p.get('time')} [{p.get('type')}] {p.get('theme')}"
@@ -448,20 +467,22 @@ def main():
             print("  Javob oxiri:", answer[-200:])
         sys.exit(1)
 
-    # Eski rejani arxivga (oxirgi 8 hafta saqlanadi)
-    if os.path.exists(OUT_FILE):
+    # Eski rejani arxivga (oxirgi 8 hafta saqlanadi) — shifrlangan
+    old = _load_reja()
+    if old:
         try:
-            with open(OUT_FILE, "r", encoding="utf-8") as f:
-                old = json.load(f)
-            arxiv_file = os.path.join(BASE, "kontent_reja_arxiv.json")
-            arxiv = []
-            if os.path.exists(arxiv_file):
-                with open(arxiv_file, "r", encoding="utf-8") as f:
+            arxiv = None
+            if SAVDO_PAROL:
+                arxiv = shifr.load_encrypted(ARXIV_ENC, SAVDO_PAROL)
+            if arxiv is None and os.path.exists(ARXIV_FILE):   # ko'chish: eski ochiq arxiv
+                with open(ARXIV_FILE, "r", encoding="utf-8") as f:
                     arxiv = json.load(f)
+            if arxiv is None:
+                arxiv = []
             arxiv.append(old)
             arxiv = arxiv[-8:]
-            with open(arxiv_file, "w", encoding="utf-8") as f:
-                json.dump(arxiv, f, ensure_ascii=False, indent=2)
+            if SAVDO_PAROL:
+                shifr.save_encrypted(ARXIV_ENC, arxiv, SAVDO_PAROL)
         except Exception:
             pass
 
@@ -482,12 +503,15 @@ def main():
         "model": MODEL,
         "accounts": plan["accounts"],
     }
-    with open(OUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(result, f, ensure_ascii=False, indent=2)
+    if SAVDO_PAROL:
+        shifr.save_encrypted(ENC_FILE, result, SAVDO_PAROL)
+    else:
+        with open(OUT_FILE, "w", encoding="utf-8") as f:
+            json.dump(result, f, ensure_ascii=False, indent=2)
 
     for k, v in plan["accounts"].items():
         print(f"  -> {k}: {len(v.get('plan', []))} ta post")
-    print(f"  Saqlandi: {OUT_FILE}")
+    print(f"  Saqlandi: {'(shifrlangan) ' + ENC_FILE if SAVDO_PAROL else OUT_FILE}")
     print("=== Tugadi ===\n")
 
 

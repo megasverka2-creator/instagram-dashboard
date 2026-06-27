@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="app_guard.js"></script>
+<script src="rp_shifr.js"></script>
 <script src="rp_cost.js"></script>
 <style>
   :root{
@@ -198,7 +199,7 @@ const AGENTS = [
 
 async function loadStatus(){
   const s={};
-  try{ const r=await fetch("kontent_reja_ai.json?v="+Date.now()); if(r.ok){const d=await r.json(); s.reja=d.generated_at||d.data_date||null;} }catch(e){}
+  try{ const d=await fetchEncrypted("kontent_reja_ai.enc.json","kontent_reja_ai.json"); if(d){ s.reja=d.generated_at||d.data_date||null; } }catch(e){}
   return s;
 }
 function agoText(iso){

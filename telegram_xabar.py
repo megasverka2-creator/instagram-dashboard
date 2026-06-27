@@ -60,6 +60,19 @@ def load_savdo():
         return None
 
 
+def load_reja():
+    """AI kontent rejani ochish: avval shifrlangan, bo'lmasa eski ochiq."""
+    if SAVDO_PAROL:
+        try:
+            import shifr
+            d = shifr.load_encrypted(os.path.join(BASE, "kontent_reja_ai.enc.json"), SAVDO_PAROL)
+            if d is not None:
+                return d
+        except Exception:
+            pass
+    return load_json("kontent_reja_ai.json")
+
+
 def fmt(n):
     return f"{round(n):,}".replace(",", " ")
 
@@ -172,7 +185,7 @@ def haftalik_xulosa():
             msg.append("")
 
     # Yangi reja
-    reja = load_json("kontent_reja_ai.json")
+    reja = load_reja()
     if reja:
         msg.append(f"🤖 <b>Yangi AI reja tayyor</b> ({reja.get('generated_at','')[:10]})")
         for acc, name in ACCOUNTS.items():
@@ -227,7 +240,7 @@ def main():
         send(haftalik_xulosa())
 
     # 2) Har kuni — bugungi eslatma (reja bo'lsa)
-    reja = load_json("kontent_reja_ai.json")
+    reja = load_reja()
     if reja:
         x = bugungi_eslatma(reja)
         if x:
