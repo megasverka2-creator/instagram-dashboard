@@ -24,7 +24,7 @@
     --sep:rgba(60,60,67,.12); --fill:rgba(118,118,128,.12);
     --accent:#5856D6;
     --benison:#ff7a59; --dieto:#8a5cf6; --eddo:#f9b234;
-    --good:#34C759; --bad:#FF3B30;
+    --good:#34C759; --bad:#FF3B30; --warn:#FF9F0A;
     --sf:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text',Inter,sans-serif;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -109,6 +109,11 @@
   .gb .track { height:8px; border-radius:5px; background:var(--fill); overflow:hidden; }
   .gb .fill { height:100%; border-radius:5px; background:var(--accent); transition:width .6s ease; }
   .gb .fill.done { background:var(--good); }
+  .gb .fill.near { background:var(--warn); }
+  .gb .fill.low { background:var(--bad); }
+  .kpi .val.g-good { color:var(--good); }
+  .kpi .val.g-near { color:var(--warn); }
+  .kpi .val.g-low { color:var(--bad); }
 
   .chart-card { padding:22px 24px; margin-bottom:13px; }
   .chart-card h3 { font-size:16.5px; font-weight:600; letter-spacing:-.35px; margin-bottom:3px; }

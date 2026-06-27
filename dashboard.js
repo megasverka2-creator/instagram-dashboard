@@ -176,11 +176,21 @@ function monthBaseline(acc, field) {
 
 function goalBar(label, currentText, pct) {
   const p = Math.max(0, Math.min(100, Math.round(pct)));
+  const cls = p >= 100 ? "done" : (p >= 70 ? "near" : "low");
   return `
     <div class="gb">
       <div class="gl"><span>${label}</span><b>${currentText} · ${p}%</b></div>
-      <div class="track"><div class="fill ${p >= 100 ? "done" : ""}" style="width:${p}%"></div></div>
+      <div class="track"><div class="fill ${cls}" style="width:${p}%"></div></div>
     </div>`;
+}
+
+// Maqsadga nisbatan rang/baho: yashil (yetdi), sariq (yaqin), qizil (past)
+function bahoKlass(qiymat, maqsad) {
+  if (!maqsad) return { klass: "", matn: "" };
+  const pct = (qiymat || 0) / maqsad * 100;
+  if (pct >= 100) return { klass: "g-good", matn: "✓ maqsadga yetdi" };
+  if (pct >= 70)  return { klass: "g-near", matn: "maqsadga yaqin" };
+  return { klass: "g-low", matn: "maqsaddan past" };
 }
 
 function renderGoals() {
@@ -241,6 +251,9 @@ function renderAccount(acc) {
 
   const fg = growth(acc, "followers");
   const rg = growth(acc, "reach_7d");
+  const g = (GOALS && GOALS.accounts) ? GOALS.accounts[acc] : null;
+  const erB = bahoKlass(d.engagement_rate || 0, g && g.er_target);
+  const rcB = bahoKlass(d.reach_7d || 0, g && g.reach_target);
 
   let html = `
     <div class="section-title" style="color:#fff">
@@ -256,13 +269,13 @@ function renderAccount(acc) {
       </div>
       <div class="kpi glass">
         <div class="label">${IC.bolt} Faollik darajasi (ER)</div>
-        <div class="val">${d.engagement_rate||0}%</div>
-        <div class="hint">${erVerdict(d.engagement_rate)}</div>
+        <div class="val ${erB.klass}">${d.engagement_rate||0}%</div>
+        <div class="hint">${g && g.er_target ? `Maqsad: ${g.er_target}% · ${erB.matn}` : erVerdict(d.engagement_rate)}</div>
       </div>
       <div class="kpi glass">
         <div class="label">${IC.eye} Qamrov (7 kun)</div>
-        <div class="val">${fmt(d.reach_7d)} ${chgBadge(rg)}</div>
-        <div class="hint">Postlarni ko'rgan odamlar</div>
+        <div class="val ${rcB.klass}">${fmt(d.reach_7d)} ${chgBadge(rg)}</div>
+        <div class="hint">${g && g.reach_target ? `Maqsad: ${fmt(g.reach_target)} · ${rcB.matn}` : "Postlarni ko'rgan odamlar"}</div>
       </div>
       <div class="kpi glass">
         <div class="label">${IC.pin} Profil ko'rishlari</div>
