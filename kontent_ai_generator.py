@@ -62,6 +62,7 @@ MAX_TOKENS = 12000          # AI javobi uchun yetarli joy (3 restoran x 4 post +
 API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 BASE = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE, "instagram_data.json")
+IG_ENC = os.path.join(BASE, "instagram_data.enc.json")
 OUT_FILE = os.path.join(BASE, "kontent_reja_ai.json")
 ENC_FILE = os.path.join(BASE, "kontent_reja_ai.enc.json")        # endi SHIFRLANGAN
 ARXIV_FILE = os.path.join(BASE, "kontent_reja_arxiv.json")
@@ -431,14 +432,14 @@ def main():
         print("  XATO: ANTHROPIC_API_KEY topilmadi (GitHub Secret'ni tekshiring)")
         sys.exit(1)
 
-    if not os.path.exists(DATA_FILE):
-        print("  XATO: instagram_data.json topilmadi — avval ma'lumot yig'ish kerak")
-        sys.exit(1)
-
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
-        history = json.load(f)
+    history = None
+    if SAVDO_PAROL:
+        history = shifr.load_encrypted(IG_ENC, SAVDO_PAROL)
+    if history is None and os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            history = json.load(f)
     if not history:
-        print("  XATO: ma'lumot bo'sh")
+        print("  XATO: instagram ma'lumoti topilmadi/bo'sh — avval ma'lumot yig'ish kerak")
         sys.exit(1)
 
     snapshot = history[-1]

@@ -611,9 +611,8 @@ function exportPDF() {
 // ============================================================
 async function loadData() {
   try {
-    const res = await fetch("instagram_data.json?v=" + Date.now());
-    if (!res.ok) throw new Error("yo'q");
-    const data = await res.json();
+    const data = await fetchEncrypted("instagram_data.enc.json", "instagram_data.json");
+    if (!data) throw new Error("yo'q");
     if (Array.isArray(data) && data.length) {
       HISTORY = data;
       document.getElementById("demoBanner").style.display = "none";

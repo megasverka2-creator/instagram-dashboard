@@ -322,12 +322,11 @@
   }
 
   try {
-    const [plan, igR] = await Promise.all([
+    const [plan, ig] = await Promise.all([
       fetchEncrypted("kontent_reja_ai.enc.json", "kontent_reja_ai.json"),
-      fetch("instagram_data.json?v=" + Date.now()),
+      fetchEncrypted("instagram_data.enc.json", "instagram_data.json"),
     ]);
-    if (!plan || !igR.ok) throw new Error("fayl yo'q");
-    const ig = await igR.json();
+    if (!plan || !ig) throw new Error("fayl yo'q");
     const igLast = ig[ig.length - 1] || {};
     const today = bugunISO();
 

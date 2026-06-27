@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="app_guard.js"></script>
+<script src="rp_shifr.js"></script>
 <style>
   :root{
     --bg:#F2F2F7; --card:#FFFFFF; --ink:#1C1C1E; --muted:rgba(60,60,67,.6); --faint:rgba(60,60,67,.35);
@@ -114,9 +115,7 @@
 <script>
 (async function(){
   try {
-    const res = await fetch("instagram_data.json?v=" + Date.now());
-    if (!res.ok) return;
-    const data = await res.json();
+    const data = await fetchEncrypted("instagram_data.enc.json", "instagram_data.json");
     if (!Array.isArray(data) || !data.length) return;
     const last = data[data.length - 1];
     let f = 0, r = 0, s = 0;

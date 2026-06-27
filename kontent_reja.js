@@ -497,9 +497,7 @@ function updateGenBtn() {
 async function loadData() {
   // 1) Asosiy statistika
   try {
-    const res = await fetch("instagram_data.json?v=" + Date.now());
-    if (!res.ok) throw new Error();
-    const data = await res.json();
+    const data = await fetchEncrypted("instagram_data.enc.json", "instagram_data.json");
     if (Array.isArray(data) && data.length) { HISTORY = data; }
     else throw new Error();
   } catch(e) {

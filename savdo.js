@@ -984,8 +984,7 @@ async function loadData() {
   DISHDAY = await fetchEncrypted("savdo_taom_kun.enc.json", "savdo_taom_kun.json");
   try { const r = await fetch("post_taom.json?v=" + Date.now()); if (r.ok) window.POST_TAOM = await r.json(); } catch (e) {}
   try {
-    const r = await fetch("instagram_data.json?v=" + Date.now());
-    if (r.ok) IG = await r.json();
+    IG = await fetchEncrypted("instagram_data.enc.json", "instagram_data.json");
   } catch (e) {}
 
   if (SAVDO.length) {

@@ -73,6 +73,19 @@ def load_reja():
     return load_json("kontent_reja_ai.json")
 
 
+def load_ig():
+    """Instagram ma'lumotini ochish: avval shifrlangan, bo'lmasa eski ochiq."""
+    if SAVDO_PAROL:
+        try:
+            import shifr
+            d = shifr.load_encrypted(os.path.join(BASE, "instagram_data.enc.json"), SAVDO_PAROL)
+            if d is not None:
+                return d
+        except Exception:
+            pass
+    return load_json("instagram_data.json")
+
+
 def fmt(n):
     return f"{round(n):,}".replace(",", " ")
 
@@ -136,7 +149,7 @@ def haftalik_xulosa():
     msg = ["📊 <b>RestoPulse — haftalik xulosa</b>\n"]
 
     # Instagram
-    ig = load_json("instagram_data.json")
+    ig = load_ig()
     if ig and len(ig):
         last = ig[-1]
         week_ago = ig[max(0, len(ig) - 8)]

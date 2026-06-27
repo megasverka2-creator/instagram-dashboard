@@ -39,6 +39,9 @@ ACCESS_TOKEN = os.environ.get("IG_ACCESS_TOKEN", ACCESS_TOKEN)
 API_VERSION = "v22.0"
 BASE_URL = f"https://graph.facebook.com/{API_VERSION}"
 DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "instagram_data.json")
+IG_ENC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "instagram_data.enc.json")  # SHIFRLANGAN
+SAVDO_PAROL = os.environ.get("SAVDO_PAROL", "")
+import shifr
 
 # =============================================================
 #  API yordamchi
@@ -317,24 +320,31 @@ def collect():
         print(f"     followers: {followers}, ER: {analysis['engagement_rate']}%, "
               f"reach(7d): {insights.get('reach', 0)}, profil ko'rish: {insights.get('profile_views', 0)}")
 
-    # Tarixni yuklash + yangisini qo'shish
-    history = []
-    if os.path.exists(DATA_FILE):
+    # Tarixni yuklash: avval shifrlangan, bo'lmasa eski ochiq (ko'chish davri)
+    history = None
+    if SAVDO_PAROL:
+        history = shifr.load_encrypted(IG_ENC, SAVDO_PAROL)
+    if history is None and os.path.exists(DATA_FILE):
         try:
             with open(DATA_FILE, "r", encoding="utf-8") as f:
                 history = json.load(f)
         except (json.JSONDecodeError, IOError):
-            history = []
+            history = None
+    if history is None:
+        history = []
 
     today = snapshot["date"]
     history = [h for h in history if h.get("date") != today]
     history.append(snapshot)
     history.sort(key=lambda h: h.get("date", ""))
 
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(history, f, ensure_ascii=False, indent=2)
-
-    print(f"\n  Saqlandi: {DATA_FILE}")
+    if SAVDO_PAROL:
+        shifr.save_encrypted(IG_ENC, history, SAVDO_PAROL)
+        print(f"\n  Saqlandi (shifrlangan): {IG_ENC}")
+    else:
+        with open(DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(history, f, ensure_ascii=False, indent=2)
+        print(f"\n  Saqlandi: {DATA_FILE}")
     print(f"  Jami o'lchovlar (kunlar): {len(history)}")
     print("=== Tugadi ===\n")
 

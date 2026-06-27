@@ -23,16 +23,22 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Shifrlash kutubxonasi
+        run: pip install cryptography
+
       - name: Ma'lumot yig'ish skriptini ishga tushirish
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          SAVDO_PAROL: ${{ secrets.SAVDO_PAROL }}
         run: python3 instagram_collector.py
 
       - name: Yangilangan ma'lumotni saqlash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add instagram_data.json
+          # Eski ochiq faylni repodan/saytdan o'chiramiz (maxfiylik)
+          git rm --quiet --ignore-unmatch instagram_data.json || true
+          [ -f instagram_data.enc.json ] && git add instagram_data.enc.json || true
           if git diff --staged --quiet; then
             echo "O'zgarish yo'q — saqlash kerak emas"
           else

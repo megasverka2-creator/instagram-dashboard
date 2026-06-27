@@ -38,6 +38,7 @@ API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE, "instagram_data.json")
+IG_ENC = os.path.join(BASE, "instagram_data.enc.json")
 OUT_FILE = os.path.join(BASE, "post_tahlil.enc.json")   # endi SHIFRLANGAN saqlanadi
 OLD_PLAIN = os.path.join(BASE, "post_tahlil.json")       # eski ochiq fayl (o'tish davri)
 SAVDO_PAROL = os.environ.get("SAVDO_PAROL", "")          # shifrlash kaliti (sayt paroli)
@@ -142,13 +143,13 @@ Faqat shu JSON formatda javob qaytar (boshqa matn yozma):
 def main():
     sinov = len(sys.argv) > 1 and sys.argv[1] == "sinov"
 
-    if not os.path.exists(DATA_FILE):
-        print("XATO: instagram_data.json topilmadi.")
-        sys.exit(0)
-
-    history = json.load(open(DATA_FILE, encoding="utf-8"))
+    history = None
+    if SAVDO_PAROL:
+        history = shifr.load_encrypted(IG_ENC, SAVDO_PAROL)
+    if history is None and os.path.exists(DATA_FILE):
+        history = json.load(open(DATA_FILE, encoding="utf-8"))
     if not history:
-        print("Ma'lumot bo'sh.")
+        print("XATO: instagram ma'lumoti topilmadi/bo'sh.")
         sys.exit(0)
     snap = history[-1]
     snap_date = datetime.strptime(snap["date"], "%Y-%m-%d").date()

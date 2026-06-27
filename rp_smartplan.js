@@ -70,9 +70,8 @@
     } catch (e) {}
     // IG postlar (eng zo'r format)
     try {
-      const r = await fetch("instagram_data.json?v=" + Date.now());
-      if (r.ok) {
-        const ig = await r.json();
+      const ig = await fetchEncrypted("instagram_data.enc.json", "instagram_data.json");
+      if (ig) {
         const last = ig[ig.length-1] || {};
         lines.push("\n=== INSTAGRAM ENG ZO'R POSTLAR ===");
         Object.entries(last.accounts || {}).forEach(([acc, data]) => {
