@@ -104,9 +104,76 @@
     });
   }
 
+  // --- 4. "Ma'lumot N kun eski" ogohlantirishi (jimgina to'xtab qolishni ushlaydi) ---
+  //  instagram_data — kunlik yangilanadigan "yurak". 2+ kun eski bo'lsa qizil belgi chiqadi.
+  const ESKI_LIMIT_KUN = 2;
+
+  function rpParol() {
+    const pw = sessionStorage.getItem("rp_pw");
+    if (!pw) return null;
+    try { return decodeURIComponent(escape(atob(pw))); } catch (e) { return null; }
+  }
+
+  async function rpDekript(blob, parol) {
+    const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+    const km = await crypto.subtle.importKey("raw", new TextEncoder().encode(parol), "PBKDF2", false, ["deriveKey"]);
+    const key = await crypto.subtle.deriveKey(
+      { name: "PBKDF2", salt: b64(blob.salt), iterations: 150000, hash: "SHA-256" },
+      km, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(blob.iv) }, key, b64(blob.ct));
+    return JSON.parse(new TextDecoder().decode(pt));
+  }
+
+  function rpEskiBelgi(matn) {
+    const css = document.createElement("style");
+    css.textContent = `
+      .rp-eski {
+        position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+        display: flex; align-items: center; gap: 8px; max-width: 92vw;
+        padding: 9px 16px; background: rgba(214,76,40,0.96); color: #fff;
+        border-radius: 14px; z-index: 200;
+        font: 600 13px -apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, sans-serif;
+        box-shadow: 0 8px 28px rgba(180,50,20,0.45);
+        animation: rpEskiIn .4s cubic-bezier(.34,1.6,.4,1);
+      }
+      .rp-eski svg { width: 18px; height: 18px; flex-shrink: 0; }
+      @keyframes rpEskiIn { from { opacity:0; transform: translate(-50%,-10px); } to { opacity:1; transform: translate(-50%,0); } }
+      @media print { .rp-eski { display: none; } }
+    `;
+    document.head.appendChild(css);
+    const el = document.createElement("div");
+    el.className = "rp-eski";
+    el.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>${matn}</span>`;
+    document.body.appendChild(el);
+  }
+
+  async function rpTozalik() {
+    try {
+      let data = null;
+      const r = await fetch("instagram_data.enc.json?v=" + Date.now());
+      if (r.ok) {
+        const blob = await r.json();
+        const parol = rpParol();
+        if (blob && blob.ct && parol) data = await rpDekript(blob, parol);
+      }
+      if (!data) {   // ko'chish davri — eski ochiq fayl
+        const r2 = await fetch("instagram_data.json?v=" + Date.now());
+        if (r2.ok) data = await r2.json();
+      }
+      if (!Array.isArray(data) || !data.length) return;
+      const oxirgi = data[data.length - 1].date;   // "YYYY-MM-DD"
+      if (!oxirgi) return;
+      const kun = Math.floor((Date.now() - new Date(oxirgi + "T00:00:00")) / 86400000);
+      if (kun < ESKI_LIMIT_KUN) return;             // yangi — belgi yo'q
+      rpEskiBelgi(`Ma'lumot ${kun} kun yangilanmagan (oxirgi: ${oxirgi})`);
+    } catch (e) { /* xato bo'lsa jim — noto'g'ri ogohlantirish bermaymiz */ }
+  }
+
+  function rpBoshla() { injectNav(); rpTozalik(); }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", injectNav);
+    document.addEventListener("DOMContentLoaded", rpBoshla);
   } else {
-    injectNav();
+    rpBoshla();
   }
 })();
