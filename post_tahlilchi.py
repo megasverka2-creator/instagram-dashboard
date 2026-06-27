@@ -203,7 +203,17 @@ def main():
         return
 
     if not nomzod:
-        print("Yangi baholanadigan post yo'q. Tugadi.")
+        print("Yangi baholanadigan post yo'q.")
+        # Ko'chish davri: shifrlangan fayl hali yo'q bo'lsa — mavjud natijani shifrlab saqlaymiz
+        if SAVDO_PAROL and not os.path.exists(OUT_FILE) and natijalar:
+            out = {
+                "_izoh": "AI post-tahlilchi natijalari. Har post bir marta baholanadi. Avtomatik to'ldiriladi.",
+                "yangilangan": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "postlar": natijalar,
+            }
+            shifr.save_encrypted(OUT_FILE, out, SAVDO_PAROL)
+            print(f"  Ko'chirildi (shifrlangan): {len(natijalar)} ta mavjud natija.")
+        print("Tugadi.")
         return
 
     if not API_KEY:
