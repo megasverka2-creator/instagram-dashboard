@@ -25,6 +25,7 @@
     const items = [
       { href: "index.html", icon: svg('<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V9.5"/>'), label: "Bosh" },
       { href: "instagram_dashboard.html", icon: svg('<path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/>'), label: "Statistika" },
+      { href: "post_tahlil.html", icon: svg('<rect x="4" y="3" width="13" height="18" rx="2"/><path d="M8 8h5M8 12h3"/><circle cx="16.5" cy="15.5" r="3"/><path d="M19 18l2 2"/>'), label: "Tahlil" },
       { href: "kontent_reja.html", icon: svg('<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="M8 15h3"/>'), label: "Reja" },
       { href: "savdo.html", icon: svg('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v9M14.8 9.2c-.6-.9-1.7-1.4-2.8-1.4-1.6 0-2.8.9-2.8 2.1 0 2.9 5.6 1.5 5.6 4.3 0 1.2-1.2 2.1-2.8 2.1-1.2 0-2.3-.5-2.9-1.4"/>'), label: "Savdo" },
       { href: "jamoa.html", icon: svg('<rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8V5M9 4.5h6"/><circle cx="9.5" cy="13" r="1.2"/><circle cx="14.5" cy="13" r="1.2"/><path d="M2 13h3M19 13h3"/>'), label: "Jamoa" },
@@ -36,14 +37,17 @@
       .rp-nav {
         position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
         display: flex; gap: 3px; padding: 7px;
+        max-width: calc(100vw - 20px); overflow-x: auto;
+        scrollbar-width: none; -ms-overflow-style: none;
         background: rgba(26,17,34,0.72);
         backdrop-filter: blur(28px) saturate(1.5); -webkit-backdrop-filter: blur(28px) saturate(1.5);
         border: 1px solid rgba(255,255,255,0.14); border-radius: 24px;
         box-shadow: 0 16px 44px rgba(8,3,20,0.55), inset 0 1px 0 rgba(255,255,255,0.12); z-index: 90;
       }
+      .rp-nav::-webkit-scrollbar { display: none; }
       .rp-nav a, .rp-nav button {
         display: flex; flex-direction: column; align-items: center; gap: 4px;
-        min-width: 62px; padding: 8px 10px; border-radius: 16px;
+        min-width: 54px; padding: 8px 9px; border-radius: 16px;
         color: rgba(246,241,251,0.62); text-decoration: none; border: none;
         background: transparent; cursor: pointer; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, sans-serif;
         font-size: 10.5px; font-weight: 500; letter-spacing: .2px;
