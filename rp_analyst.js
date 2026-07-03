@@ -117,17 +117,17 @@
       });
     }
 
-    // 5. Marketing atributsiya (yirik postlar -> savdo)
+    // 5. Marketing faoliyati (yirik postlar — qamrov). Savdo bilan SUN'IY bog'lanmaydi.
     if (typeof allPostAttributions === "function" && window.BRAND_ORDER) {
-      lines.push("\n--- MARKETING ATRIBUTSIYA (post -> savdo ta'siri) ---");
+      lines.push("\n--- MARKETING FAOLIYATI (o'sha davrdagi eng ko'p ko'rilgan postlar) ---");
       BRAND_ORDER.filter(k => window.BRANDS && BRANDS[k].ig).forEach(bk => {
         const atts = allPostAttributions(bk);
         if (!atts.length) return;
-        const sorted = atts.slice().sort((a, b) => (b.pct || 0) - (a.pct || 0)).slice(0, 4);
+        const sorted = atts.slice().sort((a, b) => ((b.views || b.reach || 0) - (a.views || a.reach || 0))).slice(0, 4);
         const txt = sorted.map(a => {
           const v = a.views ? fmt(a.views) + " ko'rish" : fmt(a.reach) + " qamrov";
           const cap = (a.caption || "").slice(0, 40);
-          return `"${cap}" (${v}, savdo ${a.pct > 0 ? "+" : ""}${a.pct}%)`;
+          return `"${cap}" (${v})`;
         }).join("; ");
         if (txt) lines.push(`${BRANDS[bk].name}: ${txt}`);
       });
@@ -227,7 +227,7 @@ Vazifang: o'sha kun qanday o'tganini, oldingi kunlarga nisbatan yaxshimi yomonmi
 QOIDALAR:
 - O'zbek tilida, qisqa va aniq. Bu kunlik tezkor xulosa — uzun yozma.
 - Eng muhim 3-4 narsaga e'tibor ber.
-- Qaysi filial yaxshi/yomon ketdi, dostavka ulushi qanday, post bo'lsa ta'siri — shularni bog'la.
+- Qaysi filial yaxshi/yomon ketdi, dostavka ulushi qanday — shularni bog'la. Post bo'lsa, faqat marketing faoliyati sifatida eslat; bitta postni savdo o'zgarishiga SABAB qilma.
 - Hafta kunini hisobga ol (dam olish kuni savdo tabiiy yuqori/past bo'lishi mumkin).
 - Amaliy bo'l: "Smart City past" emas, "Smart City bugun -15%, ertaga e'tibor bering".
 
@@ -251,7 +251,7 @@ Sening vazifang: berilgan savdo va marketing ma'lumotini tahlil qilib, restoran 
 QOIDALAR:
 - O'zbek tilida, sodda va aniq yoz. Restoran egasi tushunadigan til.
 - Raqamlarga tayanib gapir, lekin "shuncha foiz oshdi" bilan cheklanma — NEGA va NIMA QILISH kerakligini ayt.
-- Atributsiyada ehtiyot bo'l: post savdoga "ta'sir qilgan" deb ayt, lekin "yagona sabab" dema (dam olish kuni, ob-havo ham ta'sir qiladi).
+- MUHIM — MARKETING va SAVDO ALOHIDA: bitta postni savdo o'zgarishiga SABAB qilib ko'rsatma. "Bu post savdoni X% tushirdi/oshirdi" deb HECH QACHON yozma — bu statistik jihatdan noto'g'ri (savdoga dam olish kuni, ob-havo, aksiya, mavsum, joylashuv va o'nlab omil ta'sir qiladi, bitta post emas). Marketingni (qamrov, faollik) va savdoni ayrim-ayrim tahlil qil. Agar bog'lanish haqida gapirsang — faqat uzoq muddatli, TAKRORLANUVCHI naqsh sifatida, ehtiyotkorlik bilan ("reels ko'p chiqqan haftalarda savdo o'rtacha yuqoriroq kuzatiladi"), va aniq foizni bitta postga bog'lama.
 - Eng muhim 4-6 ta xulosaga e'tibor ber, hammasini sanama.
 - Har xulosa amaliy bo'lsin: "Smart City -12% tushdi" emas, "Smart City -12% tushdi, sababini tekshiring va shu hafta aksiya o'ylang".
 - Maqtov uchun maqtama. Muammoni ham, imkoniyatni ham ochiq ayt.
