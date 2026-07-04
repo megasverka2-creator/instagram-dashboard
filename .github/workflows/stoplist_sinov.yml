@@ -1,0 +1,27 @@
+name: Stop-list sinovi (bir martalik)
+
+on:
+  workflow_dispatch:  # faqat qo'lda ishga tushiriladi
+
+permissions:
+  contents: read
+
+jobs:
+  sinov:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Kodni olish
+        uses: actions/checkout@v4
+
+      - name: Python o'rnatish
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Stop-list endpointlarini sinash
+        env:
+          IIKO_SERVER: ${{ secrets.IIKO_SERVER }}
+          IIKO_LOGIN: ${{ secrets.IIKO_LOGIN }}
+          IIKO_PASS: ${{ secrets.IIKO_PASS }}
+        run: python3 stoplist_sinov.py
