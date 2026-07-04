@@ -9,8 +9,43 @@
   "use strict";
   const KEY_NAME = "rp_ai_kalit";
   const MODEL = "claude-sonnet-4-6";
-  const getKey = () => { try { return atob(localStorage.getItem(KEY_NAME) || ""); } catch (e) { return ""; } };
-  const setKey = (k) => localStorage.setItem(KEY_NAME, btoa(k.trim()));
+  // --- API kalit: sayt paroli bilan SHIFRLAB saqlanadi (AES-GCM). Eski ochiq kalit avtomatik ko'chiriladi. ---
+  const KEY_ENC = "rp_ai_kalit_enc";
+  let KEY_CACHE = "";
+  const _pw = () => { try { return decodeURIComponent(escape(atob(sessionStorage.getItem("rp_pw") || ""))); } catch (e) { return ""; } };
+  const _b64u = (s) => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  const _u64 = (u) => btoa(String.fromCharCode.apply(null, u));
+  async function _kkdf(parol, salt) {
+    const km = await crypto.subtle.importKey("raw", new TextEncoder().encode(parol), "PBKDF2", false, ["deriveKey"]);
+    return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: 150000, hash: "SHA-256" }, km, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+  }
+  async function _kSaqla(k) {
+    try {
+      const pw = _pw(); if (!pw || !k) return;
+      const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+      const key = await _kkdf(pw, salt);
+      const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, new TextEncoder().encode(k)));
+      localStorage.setItem(KEY_ENC, JSON.stringify({ v: 1, salt: _u64(salt), iv: _u64(iv), ct: _u64(ct) }));
+    } catch (e) {}
+  }
+  (async function _kBoshla() {
+    try {
+      const raw = localStorage.getItem(KEY_ENC);
+      if (raw) {
+        const b = JSON.parse(raw), pw = _pw();
+        if (pw && b && b.ct) {
+          const key = await _kkdf(pw, _b64u(b.salt));
+          const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: _b64u(b.iv) }, key, _b64u(b.ct));
+          KEY_CACHE = new TextDecoder().decode(pt);
+          return;
+        }
+      }
+      const old = localStorage.getItem(KEY_NAME);
+      if (old) { try { KEY_CACHE = atob(old); } catch (e) {} if (KEY_CACHE) { await _kSaqla(KEY_CACHE); localStorage.removeItem(KEY_NAME); } }
+    } catch (e) {}
+  })();
+  const getKey = () => KEY_CACHE;
+  const setKey = (k) => { KEY_CACHE = (k || "").trim(); _kSaqla(KEY_CACHE); };
 
   function markBusy(id) {
     try { const b = JSON.parse(localStorage.getItem("rp_agent_busy") || "{}"); b[id] = Date.now(); localStorage.setItem("rp_agent_busy", JSON.stringify(b)); } catch (e) {}
@@ -178,7 +213,7 @@ JAVOB FORMATI (markdown):
         <div class="sp-result">${mdToHtml(r2.text)}</div>
         <div class="sp-foot">🧠 Tahlilchi → 📅 Reja · ${new Date().toLocaleString("ru-RU")} · ma'lumotga asoslangan</div>`;
     } catch (e) {
-      out.innerHTML = `<div class="sp-error">Xato: ${e.message}<br><small>API kalit noto'g'ri bo'lsa <a href="#" onclick="localStorage.removeItem('${KEY_NAME}');location.reload();return false;">qaytadan kiriting</a>.</small></div>`;
+      out.innerHTML = `<div class="sp-error">Xato: ${e.message}<br><small>API kalit noto'g'ri bo'lsa <a href="#" onclick="localStorage.removeItem('${KEY_ENC}');location.reload();return false;">qaytadan kiriting</a>.</small></div>`;
     } finally {
       if (btn) { btn.disabled = false; btn.textContent = "🧠 Aqlli reja tuz"; }
     }

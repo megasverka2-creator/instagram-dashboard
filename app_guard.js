@@ -29,6 +29,7 @@
       { href: "kontent_reja.html", icon: svg('<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="M8 15h3"/>'), label: "Reja" },
       { href: "savdo.html", icon: svg('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v9M14.8 9.2c-.6-.9-1.7-1.4-2.8-1.4-1.6 0-2.8.9-2.8 2.1 0 2.9 5.6 1.5 5.6 4.3 0 1.2-1.2 2.1-2.8 2.1-1.2 0-2.3-.5-2.9-1.4"/>'), label: "Savdo" },
       { href: "jamoa.html", icon: svg('<rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8V5M9 4.5h6"/><circle cx="9.5" cy="13" r="1.2"/><circle cx="14.5" cy="13" r="1.2"/><path d="M2 13h3M19 13h3"/>'), label: "Jamoa" },
+      { href: "ekran.html", icon: svg('<rect x="2.5" y="4.5" width="19" height="13" rx="2.5"/><path d="M8 21h8M12 17.5V21"/>'), label: "Ekran" },
     ];
     const exitIcon = svg('<path d="M14 8V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2v-2"/><path d="M9 12h11"/><path d="M17 9l3 3-3 3"/>');
 

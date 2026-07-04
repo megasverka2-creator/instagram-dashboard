@@ -37,10 +37,8 @@ CAPTION_LIMIT = 320             # AI'ga yuboriladigan caption uzunligi
 API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-DATA_FILE = os.path.join(BASE, "instagram_data.json")
 IG_ENC = os.path.join(BASE, "instagram_data.enc.json")
 OUT_FILE = os.path.join(BASE, "post_tahlil.enc.json")   # endi SHIFRLANGAN saqlanadi
-OLD_PLAIN = os.path.join(BASE, "post_tahlil.json")       # eski ochiq fayl (o'tish davri)
 SAVDO_PAROL = os.environ.get("SAVDO_PAROL", "")          # shifrlash kaliti (sayt paroli)
 import shifr
 
@@ -143,11 +141,7 @@ Faqat shu JSON formatda javob qaytar (boshqa matn yozma):
 def main():
     sinov = len(sys.argv) > 1 and sys.argv[1] == "sinov"
 
-    history = None
-    if SAVDO_PAROL:
-        history = shifr.load_encrypted(IG_ENC, SAVDO_PAROL)
-    if history is None and os.path.exists(DATA_FILE):
-        history = json.load(open(DATA_FILE, encoding="utf-8"))
+    history = shifr.load_encrypted(IG_ENC, SAVDO_PAROL) if SAVDO_PAROL else None
     if not history:
         print("XATO: instagram ma'lumoti topilmadi/bo'sh.")
         sys.exit(0)
@@ -159,12 +153,6 @@ def main():
     natijalar = []
     done_ids = set()
     prev = shifr.load_encrypted(OUT_FILE, SAVDO_PAROL) if SAVDO_PAROL else None
-    if prev is None and os.path.exists(OLD_PLAIN):
-        # Ko'chish davri: hali shifrlangan fayl yo'q — eski ochiqdan o'qib olamiz (bir martalik)
-        try:
-            prev = json.load(open(OLD_PLAIN, encoding="utf-8"))
-        except Exception:
-            prev = None
     if prev:
         natijalar = prev.get("postlar", [])
         done_ids = {x["id"] for x in natijalar}
