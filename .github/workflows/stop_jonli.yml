@@ -17,10 +17,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Jonli stop-listni o'qib guruhga yuborish
+      - name: Server stop-listni o'qib guruhga yuborish
         env:
-          IIKO_CLOUD_APILOGIN: ${{ secrets.IIKO_CLOUD_APILOGIN }}
+          IIKO_SERVER: ${{ secrets.IIKO_SERVER }}
+          IIKO_LOGIN: ${{ secrets.IIKO_LOGIN }}
+          IIKO_PASS: ${{ secrets.IIKO_PASS }}
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           STOP_CHAT_ID: ${{ secrets.STOP_CHAT_ID }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python3 stop_jonli.py
+        run: python3 stop_jonli_server.py
