@@ -3,14 +3,14 @@
 """
 RestoPulse — STOP-LIST XABAR SINOVI (namuna, bir martalik)
 
-Hozirgi ulangan guruhga (TELEGRAM_CHAT_ID) kechki stop-list xulosasining
+"kafe boshqaruv" guruhiga (STOP_CHAT_ID) kechki stop-list xulosasining
 NAMUNA ko'rinishini yuboradi: filial bloki + taxminiy ta'sir + sabab tugmalari.
 
-MUHIM: Bu NAMUNA ma'lumot (haqiqiy stop-list emas — u apiLogin kelgach ulanadi).
+MUHIM: Bu NAMUNA (haqiqiy stop-list emas — u apiLogin bilan keyin ulanadi).
 Tugmalar ko'rinadi, lekin bosilganda hozircha javob bermaydi — tinglovchi
 (Railway worker) keyingi bosqichda quriladi.
 
-Secrets: TELEGRAM_TOKEN, TELEGRAM_CHAT_ID (mavjud)
+Secrets: TELEGRAM_TOKEN, STOP_CHAT_ID  (STOP_CHAT_ID bo'lmasa TELEGRAM_CHAT_ID)
 """
 
 import json
@@ -19,7 +19,7 @@ import sys
 import urllib.request
 
 TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
-CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
+CHAT_ID = os.environ.get("STOP_CHAT_ID", "") or os.environ.get("TELEGRAM_CHAT_ID", "")
 
 
 def tg(method, payload):
@@ -27,12 +27,14 @@ def tg(method, payload):
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(url, data=data, method="POST")
     req.add_header("Content-Type", "application/json")
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        return {"ok": False, "error": e.read().decode("utf-8", errors="replace")[:300]}
 
 
 def sabab_tugmalar(filial, taom):
-    """Bir taom uchun 4 ta sabab tugmasi (callback_data <64 bayt)."""
     def cb(kod):
         return f"s|{filial}|{taom}|{kod}"[:64]
     return [
@@ -49,10 +51,10 @@ def sabab_tugmalar(filial, taom):
 
 def main():
     if not (TOKEN and CHAT_ID):
-        print("XATO: TELEGRAM_TOKEN yoki TELEGRAM_CHAT_ID sekreti yo'q.")
+        print("XATO: TELEGRAM_TOKEN yoki STOP_CHAT_ID sekreti yo'q.")
         sys.exit(1)
+    print(f"Guruh (chat_id): {CHAT_ID}")
 
-    # 1) Sarlavha xabari
     bosh = (
         "🧪 <b>STOP-LIST SINOVI — NAMUNA</b>\n"
         "Bu kelgusi kechki xulosaning ko'rinishi. Ma'lumotlar haqiqiy emas.\n"
@@ -61,7 +63,6 @@ def main():
     r = tg("sendMessage", {"chat_id": CHAT_ID, "text": bosh, "parse_mode": "HTML"})
     print("Sarlavha:", "OK" if r.get("ok") else r)
 
-    # 2) Filial bloki — namunaviy bitta taom (haqiqiysida har taomga alohida)
     blok = (
         "🏢 <b>Benison-MegaCenter</b> — bugungi stop (namuna)\n\n"
         "🍽 <b>Lavash klassik</b>\n"
@@ -79,9 +80,9 @@ def main():
     print("Filial bloki:", "OK" if r.get("ok") else r)
 
     if r.get("ok"):
-        print("\nSINOV MUVAFFAQIYATLI — guruhda 2 ta xabar ko'rinishi kerak.")
+        print("\nSINOV MUVAFFAQIYATLI — 'kafe boshqaruv' guruhida 2 ta xabar ko'rinishi kerak.")
     else:
-        print("\nXATO — javobni tekshiring (bot guruhda a'zomi? chat_id to'g'rimi?).")
+        print("\nXATO — bot guruhda a'zomi/admin bo'lsa va STOP_CHAT_ID to'g'ri bo'lsa qayta urining.")
         sys.exit(1)
 
 

@@ -1,7 +1,7 @@
 name: Stop xabar sinovi (namuna)
 
 on:
-  workflow_dispatch:  # faqat qo'lda
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -13,14 +13,13 @@ jobs:
     steps:
       - name: Kodni olish
         uses: actions/checkout@v4
-
       - name: Python o'rnatish
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
       - name: Namuna xabarni guruhga yuborish
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          STOP_CHAT_ID: ${{ secrets.STOP_CHAT_ID }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python3 stop_xabar_sinov.py
