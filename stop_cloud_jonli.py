@@ -51,11 +51,23 @@ def muddat(dateAdd):
 def main():
     if not (APILOGIN and TG_TOKEN and CHAT_ID):
         print("XATO: IIKO_CLOUD_APILOGIN / TELEGRAM_TOKEN / STOP_CHAT_ID dan biri yo'q."); sys.exit(1)
-    st, j = post("/api/1/access_token", {"apiLogin": APILOGIN})
-    if st != 200 or "token" not in j:
-        print(f"[✗] Token XATO {st}: {json.dumps(j, ensure_ascii=False)[:300]}")
-        tg("⚠️ Stop-list: iiko token olinmadi (StopList apiLogin tekshiring)."); sys.exit(1)
-    token = j["token"]; print("[✓] Token olindi")
+    # v2/access_token bir necha formatda bo'lishi mumkin — ketma-ket sinaymiz
+    token = None
+    urinishlar = [
+        ("v2 apiLogin",     "/api/v2/access_token", {"apiLogin": APILOGIN}),
+        ("v2 clientSecret", "/api/v2/access_token", {"clientSecret": APILOGIN}),
+        ("v2 clientId+sec", "/api/v2/access_token", {"clientId": "StopList", "clientSecret": APILOGIN}),
+        ("v1 apiLogin",     "/api/1/access_token",  {"apiLogin": APILOGIN}),
+    ]
+    for nom, path, body in urinishlar:
+        st, j = post(path, body)
+        tok = j.get("token") or j.get("access_token") or j.get("accessToken")
+        print(f"    [{st}] {nom}: {tok[:10]+'…' if tok else json.dumps(j, ensure_ascii=False)[:140]}")
+        if st == 200 and tok:
+            token = tok; print(f"[✓] Token olindi ({nom})"); break
+    if not token:
+        print("[✗] Hech qaysi format token bermadi.")
+        tg("⚠️ Stop-list: iiko token olinmadi — kalit formatini aniqlash kerak."); sys.exit(1)
 
     st, j = post("/api/1/organizations", {"returnAdditionalInfo": True}, token)
     orgs = j.get("organizations", []) if st == 200 else []
