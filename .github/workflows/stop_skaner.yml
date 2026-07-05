@@ -1,0 +1,25 @@
+name: Stop-list keng skaner
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  skaner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Kodni olish
+        uses: actions/checkout@v4
+      - name: Python o'rnatish
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Stop-list manzillarini skanerlash
+        env:
+          IIKO_SERVER: ${{ secrets.IIKO_SERVER }}
+          IIKO_LOGIN: ${{ secrets.IIKO_LOGIN }}
+          IIKO_PASS: ${{ secrets.IIKO_PASS }}
+        run: python3 stop_skaner.py
