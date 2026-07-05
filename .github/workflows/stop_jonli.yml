@@ -1,0 +1,26 @@
+name: Stop-list jonli tekshiruv
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  jonli:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Kodni olish
+        uses: actions/checkout@v4
+      - name: Python o'rnatish
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Jonli stop-listni o'qib guruhga yuborish
+        env:
+          IIKO_CLOUD_APILOGIN: ${{ secrets.IIKO_CLOUD_APILOGIN }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          STOP_CHAT_ID: ${{ secrets.STOP_CHAT_ID }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python3 stop_jonli.py
