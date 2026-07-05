@@ -51,7 +51,7 @@ def muddat(dateAdd):
 def main():
     if not (APILOGIN and TG_TOKEN and CHAT_ID):
         print("XATO: IIKO_CLOUD_APILOGIN / TELEGRAM_TOKEN / STOP_CHAT_ID dan biri yo'q."); sys.exit(1)
-    st, j = post("/api/1/access_token", {"apiLogin": APILOGIN})
+    st, j = post("/api/v2/access_token", {"apiLogin": APILOGIN})
     if st != 200 or "token" not in j:
         print(f"[✗] Token XATO {st}: {json.dumps(j, ensure_ascii=False)[:300]}")
         tg("⚠️ Stop-list: iiko token olinmadi (StopList apiLogin tekshiring)."); sys.exit(1)
