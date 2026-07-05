@@ -17,9 +17,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Stop-list manzillarini skanerlash
+      - name: getDeliveryStopList ni sinash
         env:
           IIKO_SERVER: ${{ secrets.IIKO_SERVER }}
           IIKO_LOGIN: ${{ secrets.IIKO_LOGIN }}
           IIKO_PASS: ${{ secrets.IIKO_PASS }}
-        run: python3 stop_skaner.py
+        run: python3 stop_skaner2.py
