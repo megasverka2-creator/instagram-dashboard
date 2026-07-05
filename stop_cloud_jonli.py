@@ -51,13 +51,22 @@ def muddat(dateAdd):
 def main():
     if not (APILOGIN and TG_TOKEN and CHAT_ID):
         print("XATO: IIKO_CLOUD_APILOGIN / TELEGRAM_TOKEN / STOP_CHAT_ID dan biri yo'q."); sys.exit(1)
-    # v2 endpointi parametrni "apiKey" deb kutadi (iiko xato matnidan aniqlandi)
-    st, j = post("/api/v2/access_token", {"apiKey": APILOGIN})
-    token = j.get("token") or j.get("access_token") or j.get("accessToken")
-    if st != 200 or not token:
-        print(f"[✗] Token XATO {st}: {json.dumps(j, ensure_ascii=False)[:300]}")
-        tg("⚠️ Stop-list: iiko token olinmadi."); sys.exit(1)
-    print("[✓] Token olindi")
+    token = None
+    urinishlar = [
+        ("apiKey+clientSecret(bir xil)", {"apiKey": APILOGIN, "clientSecret": APILOGIN}),
+        ("clientId=StopList+secret",     {"clientId": "StopList", "clientSecret": APILOGIN, "apiKey": APILOGIN}),
+        ("apiKey+empty clientSecret",    {"apiKey": APILOGIN, "clientSecret": ""}),
+    ]
+    for nom, body in urinishlar:
+        st, j = post("/api/v2/access_token", body)
+        tok = j.get("token") or j.get("access_token") or j.get("accessToken")
+        info = tok[:10]+"…" if tok else json.dumps(j, ensure_ascii=False)[:220]
+        print(f"    [{st}] {nom}: {info}")
+        if st == 200 and tok:
+            token = tok; print(f"[✓] Token olindi ({nom})"); break
+    if not token:
+        print("\n[✗] v2 hech qaysi kombinatsiya ishlamadi — ikkinchi maxfiy qiymat (clientSecret) kerak.")
+        tg("⚠️ Stop-list: v2 token — dilerdan clientSecret so'rash kerak."); sys.exit(1)
 
     st, j = post("/api/1/organizations", {"returnAdditionalInfo": True}, token)
     orgs = j.get("organizations", []) if st == 200 else []
