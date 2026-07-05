@@ -17,9 +17,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: getDeliveryStopList ni sinash
+      - name: 500 xato matnini ko'rsatish
         env:
           IIKO_SERVER: ${{ secrets.IIKO_SERVER }}
           IIKO_LOGIN: ${{ secrets.IIKO_LOGIN }}
           IIKO_PASS: ${{ secrets.IIKO_PASS }}
-        run: python3 stop_skaner2.py
+        run: python3 stop_skaner3.py
