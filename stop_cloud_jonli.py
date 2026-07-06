@@ -7,13 +7,17 @@ api-ru.iiko.services orqali: token -> tashkilotlar -> nomenklatura (nomlar)
 -> stop_lists. Haqiqiy stop-listni "kafe boshqaruv" guruhiga yuboradi.
 Faqat o'qiydi. Secrets: IIKO_CLOUD_APILOGIN, TELEGRAM_TOKEN, STOP_CHAT_ID
 """
-import json, os, sys, urllib.error, urllib.request
+import json, os, sys, hashlib, re, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timezone, timedelta
 
 IIKO = "https://api-ru.iiko.services"
 APILOGIN = os.environ.get("IIKO_CLOUD_APILOGIN", "").strip()
 TG_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
 CHAT_ID = os.environ.get("STOP_CHAT_ID", "") or os.environ.get("TELEGRAM_CHAT_ID", "")
+# Server API — taom nomlari uchun (hamma taom shu yerda)
+SERVER = os.environ.get("IIKO_SERVER", "").rstrip("/")
+SRV_LOGIN = os.environ.get("IIKO_LOGIN", "")
+SRV_PASS = os.environ.get("IIKO_PASS", "")
 TASHKENT = timezone(timedelta(hours=5))
 
 def post(path, body, token=None, timeout=90):
@@ -48,6 +52,49 @@ def muddat(dateAdd):
         except Exception: continue
     return None
 
+def server_nomlar():
+    """Server API (login/parol) orqali barcha taom nomlarini oladi: {productId: nom}."""
+    nomlar = {}
+    if not (SERVER and SRV_LOGIN and SRV_PASS):
+        print("    (server sekretlari yo'q — nomlar olinmadi)")
+        return nomlar
+    def sget(url, timeout=60):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url), timeout=timeout) as r:
+                return r.status, r.read().decode("utf-8", errors="replace")
+        except Exception as e:
+            return -1, str(e)
+    sha1 = hashlib.sha1(SRV_PASS.encode()).hexdigest()
+    st, tok = sget(f"{SERVER}/resto/api/auth?" + urllib.parse.urlencode({"login": SRV_LOGIN, "pass": sha1}))
+    tok = (tok or "").strip()
+    if st != 200 or len(tok) < 8:
+        print(f"    (server auth xato: {st})"); return nomlar
+    try:
+        # 1) v2 JSON mahsulotlar ro'yxati
+        st, body = sget(f"{SERVER}/resto/api/v2/entities/products/list?key={tok}&includeDeleted=true")
+        if st == 200 and body.strip().startswith(("[", "{")):
+            try:
+                data = json.loads(body)
+                arr = data if isinstance(data, list) else data.get("response", data.get("products", []))
+                for p in arr:
+                    if p.get("id"): nomlar[p["id"]] = p.get("name") or p["id"]
+            except Exception:
+                pass
+        # 2) v1 XML (agar v2 bo'sh bo'lsa)
+        if not nomlar:
+            st, body = sget(f"{SERVER}/resto/api/products?key={tok}")
+            if st == 200:
+                for m in re.finditer(r"<id>([0-9a-fA-F-]{36})</id>\s*<[^>]*?name>([^<]+)<", body):
+                    nomlar[m.group(1)] = m.group(2)
+                if not nomlar:  # boshqa tartib
+                    for blok in re.findall(r"<productDto>.*?</productDto>", body, re.S):
+                        i = re.search(r"<id>([0-9a-fA-F-]{36})</id>", blok)
+                        n = re.search(r"<name>([^<]+)</name>", blok)
+                        if i and n: nomlar[i.group(1)] = n.group(1)
+    finally:
+        sget(f"{SERVER}/resto/api/logout?key={tok}")
+    return nomlar
+
 def main():
     if not (APILOGIN and TG_TOKEN and CHAT_ID):
         print("XATO: IIKO_CLOUD_APILOGIN / TELEGRAM_TOKEN / STOP_CHAT_ID dan biri yo'q."); sys.exit(1)
@@ -66,13 +113,17 @@ def main():
         print("Javob:", json.dumps(j, ensure_ascii=False)[:300]); tg("⚠️ Filiallar topilmadi."); sys.exit(1)
     org_ids = list(org_nom.keys())
 
-    nom = {}
+    print("[·] Server tomondan taom nomlari olinmoqda...")
+    nom = server_nomlar()
+    print(f"[✓] Server nomlari: {len(nom)} ta")
+    # Cloud nomenklatura — zaxira (server topmaganlarini to'ldiradi)
     for oid in org_ids:
         st, j = post("/api/1/nomenclature", {"organizationId": oid}, token)
         if st == 200:
             for p in j.get("products", []):
-                if p.get("id"): nom[p["id"]] = p.get("name") or p["id"]
-    print(f"[✓] Nomenklatura: {len(nom)} ta taom nomi")
+                if p.get("id") and p["id"] not in nom:
+                    nom[p["id"]] = p.get("name") or p["id"]
+    print(f"[✓] Jami nom lug'ati: {len(nom)} ta")
 
     st, j = post("/api/1/stop_lists", {"organizationIds": org_ids}, token)
     print(f"[{'✓' if st==200 else '✗'}] stop_lists: {st}")
