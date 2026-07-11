@@ -986,6 +986,9 @@ async function loadData() {
   try {
     IG = await fetchEncrypted("instagram_data.enc.json", "instagram_data.json");
   } catch (e) {}
+  try {
+    window.STOPLAR = await fetchEncrypted("stop_tahlil.enc.json", "stop_tahlil.json");
+  } catch (e) { window.STOPLAR = null; }
 
   if (SAVDO.length) {
     document.getElementById("lastUpdate").textContent = SAVDO[SAVDO.length - 1].date;
@@ -1032,6 +1035,7 @@ async function loadData() {
     return;
   }
   rerender();
+  renderStop();
   // AI tahlilchi uchun global ma'lumotlarni ochamiz
   function syncGlobals() {
     window.SAVDO = SAVDO; window.TAOMLAR = TAOMLAR; window.TURLAR = TURLAR;
@@ -1046,3 +1050,92 @@ async function loadData() {
   const _origRerender = rerender;
   window.rerender = function () { _origRerender(); window.PERIOD = PERIOD; };
 })();
+
+// ============================================================
+//  🛑 Stop-list bloki (stop_tahlil.enc.json — bot bazasidan)
+//  Jadval ustunlariga qattiq bog'lanmagan: ustun nomlarini o'zi topadi.
+// ============================================================
+function stopUstunTop(qator, kalitlar) {
+  if (!qator) return null;
+  const keys = Object.keys(qator);
+  for (const k of kalitlar) {
+    const found = keys.find(x => x.toLowerCase().includes(k));
+    if (found) return found;
+  }
+  return null;
+}
+
+function renderStop() {
+  const el = document.getElementById("stopBlock");
+  if (!el) return;
+  const S = window.STOPLAR;
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g,
+    c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  if (!S) {
+    el.innerHTML = `<div class="glass empty" style="padding:18px;border-radius:16px;">
+      Stop ma'lumoti hali yo'q — Actions'da "Stop-list ma'lumoti (saytga)" ishlagach paydo bo'ladi.</div>`;
+    return;
+  }
+  const rows = (S.stop_kunlik && S.stop_kunlik.qatorlar) || [];
+  if (!rows.length) {
+    el.innerHTML = `<div class="glass empty" style="padding:18px;border-radius:16px;">
+      Oxirgi ${S.davr_kun || 14} kunda yozuvlar yo'q. Bot 22:00 xulosasidan keyin bu yer to'ladi.
+      <div style="opacity:.6;font-size:12px;margin-top:6px;">Fayl yangilangan: ${esc(S.yaratilgan || "-")}</div></div>`;
+    return;
+  }
+
+  const filialK = stopUstunTop(rows[0], ["filial", "dept", "bolim", "bo'lim", "branch"]);
+  const taomK = stopUstunTop(rows[0], ["taom", "mahsulot", "dish", "product", "nom"]);
+  const sanaK = (S.stop_kunlik && S.stop_kunlik.sana_ustuni) || stopUstunTop(rows[0], ["sana", "date", "kun"]);
+
+  const guruh = (kalit) => {
+    const m = {};
+    rows.forEach(r => { const v = r[kalit]; if (v != null && v !== "") m[v] = (m[v] || 0) + 1; });
+    return Object.entries(m).sort((a, b) => b[1] - a[1]);
+  };
+
+  let html = "";
+
+  // 1) Filiallar bo'yicha
+  if (filialK) {
+    const fl = guruh(filialK);
+    html += `<div class="section-title" style="margin-top:4px;">🏢 Filiallar bo'yicha stop yozuvlari</div><div class="brand-grid">`;
+    fl.forEach(([nom, son]) => {
+      html += `<div class="glass" style="padding:14px 16px;border-radius:16px;">
+        <div style="font-weight:700;">${esc(nom)}</div>
+        <div style="font-size:22px;font-weight:800;margin-top:4px;">${son}</div>
+        <div style="opacity:.65;font-size:12px;">yozuv / ${S.davr_kun || 14} kun</div></div>`;
+    });
+    html += `</div>`;
+  }
+
+  // 2) Eng ko'p stopga tushgan taomlar
+  if (taomK) {
+    const tp = guruh(taomK).slice(0, 10);
+    html += `<div class="section-title">🍽 Eng ko'p stopga tushganlar (top 10)</div>
+      <div class="glass" style="padding:6px 16px;border-radius:16px;">`;
+    tp.forEach(([nom, son], i) => {
+      html += `<div style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;
+        ${i ? "border-top:1px solid rgba(255,255,255,.08);" : ""}">
+        <span>${esc(nom)}</span><span style="font-weight:700;">${son} marta</span></div>`;
+    });
+    html += `</div>`;
+  }
+
+  // 3) Oxirgi yozuvlar (xom jadval — barcha ustunlar)
+  const cols = Object.keys(rows[0]);
+  const last = rows.slice(0, 12);
+  html += `<div class="section-title">🕐 Oxirgi yozuvlar</div>
+    <div class="glass" style="padding:12px;border-radius:16px;overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px;white-space:nowrap;">
+    <tr>${cols.map(c => `<th style="text-align:left;padding:6px 10px;opacity:.6;font-weight:600;">${esc(c)}</th>`).join("")}</tr>`;
+  last.forEach(r => {
+    html += `<tr>${cols.map(c => `<td style="padding:6px 10px;border-top:1px solid rgba(255,255,255,.07);">${esc(r[c])}</td>`).join("")}</tr>`;
+  });
+  html += `</table></div>
+    <div style="opacity:.55;font-size:12px;margin:8px 6px;">Raqamlar bot bazasidan, savdo ta'siri bo'lsa — taxminiy.
+    Yangilangan: ${esc(S.yaratilgan || "-")}${sanaK ? " · sana ustuni: " + esc(sanaK) : ""}</div>`;
+
+  el.innerHTML = html;
+}

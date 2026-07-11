@@ -168,7 +168,36 @@
       });
     }
 
+    // 6. Stop-list (bot bazasidan, oxirgi 14 kun) — savdo pasayishini izohlashda yordam beradi
+    lines.push(stopContext());
+
     return lines.join("\n");
+  }
+
+  // --- Stop-list konteksti (stop_tahlil.enc.json, ustunlarga moslashuvchan) ---
+  function stopContext() {
+    try {
+      const S = window.STOPLAR;
+      const rows = S && S.stop_kunlik && S.stop_kunlik.qatorlar;
+      if (!rows || !rows.length) return "";
+      const findK = (kalitlar) => {
+        const keys = Object.keys(rows[0]);
+        for (const k of kalitlar) { const f = keys.find(x => x.toLowerCase().includes(k)); if (f) return f; }
+        return null;
+      };
+      const filialK = findK(["filial", "dept", "bolim", "bo'lim", "branch"]);
+      const taomK = findK(["taom", "mahsulot", "dish", "product", "nom"]);
+      const guruh = (kalit) => {
+        const m = {};
+        rows.forEach(r => { const v = r[kalit]; if (v != null && v !== "") m[v] = (m[v] || 0) + 1; });
+        return Object.entries(m).sort((a, b) => b[1] - a[1]);
+      };
+      const out = [`\n--- STOP-LIST (oxirgi ${S.davr_kun || 14} kun, ${rows.length} yozuv; savdo ta'siri bo'lsa TAXMINIY) ---`];
+      if (filialK) out.push("Filiallar: " + guruh(filialK).map(([n, s]) => `${n} — ${s}`).join("; "));
+      if (taomK) out.push("Eng ko'p stopda: " + guruh(taomK).slice(0, 8).map(([n, s]) => `${n} (${s} marta)`).join("; "));
+      out.push("Eslatma: taom uzoq stopda bo'lsa, uning savdosi pasayishi tabiiy — buni tahlilda hisobga ol, lekin sun'iy bog'lama.");
+      return out.join("\n");
+    } catch (e) { return ""; }
   }
 
   // --- Kunlik kontekst (bitta kun + oldingi kunlar bilan solishtirish) ---
