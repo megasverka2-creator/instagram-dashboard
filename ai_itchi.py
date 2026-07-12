@@ -211,15 +211,29 @@ def ai_yangiliklar():
 
 
 def telegram_yubor(matn):
-    data = urllib.parse.urlencode(
-        {"chat_id": CHAT_ID, "text": matn[:4000], "disable_web_page_preview": "true"}
-    ).encode()
-    req = urllib.request.Request(
-        f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage", data=data
-    )
-    with urllib.request.urlopen(req, timeout=30) as r:
-        ok = json.loads(r.read().decode()).get("ok")
-    print(f"Telegram: {'yuborildi' if ok else 'XATO'}", flush=True)
+    """Uzun xabarni Telegram chegarasiga (4096) mos bo'laklarga bo'lib yuboradi."""
+    bolaklar = []
+    while matn:
+        if len(matn) <= 4000:
+            bolaklar.append(matn)
+            break
+        kes = matn.rfind("\n", 0, 4000)  # imkon qadar qator chegarasida kesamiz
+        if kes < 500:
+            kes = 4000
+        bolaklar.append(matn[:kes])
+        matn = matn[kes:].lstrip("\n")
+    for i, bolak in enumerate(bolaklar):
+        if len(bolaklar) > 1:
+            bolak += f"\n\n({i + 1}/{len(bolaklar)})"
+        data = urllib.parse.urlencode(
+            {"chat_id": CHAT_ID, "text": bolak, "disable_web_page_preview": "true"}
+        ).encode()
+        req = urllib.request.Request(
+            f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage", data=data
+        )
+        with urllib.request.urlopen(req, timeout=30) as r:
+            ok = json.loads(r.read().decode()).get("ok")
+        print(f"Telegram bolak {i + 1}/{len(bolaklar)}: {'yuborildi' if ok else 'XATO'}", flush=True)
 
 
 def main():
