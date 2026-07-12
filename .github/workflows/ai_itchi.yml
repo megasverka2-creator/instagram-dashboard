@@ -1,0 +1,31 @@
+name: AI IT-chi (tizim tekshiruvi)
+
+on:
+  schedule:
+    # Har kuni UTC 04:00 = Toshkent 09:00. GitHub jadvali biroz kechikishi
+    # mumkin — kunlik hisobot uchun bu muammo emas.
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  tekshir:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodni olish
+        uses: actions/checkout@v4
+
+      - name: Python o'rnatish
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Tekshiruv va hisobot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        run: python ai_itchi.py
