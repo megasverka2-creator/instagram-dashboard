@@ -153,6 +153,63 @@ def claude_tashxis(faktlar):
         return None
 
 
+def ai_yangiliklar():
+    """AI olamidagi yangiliklar + RestoPulse uchun aniq takliflar (web search bilan)."""
+    if not ANTHROPIC_KEY:
+        return None
+    system = (
+        "Sen RestoPulse ekotizimining AI IT mutaxassisisan. RestoPulse — Navoiy viloyatidagi "
+        "restoranlar tarmog'ining (Benison, Eddo, Mazzona) marketing avtomatikasi. Stack: "
+        "Telegram botlar (python-telegram-bot, Railway), Claude API (tahlil, post matnlari, vision), "
+        "OpenAI GPT Image (taom foto tahriri), Aisha AI STT (o'zbekcha ovoz), iiko (savdo/stop-list), "
+        "GitHub Actions + Pages (yig'uvchilar, parolli sayt), Postgres. Egasi dasturchi emas — "
+        "Claude tayyor fayl beradi, u push qiladi.\n"
+        "VAZIFA: internetdan OXIRGI 2-3 haftadagi, aynan shu stack'ka tegishli AI yangiliklarini top "
+        "va ulardan RestoPulse'ga amaliy foyda chiqar.\n"
+        "QOIDALAR:\n"
+        "- 2-4 ta eng muhim yangilik. Har biri: 1-2 jumla mohiyati + 'RestoPulse uchun:' aniq taklif.\n"
+        "- Eng yaxshi 1 ta taklifga «Claude'ga tayyor prompt:» deb ko'chirib tashlanadigan topshiriq yoz.\n"
+        "- Faqat topilgan faktlarga tayan, to'qima; ishonchsiz bo'lsa 'tekshirish kerak' de.\n"
+        "- Umumiy reklama shovqinini emas, amaliy narsalarni tanla (API yangilanishi, narx o'zgarishi, "
+        "yangi imkoniyat, muhim eskirish/deprecation).\n"
+        "- O'zbek tilida, 1200 belgidan oshmasin, Markdown ishlatma, oddiy matn + emoji."
+    )
+    body = json.dumps(
+        {
+            "model": MODEL,
+            "max_tokens": 1200,
+            "system": system,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "Shu haftalik AI yangiliklari sharhini tayyorla. "
+                    "Claude API, OpenAI image, o'zbekcha STT, Telegram bot ekotizimi, "
+                    "restoran-marketing AI bo'yicha yangiliklarni qidir.",
+                }
+            ],
+            "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 5}],
+        }
+    ).encode()
+    req = urllib.request.Request(
+        "https://api.anthropic.com/v1/messages",
+        data=body,
+        headers={
+            "x-api-key": ANTHROPIC_KEY,
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=180) as r:
+            data = json.loads(r.read().decode())
+        return "".join(
+            b.get("text", "") for b in data.get("content", []) if b.get("type") == "text"
+        ).strip()
+    except Exception as e:
+        print(f"! AI yangiliklar xatosi: {e}", flush=True)
+        return None
+
+
 def telegram_yubor(matn):
     data = urllib.parse.urlencode(
         {"chat_id": CHAT_ID, "text": matn[:4000], "disable_web_page_preview": "true"}
@@ -166,6 +223,9 @@ def telegram_yubor(matn):
 
 
 def main():
+    import sys
+    from datetime import timedelta
+
     wf = workflow_holati()
     fl = fayl_yoshi()
     faktlar = (
@@ -183,6 +243,17 @@ def main():
         hisobot = "🤖 AI IT-chi — kunlik tekshiruv\n\n" + hisobot
 
     telegram_yubor(hisobot)
+
+    # Haftalik AI yangiliklari: dushanba (Toshkent) avtomatik yoki 'yangiliklar' argumenti bilan
+    toshkent_kun = (datetime.now(timezone.utc) + timedelta(hours=5)).weekday()  # 0 = dushanba
+    majburiy = len(sys.argv) > 1 and sys.argv[1] == "yangiliklar"
+    if majburiy or toshkent_kun == 0:
+        print("AI yangiliklari tayyorlanmoqda...", flush=True)
+        yangilik = ai_yangiliklar()
+        if yangilik:
+            telegram_yubor("🧠 AI IT-chi — haftalik AI yangiliklari va takliflar\n\n" + yangilik)
+        else:
+            print("! Yangiliklar tayyorlanmadi (keyingi safar yana uriniladi)", flush=True)
 
 
 if __name__ == "__main__":

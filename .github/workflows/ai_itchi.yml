@@ -6,6 +6,15 @@ on:
     # mumkin — kunlik hisobot uchun bu muammo emas.
     - cron: '0 4 * * *'
   workflow_dispatch:
+    inputs:
+      rejim:
+        description: "Rejim (yangiliklar = AI yangiliklarini ham darhol yuboradi)"
+        required: false
+        default: "kunlik"
+        type: choice
+        options:
+          - kunlik
+          - yangiliklar
 
 permissions:
   contents: read
@@ -28,4 +37,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-        run: python ai_itchi.py
+        run: python ai_itchi.py ${{ github.event.inputs.rejim || 'kunlik' }}
