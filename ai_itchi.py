@@ -26,7 +26,7 @@ GH_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 TG_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
 CHAT_ID = os.environ.get("ITCHI_CHAT_ID", "775946529")  # standart: marketing xodimi
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-5"
 
 # Fayl qanchalik tez yangilanishi kutiladi (kunda). Ro'yxatda yo'qlar tekshirilmaydi.
 KUTILGAN_YOSH = {

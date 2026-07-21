@@ -34,7 +34,7 @@ ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 TG_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
 CHAT_ID = os.environ.get("ITCHI_CHAT_ID", "775946529")
 RUN_ID = os.environ.get("RUN_ID", "").strip()  # ixtiyoriy: aniq run'ni tuzatish
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-opus-4-8"
 
 OZIMIZ = ("AI IT-chi", "AI IT-chi tuzatuvchi")  # o'z-o'zini tuzatishga urinmasin
 RUXSAT_KENGAYTMA = (".py", ".js", ".html", ".css", ".md", ".json", ".txt")
