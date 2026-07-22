@@ -1,0 +1,14 @@
+name: Rich tugma sinovi (bir martalik)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sinov:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rich + tugma + tahrir sinovi
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        run: python3 rich_tugma_sinov.py
