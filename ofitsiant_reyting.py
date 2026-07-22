@@ -77,12 +77,10 @@ def olap(token, date_from, date_to, group_fields, agg_fields):
 
 def tur_nomi(order_type):
     t = (order_type or "").lower()
+    if any(w in t for w in ["самовывоз", "olib", "навынос", "pickup", "вынос", "take"]):
+        return "🥡 Olib ketish"
     if any(w in t for w in ["достав", "deliver", "yetkaz", "dostavka", "kuryer"]):
         return "🛵 Dostavka"
-    if any(w in t for w in ["самообслуж", "самообс", "o'z-o'z", "oz-oz", "self"]):
-        return "🧍 O'z-o'ziga xizmat"
-    if any(w in t for w in ["себе", "olib", "навынос", "pickup", "вынос", "take"]):
-        return "🥡 Olib ketish"
     return "🍽 Zal"
 
 
