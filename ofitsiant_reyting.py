@@ -73,6 +73,63 @@ def olap_waiters(token, date_from, date_to):
     return api_post_json("/resto/api/v2/reports/olap", {"key": token}, body)
 
 
+def olap_turlar(token, date_from, date_to):
+    body = {
+        "reportType": "SALES",
+        "buildSummary": "false",
+        "groupByRowFields": ["Department", "OrderType"],
+        "aggregateFields": ["DishDiscountSumInt"],
+        "filters": {
+            "OpenDate.Typed": {
+                "filterType": "DateRange", "periodType": "CUSTOM",
+                "from": date_from, "to": date_to,
+            },
+            "DeletedWithWriteoff": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
+            "OrderDeleted": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
+        },
+    }
+    return api_post_json("/resto/api/v2/reports/olap", {"key": token}, body)
+
+
+def tur_nomi(order_type):
+    t = (order_type or "").lower()
+    if any(w in t for w in ["достав", "deliver", "yetkaz", "dostavka", "kuryer"]):
+        return "dostavka"
+    if any(w in t for w in ["самообслуж", "самообс", "o'z-o'z", "oz-oz"]):
+        return "oz_xizmat"
+    if any(w in t for w in ["себе", "self", "olib", "навынос", "pickup", "вынос", "take"]):
+        return "olib_ketish"
+    return "zal"
+
+
+TUR_KORINISH = [("zal", "\U0001F37D Zal"), ("dostavka", "\U0001F6F5 Dostavka"),
+                ("olib_ketish", "\U0001F961 Olib ketish"),
+                ("oz_xizmat", "\U0001F9CD O'z-o'ziga xizmat")]
+
+
+def taqsimot_matn(data):
+    qatorlar = data.get("data", data) if isinstance(data, dict) else data
+    fil = {}
+    for q in qatorlar:
+        dep = q.get("Department") or "?"
+        xom = q.get("OrderType") or ""
+        print(f"OrderType: '{xom}' -> {tur_nomi(xom)}", flush=True)
+        s = float(q.get("DishDiscountSumInt") or 0)
+        fil.setdefault(dep, {})
+        fil[dep][tur_nomi(xom)] = fil[dep].get(tur_nomi(xom), 0) + s
+    if not fil:
+        return ""
+    matn = "\U0001F4CA SAVDO TAQSIMOTI (turlar bo'yicha)\n"
+    for dep in sorted(fil):
+        jami = sum(fil[dep].values()) or 1
+        matn += f"\n\U0001F3E2 {dep} \u2014 jami {pul(jami)} so'm\n"
+        for kod_, nom in TUR_KORINISH:
+            s = fil[dep].get(kod_, 0)
+            if s > 0:
+                matn += f"  {nom}: {pul(s)} so'm ({round(s * 100 / jami)}%)\n"
+    return matn
+
+
 def pul(n):
     return f"{int(round(n)):,}".replace(",", " ")
 
@@ -153,9 +210,10 @@ def main():
     token = login()
     try:
         data = olap_waiters(token, date_from, date_to)
+        turlar = olap_turlar(token, date_from, date_to)
     finally:
         logout(token)
-    matn = hisobot_tuz(data, date_from, date_to)
+    matn = taqsimot_matn(turlar) + "\n" + hisobot_tuz(data, date_from, date_to)
     print(matn, flush=True)
     telegram_yubor(matn)
 
