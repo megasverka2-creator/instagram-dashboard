@@ -1,0 +1,30 @@
+name: Postgres zaxira nusxa
+
+on:
+  schedule:
+    - cron: "0 1 * * 3"
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Postgres klientini ornatish
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
+
+      - name: Dump olish va shifrlash
+        env:
+          DB: ${{ secrets.STOP_DATABASE_URL }}
+          PAROL: ${{ secrets.BACKUP_PAROL }}
+        run: |
+          pg_dump "$DB" | gzip > backup.sql.gz
+          openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -pass env:PAROL -in backup.sql.gz -out backup.sql.gz.enc
+          rm backup.sql.gz
+          ls -la backup.sql.gz.enc
+
+      - name: Artifact sifatida saqlash
+        uses: actions/upload-artifact@v4
+        with:
+          name: postgres-backup-${{ github.run_id }}
+          path: backup.sql.gz.enc
+          retention-days: 90
