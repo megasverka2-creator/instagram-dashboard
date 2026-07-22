@@ -1,0 +1,16 @@
+name: OLAP razvedka (bir martalik)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  razvedka:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Maydonlar royxatini olish
+        env:
+          IIKO_LOGIN: ${{ secrets.IIKO_LOGIN }}
+          IIKO_PASS: ${{ secrets.IIKO_PASS }}
+          IIKO_SERVER: ${{ secrets.IIKO_SERVER }}
+        run: python3 iiko_olap_razvedka.py
