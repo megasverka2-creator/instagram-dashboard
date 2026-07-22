@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Ofitsiant reytingi — haftalik hisobot (iiko OLAP asosida).
-O'tgan 7 kun: filial kesimida har ofitsiantning buyurtmalari soni,
-savdosi, o'rtacha cheki va mehmonlar soni. Telegram'ga yuboriladi.
-Razvedka bilan tasdiqlangan maydonlar: OrderWaiter.Name, Department,
-UniqOrderId.OrdersCount, DishDiscountSumInt, GuestNum.
-Sekretlar: IIKO_LOGIN, IIKO_PASS, IIKO_SERVER, TELEGRAM_TOKEN."""
+"""Ofitsiant reytingi (iiko OLAP). Ikki rejim:
+  filial  — har filial kartasi: taqsimot + kassa + top-10
+  umumiy  — tarmoq bo'ylab yagona top-10 + jami
+Ishga tushirish: python3 ofitsiant_reyting.py [filial|umumiy|hammasi]
+Sekretlar: IIKO_LOGIN, IIKO_PASS, IIKO_SERVER, TELEGRAM_TOKEN.
+Muhit: KASSIR_NOMLAR (vergul bilan), REYTING_CHAT_ID, REYTING_THREAD_ID."""
 import hashlib
 import json
 import os
+import sys
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
@@ -19,8 +20,8 @@ PASSWORD = os.environ["IIKO_PASS"]
 TG_TOKEN = os.environ["TELEGRAM_TOKEN"]
 CHAT_ID = os.environ.get("REYTING_CHAT_ID", "775946529")
 THREAD_ID = os.environ.get("REYTING_THREAD_ID", "").strip()
-TOP_N = 10
 ISTISNO = {n.strip().lower() for n in os.environ.get("KASSIR_NOMLAR", "").split(",") if n.strip()}
+TOP_N = 10
 
 
 def api_get(path, params=None):
@@ -55,12 +56,12 @@ def logout(token):
         pass
 
 
-def olap_waiters(token, date_from, date_to):
+def olap(token, date_from, date_to, group_fields, agg_fields):
     body = {
         "reportType": "SALES",
         "buildSummary": "false",
-        "groupByRowFields": ["Department", "OrderWaiter.Name"],
-        "aggregateFields": ["DishDiscountSumInt", "UniqOrderId.OrdersCount", "GuestNum"],
+        "groupByRowFields": group_fields,
+        "aggregateFields": agg_fields,
         "filters": {
             "OpenDate.Typed": {
                 "filterType": "DateRange", "periodType": "CUSTOM",
@@ -70,109 +71,102 @@ def olap_waiters(token, date_from, date_to):
             "OrderDeleted": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
         },
     }
-    return api_post_json("/resto/api/v2/reports/olap", {"key": token}, body)
-
-
-def olap_turlar(token, date_from, date_to):
-    body = {
-        "reportType": "SALES",
-        "buildSummary": "false",
-        "groupByRowFields": ["Department", "OrderType"],
-        "aggregateFields": ["DishDiscountSumInt"],
-        "filters": {
-            "OpenDate.Typed": {
-                "filterType": "DateRange", "periodType": "CUSTOM",
-                "from": date_from, "to": date_to,
-            },
-            "DeletedWithWriteoff": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
-            "OrderDeleted": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
-        },
-    }
-    return api_post_json("/resto/api/v2/reports/olap", {"key": token}, body)
+    natija = api_post_json("/resto/api/v2/reports/olap", {"key": token}, body)
+    return natija.get("data", natija) if isinstance(natija, dict) else natija
 
 
 def tur_nomi(order_type):
     t = (order_type or "").lower()
     if any(w in t for w in ["достав", "deliver", "yetkaz", "dostavka", "kuryer"]):
-        return "dostavka"
-    if any(w in t for w in ["самообслуж", "самообс", "o'z-o'z", "oz-oz"]):
-        return "oz_xizmat"
-    if any(w in t for w in ["себе", "self", "olib", "навынос", "pickup", "вынос", "take"]):
-        return "olib_ketish"
-    return "zal"
+        return "🛵 Dostavka"
+    if any(w in t for w in ["самообслуж", "самообс", "o'z-o'z", "oz-oz", "self"]):
+        return "🧍 O'z-o'ziga xizmat"
+    if any(w in t for w in ["себе", "olib", "навынос", "pickup", "вынос", "take"]):
+        return "🥡 Olib ketish"
+    return "🍽 Zal"
 
 
-TUR_KORINISH = [("zal", "\U0001F37D Zal"), ("dostavka", "\U0001F6F5 Dostavka"),
-                ("olib_ketish", "\U0001F961 Olib ketish"),
-                ("oz_xizmat", "\U0001F9CD O'z-o'ziga xizmat")]
+def pul(n):
+    n = int(round(n))
+    if n >= 1_000_000:
+        return f"{n / 1_000_000:.1f} mln".replace(".0 ", " ")
+    return f"{n:,}".replace(",", " ")
 
 
-def taqsimot_matn(data):
-    qatorlar = data.get("data", data) if isinstance(data, dict) else data
-    fil = {}
-    for q in qatorlar:
+def malumot_yig(token, date_from, date_to):
+    ofis = olap(token, date_from, date_to,
+                ["Department", "OrderWaiter.Name"],
+                ["DishDiscountSumInt", "UniqOrderId.OrdersCount"])
+    turlar = olap(token, date_from, date_to,
+                  ["Department", "OrderType"], ["DishDiscountSumInt"])
+
+    filiallar, kassa, taqsimot = {}, {}, {}
+    for q in ofis:
+        dep = q.get("Department") or "?"
+        nom = (q.get("OrderWaiter.Name") or "").strip()
+        if not nom:
+            continue
+        savdo = float(q.get("DishDiscountSumInt") or 0)
+        buyurtma = float(q.get("UniqOrderId.OrdersCount") or 0)
+        if nom.lower() in ISTISNO:
+            kassa[dep] = kassa.get(dep, 0) + savdo
+            continue
+        filiallar.setdefault(dep, []).append(
+            {"nom": nom, "savdo": savdo, "buyurtma": buyurtma})
+    for q in turlar:
         dep = q.get("Department") or "?"
         xom = q.get("OrderType") or ""
         print(f"OrderType: '{xom}' -> {tur_nomi(xom)}", flush=True)
         s = float(q.get("DishDiscountSumInt") or 0)
-        fil.setdefault(dep, {})
-        fil[dep][tur_nomi(xom)] = fil[dep].get(tur_nomi(xom), 0) + s
-    if not fil:
-        return ""
-    matn = "\U0001F4CA SAVDO TAQSIMOTI (turlar bo'yicha)\n"
-    for dep in sorted(fil):
-        jami = sum(fil[dep].values()) or 1
-        matn += f"\n\U0001F3E2 {dep} \u2014 jami {pul(jami)} so'm\n"
-        for kod_, nom in TUR_KORINISH:
-            s = fil[dep].get(kod_, 0)
-            if s > 0:
-                matn += f"  {nom}: {pul(s)} so'm ({round(s * 100 / jami)}%)\n"
+        taqsimot.setdefault(dep, {})
+        tk = tur_nomi(xom)
+        taqsimot[dep][tk] = taqsimot[dep].get(tk, 0) + s
+    return filiallar, kassa, taqsimot
+
+
+def qator(i, o, filial=None):
+    medal = {1: "🥇", 2: "🥈", 3: "🥉"}.get(i, f"{i}.")
+    chek = o["savdo"] / o["buyurtma"] if o["buyurtma"] else 0
+    joy = f" ({filial})" if filial else ""
+    return (f"{medal} {o['nom']}{joy} — {pul(o['savdo'])} so'm "
+            f"({int(o['buyurtma'])} ta, chek {pul(chek)})\n")
+
+
+def filial_hisobot(filiallar, kassa, taqsimot, date_from, date_to):
+    matn = f"🏆 OFITSIANT REYTINGI — filiallar kesimida\n📅 {date_from} — {date_to}\n"
+    for dep in sorted(set(list(filiallar) + list(kassa) + list(taqsimot))):
+        t = taqsimot.get(dep, {})
+        jami = sum(t.values())
+        matn += f"\n━━━━━━━━━━━━━━\n🏢 {dep} — jami {pul(jami)} so'm\n"
+        if t:
+            qism = " • ".join(f"{k.split()[0]} {round(v * 100 / jami)}%"
+                              for k, v in sorted(t.items(), key=lambda x: -x[1]))
+            matn += f"   {qism}\n"
+        if dep in kassa:
+            matn += f"   🧾 Kassa orqali: {pul(kassa[dep])} so'm\n"
+        royxat = sorted(filiallar.get(dep, []), key=lambda x: -x["savdo"])[:TOP_N]
+        if royxat:
+            for i, o in enumerate(royxat, 1):
+                matn += "   " + qator(i, o)
+        else:
+            matn += "   (ofitsiant kesimi yo'q — savdo kassa orqali yuritiladi)\n"
     return matn
 
 
-def pul(n):
-    return f"{int(round(n)):,}".replace(",", " ")
-
-
-def hisobot_tuz(data, date_from, date_to):
-    qatorlar = data.get("data", data) if isinstance(data, dict) else data
-    filiallar = {}
-    kassa = {}
-    for q in qatorlar:
-        dep = q.get("Department") or "?"
-        ofitsiant = (q.get("OrderWaiter.Name") or "").strip()
-        if not ofitsiant:
-            continue
-        savdo_ = float(q.get("DishDiscountSumInt") or 0)
-        if ofitsiant.lower() in ISTISNO:
-            kassa[dep] = kassa.get(dep, 0) + savdo_
-            continue
-        savdo = float(q.get("DishDiscountSumInt") or 0)
-        buyurtma = float(q.get("UniqOrderId.OrdersCount") or 0)
-        mehmon = float(q.get("GuestNum") or 0)
-        filiallar.setdefault(dep, []).append(
-            {"nom": ofitsiant, "savdo": savdo, "buyurtma": buyurtma, "mehmon": mehmon})
-
-    if not filiallar:
-        return "🏆 Ofitsiant reytingi\n\nMa'lumot topilmadi (davr: " \
-               f"{date_from} — {date_to})."
-
-    matn = (f"🏆 OFITSIANT REYTINGI\n"
-            f"📅 Davr: {date_from} — {date_to}\n"
-            f"(saralash: savdo bo'yicha, top-{TOP_N})\n")
-    for dep in sorted(filiallar):
-        royxat = sorted(filiallar[dep], key=lambda x: -x["savdo"])[:TOP_N]
-        matn += f"\n🏢 {dep}\n"
-        for i, o in enumerate(royxat, 1):
-            chek = o["savdo"] / o["buyurtma"] if o["buyurtma"] else 0
-            medal = {1: "🥇", 2: "🥈", 3: "🥉"}.get(i, f"{i}.")
-            matn += (f"{medal} {o['nom']}: {int(o['buyurtma'])} buyurtma, "
-                     f"{pul(o['savdo'])} so'm, o'rt. chek {pul(chek)}\n")
+def umumiy_hisobot(filiallar, kassa, taqsimot, date_from, date_to):
+    hamma = []
+    for dep, royxat in filiallar.items():
+        for o in royxat:
+            hamma.append({**o, "filial": dep})
+    hamma.sort(key=lambda x: -x["savdo"])
+    tarmoq_jami = sum(sum(t.values()) for t in taqsimot.values())
+    matn = (f"🌐 UMUMIY REYTING — butun tarmoq\n📅 {date_from} — {date_to}\n"
+            f"💰 Tarmoq jami savdo: {pul(tarmoq_jami)} so'm\n\n"
+            f"TOP-{TOP_N} ofitsiant (barcha filiallar):\n")
+    for i, o in enumerate(hamma[:TOP_N], 1):
+        matn += qator(i, o, o["filial"])
     if kassa:
-        matn += "\n🧾 Kassa savdolari (reytingdan tashqari):\n"
-        for dep in sorted(kassa):
-            matn += f"  {dep}: {pul(kassa[dep])} so'm\n"
-    matn += "\n💡 Keyingi bosqich: QR mijoz baholari qo'shilgach, reyting ⭐ bilan to'ladi."
+        matn += f"\n🧾 Kassa savdolari jami: {pul(sum(kassa.values()))} so'm\n"
     return matn
 
 
@@ -202,20 +196,21 @@ def telegram_yubor(matn):
 
 
 def main():
+    rejim = (sys.argv[1] if len(sys.argv) > 1 else "hammasi").lower()
     toshkent = datetime.now(timezone.utc) + timedelta(hours=5)
     kecha = (toshkent - timedelta(days=1)).date()
     boshi = kecha - timedelta(days=6)
     date_from, date_to = boshi.isoformat(), kecha.isoformat()
-    print(f"Davr: {date_from} — {date_to}", flush=True)
+    print(f"Rejim: {rejim}, davr: {date_from} — {date_to}", flush=True)
     token = login()
     try:
-        data = olap_waiters(token, date_from, date_to)
-        turlar = olap_turlar(token, date_from, date_to)
+        filiallar, kassa, taqsimot = malumot_yig(token, date_from, date_to)
     finally:
         logout(token)
-    matn = taqsimot_matn(turlar) + "\n" + hisobot_tuz(data, date_from, date_to)
-    print(matn, flush=True)
-    telegram_yubor(matn)
+    if rejim in ("filial", "hammasi"):
+        telegram_yubor(filial_hisobot(filiallar, kassa, taqsimot, date_from, date_to))
+    if rejim in ("umumiy", "hammasi"):
+        telegram_yubor(umumiy_hisobot(filiallar, kassa, taqsimot, date_from, date_to))
 
 
 if __name__ == "__main__":

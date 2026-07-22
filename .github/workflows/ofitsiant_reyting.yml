@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "0 4 * * 1"
   workflow_dispatch:
+    inputs:
+      rejim:
+        description: "Hisobot rejimi"
+        type: choice
+        options: [hammasi, filial, umumiy]
+        default: hammasi
 
 jobs:
   reyting:
@@ -17,4 +23,4 @@ jobs:
           IIKO_SERVER: ${{ secrets.IIKO_SERVER }}
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           KASSIR_NOMLAR: "Jahongir,Диёр,1,Shahzoda,Shahina"
-        run: python3 ofitsiant_reyting.py
+        run: python3 ofitsiant_reyting.py "${{ github.event.inputs.rejim || 'hammasi' }}"
