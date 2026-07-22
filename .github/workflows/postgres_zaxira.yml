@@ -9,12 +9,12 @@ jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      - name: Dump olish (Docker, Postgres 17 klienti)
+      - name: Dump olish (Docker, Postgres 18 klienti)
         env:
           DB: ${{ secrets.STOP_DATABASE_URL }}
         run: |
           set -euo pipefail
-          docker run --rm postgres:17 pg_dump "$DB" > backup.sql
+          docker run --rm postgres:18 pg_dump "$DB" > backup.sql
           HAJM=$(wc -c < backup.sql)
           echo "Dump hajmi: $HAJM bayt"
           if [ "$HAJM" -lt 1000 ]; then
