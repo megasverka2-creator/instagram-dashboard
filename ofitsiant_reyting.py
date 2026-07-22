@@ -168,6 +168,27 @@ def umumiy_hisobot(filiallar, kassa, taqsimot, date_from, date_to):
     return matn
 
 
+def rich_yubor(markdown_matn, oddiy_matn):
+    """Avval sendRichMessage (markdown), xato bo'lsa oddiy matnga tushadi."""
+    payload = {"chat_id": CHAT_ID, "rich_message": {"markdown": markdown_matn}}
+    if THREAD_ID:
+        payload["message_thread_id"] = int(THREAD_ID)
+    try:
+        req = urllib.request.Request(
+            f"https://api.telegram.org/bot{TG_TOKEN}/sendRichMessage",
+            data=json.dumps(payload).encode(),
+            headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            ok = json.loads(r.read().decode()).get("ok")
+        if ok:
+            print("Rich xabar yuborildi", flush=True)
+            return
+        print("Rich ok=false, oddiy matnga o'tildi", flush=True)
+    except Exception as e:
+        print(f"Rich xato ({e}), oddiy matnga o'tildi", flush=True)
+    telegram_yubor(oddiy_matn)
+
+
 def telegram_yubor(matn):
     bolaklar = []
     while matn:
@@ -193,6 +214,55 @@ def telegram_yubor(matn):
         print(f"Telegram {i + 1}/{len(bolaklar)}: {'ok' if ok else 'XATO'}", flush=True)
 
 
+def md_jadval(royxat, filial_korsat=False):
+    sarlavha = "| № | Ofitsiant |" + (" Filial |" if filial_korsat else "") + " Buyurtma | Savdo | Chek |\n"
+    sarlavha += "|---|---|" + ("---|" if filial_korsat else "") + "---|---|---|\n"
+    qatorlar = ""
+    for i, o in enumerate(royxat, 1):
+        medal = {1: "🥇", 2: "🥈", 3: "🥉"}.get(i, str(i))
+        chek = o["savdo"] / o["buyurtma"] if o["buyurtma"] else 0
+        fil = f" {o.get('filial', '')} |" if filial_korsat else ""
+        qatorlar += (f"| {medal} | {o['nom']} |{fil} {int(o['buyurtma'])} | "
+                     f"{pul(o['savdo'])} | {pul(chek)} |\n")
+    return sarlavha + qatorlar
+
+
+def filial_rich(filiallar, kassa, taqsimot, date_from, date_to):
+    md = f"# 🏆 Ofitsiant reytingi — filiallar\n\n**Davr:** {date_from} — {date_to}\n"
+    for dep in sorted(set(list(filiallar) + list(kassa) + list(taqsimot))):
+        t = taqsimot.get(dep, {})
+        jami = sum(t.values())
+        md += f"\n## 🏢 {dep} — {pul(jami)} so'm\n"
+        if t:
+            md += " • ".join(f"{k} {round(v * 100 / jami)}%"
+                             for k, v in sorted(t.items(), key=lambda x: -x[1])) + "\n"
+        if dep in kassa:
+            md += f"\n🧾 Kassa orqali: **{pul(kassa[dep])} so'm**\n"
+        royxat = sorted(filiallar.get(dep, []), key=lambda x: -x["savdo"])[:TOP_N]
+        if royxat:
+            md += "\n" + md_jadval(royxat)
+        else:
+            md += "\n_(ofitsiant kesimi yo'q — savdo kassa orqali yuritiladi)_\n"
+    return md
+
+
+def umumiy_rich(filiallar, kassa, taqsimot, date_from, date_to):
+    hamma = []
+    for dep, royxat in filiallar.items():
+        for o in royxat:
+            hamma.append({**o, "filial": dep})
+    hamma.sort(key=lambda x: -x["savdo"])
+    tarmoq_jami = sum(sum(t.values()) for t in taqsimot.values())
+    md = (f"# 🌐 Umumiy reyting — butun tarmoq\n\n"
+          f"**Davr:** {date_from} — {date_to}\n\n"
+          f"**💰 Tarmoq jami savdo:** {pul(tarmoq_jami)} so'm\n\n"
+          f"## TOP-{TOP_N} ofitsiant\n\n")
+    md += md_jadval(hamma[:TOP_N], filial_korsat=True)
+    if kassa:
+        md += f"\n🧾 Kassa savdolari jami: **{pul(sum(kassa.values()))} so'm**\n"
+    return md
+
+
 def main():
     rejim = (sys.argv[1] if len(sys.argv) > 1 else "hammasi").lower()
     toshkent = datetime.now(timezone.utc) + timedelta(hours=5)
@@ -206,9 +276,11 @@ def main():
     finally:
         logout(token)
     if rejim in ("filial", "hammasi"):
-        telegram_yubor(filial_hisobot(filiallar, kassa, taqsimot, date_from, date_to))
+        rich_yubor(filial_rich(filiallar, kassa, taqsimot, date_from, date_to),
+                   filial_hisobot(filiallar, kassa, taqsimot, date_from, date_to))
     if rejim in ("umumiy", "hammasi"):
-        telegram_yubor(umumiy_hisobot(filiallar, kassa, taqsimot, date_from, date_to))
+        rich_yubor(umumiy_rich(filiallar, kassa, taqsimot, date_from, date_to),
+                   umumiy_hisobot(filiallar, kassa, taqsimot, date_from, date_to))
 
 
 if __name__ == "__main__":
