@@ -1,0 +1,19 @@
+name: Ofitsiant reytingi (haftalik)
+
+on:
+  schedule:
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+
+jobs:
+  reyting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reyting tuzish va yuborish
+        env:
+          IIKO_LOGIN: ${{ secrets.IIKO_LOGIN }}
+          IIKO_PASS: ${{ secrets.IIKO_PASS }}
+          IIKO_SERVER: ${{ secrets.IIKO_SERVER }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        run: python3 ofitsiant_reyting.py
