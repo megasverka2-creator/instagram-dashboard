@@ -20,6 +20,7 @@ TG_TOKEN = os.environ["TELEGRAM_TOKEN"]
 CHAT_ID = os.environ.get("REYTING_CHAT_ID", "775946529")
 THREAD_ID = os.environ.get("REYTING_THREAD_ID", "").strip()
 TOP_N = 10
+ISTISNO = {n.strip().lower() for n in os.environ.get("KASSIR_NOMLAR", "").split(",") if n.strip()}
 
 
 def api_get(path, params=None):
@@ -79,10 +80,15 @@ def pul(n):
 def hisobot_tuz(data, date_from, date_to):
     qatorlar = data.get("data", data) if isinstance(data, dict) else data
     filiallar = {}
+    kassa = {}
     for q in qatorlar:
         dep = q.get("Department") or "?"
         ofitsiant = (q.get("OrderWaiter.Name") or "").strip()
         if not ofitsiant:
+            continue
+        savdo_ = float(q.get("DishDiscountSumInt") or 0)
+        if ofitsiant.lower() in ISTISNO:
+            kassa[dep] = kassa.get(dep, 0) + savdo_
             continue
         savdo = float(q.get("DishDiscountSumInt") or 0)
         buyurtma = float(q.get("UniqOrderId.OrdersCount") or 0)
@@ -105,6 +111,10 @@ def hisobot_tuz(data, date_from, date_to):
             medal = {1: "🥇", 2: "🥈", 3: "🥉"}.get(i, f"{i}.")
             matn += (f"{medal} {o['nom']}: {int(o['buyurtma'])} buyurtma, "
                      f"{pul(o['savdo'])} so'm, o'rt. chek {pul(chek)}\n")
+    if kassa:
+        matn += "\n🧾 Kassa savdolari (reytingdan tashqari):\n"
+        for dep in sorted(kassa):
+            matn += f"  {dep}: {pul(kassa[dep])} so'm\n"
     matn += "\n💡 Keyingi bosqich: QR mijoz baholari qo'shilgach, reyting ⭐ bilan to'ladi."
     return matn
 

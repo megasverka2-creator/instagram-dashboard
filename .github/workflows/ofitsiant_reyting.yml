@@ -16,4 +16,5 @@ jobs:
           IIKO_PASS: ${{ secrets.IIKO_PASS }}
           IIKO_SERVER: ${{ secrets.IIKO_SERVER }}
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          KASSIR_NOMLAR: "Jahongir,Диёр,1,Shahzoda,Shahina"
         run: python3 ofitsiant_reyting.py
