@@ -9,15 +9,26 @@ jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      - name: Postgres klientini ornatish
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
-
-      - name: Dump olish va shifrlash
+      - name: Dump olish (Docker, Postgres 17 klienti)
         env:
           DB: ${{ secrets.STOP_DATABASE_URL }}
+        run: |
+          set -euo pipefail
+          docker run --rm postgres:17 pg_dump "$DB" > backup.sql
+          HAJM=$(wc -c < backup.sql)
+          echo "Dump hajmi: $HAJM bayt"
+          if [ "$HAJM" -lt 1000 ]; then
+            echo "XATO: dump juda kichik - backup ishlamadi!"
+            exit 1
+          fi
+          grep -c "CREATE TABLE" backup.sql
+
+      - name: Shifrlash
+        env:
           PAROL: ${{ secrets.BACKUP_PAROL }}
         run: |
-          pg_dump "$DB" | gzip > backup.sql.gz
+          set -euo pipefail
+          gzip backup.sql
           openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -pass env:PAROL -in backup.sql.gz -out backup.sql.gz.enc
           rm backup.sql.gz
           ls -la backup.sql.gz.enc
