@@ -1,0 +1,16 @@
+name: RMS stop razvedka (bir martalik)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  razvedka:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: RMS stop-list yollarini qidirish
+        env:
+          IIKO_LOGIN: ${{ secrets.IIKO_LOGIN }}
+          IIKO_PASS: ${{ secrets.IIKO_PASS }}
+          IIKO_SERVER: ${{ secrets.IIKO_SERVER }}
+        run: python3 rms_stop_razvedka.py
