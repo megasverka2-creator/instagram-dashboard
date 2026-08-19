@@ -6,6 +6,7 @@ iiko Savdo Kollektori
 iiko Server API'dan kunlik savdo ma'lumotlarini yig'adi:
   - savdo_data.json     — kunlik tushum, cheklar, o'rtacha chek (filial bo'yicha)
   - savdo_taomlar.json  — oxirgi 7 kun eng ko'p sotilgan taomlar (filial bo'yicha)
+  - savdo_kategoriya.json — kategoriya/menyu guruhi kesimida kunlik savdo (filial bo'yicha)
 
 GitHub Secrets: IIKO_SERVER (https://nomingiz.iiko.it), IIKO_LOGIN, IIKO_PASS
 Har kuni avtomatik ishlaydi (GitHub Actions).
@@ -44,10 +45,12 @@ DATA_ENC = os.path.join(BASE, "savdo_data.enc.json")        # yangi shifrlangan 
 DISHES_ENC = os.path.join(BASE, "savdo_taomlar.enc.json")
 TYPES_ENC = os.path.join(BASE, "savdo_turlar.enc.json")
 DISHDAY_ENC = os.path.join(BASE, "savdo_taom_kun.enc.json")  # taom×kun (atributsiya)
+CATEG_ENC = os.path.join(BASE, "savdo_kategoriya.enc.json")  # kategoriya×filial×kun
 
 import shifr
 
 DAYS_BACK = 7  # har safar oxirgi 7 kunni yangilab yig'amiz (kech kelgan cheklar uchun)
+KATEG_KUN = 90  # kategoriya tarixida saqlanadigan kunlar soni
 
 
 # =============================================================
@@ -164,6 +167,27 @@ def olap_top_dishes(token, date_from, date_to):
         "buildSummary": "false",
         "groupByRowFields": ["Department", "DishGroup", "DishName"],
         "aggregateFields": ["DishDiscountSumInt", "DishAmountInt"],
+        "filters": {
+            "OpenDate.Typed": {
+                "filterType": "DateRange", "periodType": "CUSTOM",
+                "from": date_from, "to": date_to,
+            },
+            "DeletedWithWriteoff": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
+            "OrderDeleted": {"filterType": "IncludeValues", "values": ["NOT_DELETED"]},
+        },
+    }
+    return api_post_json("/resto/api/v2/reports/olap", {"key": token}, body)
+
+
+def olap_categories(token, date_from, date_to):
+    """Kategoriya kesimida kunlik savdo: sana + filial + kategoriya + menyu guruhi.
+    DishCategory — buxgalteriya kategoriyasi (Oshxona/Bar/...),
+    DishGroup     — menyu guruhi (Burgerlar/Lavashlar/Ichimliklar/...)."""
+    body = {
+        "reportType": "SALES",
+        "buildSummary": "false",
+        "groupByRowFields": ["OpenDate.Typed", "Department", "DishCategory", "DishGroup"],
+        "aggregateFields": ["DishDiscountSumInt", "DishAmountInt", "UniqOrderId.OrdersCount"],
         "filters": {
             "OpenDate.Typed": {
                 "filterType": "DateRange", "periodType": "CUSTOM",
@@ -394,6 +418,51 @@ def main():
             print(f"  Saqlandi (shifrlangan): {DISHDAY_ENC} ({len(top_names)} taom, {len(days_map)} kun)")
         except Exception as e:
             print(f"  ! Taom×kun yig'ishda xato (qolgan ma'lumot saqlandi): {e}")
+
+        # --- 5. Kategoriya × filial × kun (buxgalteriya kategoriyasi + menyu guruhi) ---
+        try:
+            cdata = olap_categories(token, date_from, date_to)
+            crows = cdata.get("data", [])
+            # sana -> filial -> {"kategoriya"|"guruh"} -> nom -> {revenue, amount, checks}
+            cdaily = {}
+            for r in crows:
+                date = (r.get("OpenDate.Typed") or "")[:10]
+                if not date:
+                    continue
+                dept = dept_key(r.get("Department") or "?")
+                rev = round(r.get("DishDiscountSumInt") or 0)
+                amt = round(r.get("DishAmountInt") or 0)
+                chk = round(r.get("UniqOrderId.OrdersCount") or 0)
+                if not rev and not amt:
+                    continue
+                node = cdaily.setdefault(date, {}).setdefault(
+                    dept, {"kategoriya": {}, "guruh": {}})
+                for kesim, nom in (("kategoriya", r.get("DishCategory")),
+                                   ("guruh", r.get("DishGroup"))):
+                    k = node[kesim].setdefault(nom or "Boshqa",
+                                               {"revenue": 0, "amount": 0, "checks": 0})
+                    k["revenue"] += rev
+                    k["amount"] += amt
+                    k["checks"] += chk
+
+            chist = shifr.load_encrypted(CATEG_ENC, SAVDO_PAROL) or []
+            if not isinstance(chist, list):
+                chist = []
+            refreshed_c = set(cdaily.keys())
+            chist = [h for h in chist if h.get("date") not in refreshed_c]
+            for date in sorted(cdaily.keys()):
+                chist.append({"date": date, "departments": cdaily[date]})
+            chist.sort(key=lambda h: h.get("date", ""))
+            chist = chist[-KATEG_KUN:]
+            shifr.save_encrypted(CATEG_ENC, chist, SAVDO_PAROL)
+            nomlar = {n for d in cdaily.values() for f in d.values() for n in f["guruh"]}
+            kats = {n for d in cdaily.values() for f in d.values() for n in f["kategoriya"]}
+            print(f"  Saqlandi (shifrlangan): {CATEG_ENC} "
+                  f"({len(chist)} kun, {len(kats)} kategoriya, {len(nomlar)} menyu guruhi)")
+            print("  iiko'dagi kategoriyalar: " + ", ".join(sorted(kats)[:20]))
+            print("  iiko'dagi menyu guruhlari: " + ", ".join(sorted(nomlar)[:25]))
+        except Exception as e:
+            print(f"  ! Kategoriya yig'ishda xato (qolgan ma'lumot saqlandi): {e}")
 
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")[:300]
