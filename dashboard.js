@@ -627,11 +627,16 @@ async function loadData() {
     const data = await fetchEncrypted("instagram_data.enc.json", "instagram_data.json");
     if (!data) throw new Error("yo'q");
     if (Array.isArray(data) && data.length) {
-      HISTORY = data;
+      // Token tugagan yoki API ishlamagan kunlarda tarixda akkauntsiz ("bo'sh")
+      // kunlar qolib ketadi. Ularni tashlab yubormasak, "Haftalik" davr faqat
+      // shu bo'sh kunlarni oladi va butun sahifa quruq ko'rinadi.
+      const tozaTarix = data.filter(s => s.accounts && Object.keys(s.accounts).length);
+      if (!tozaTarix.length) throw new Error("bo'sh");
+      HISTORY = tozaTarix;
       document.getElementById("demoBanner").style.display = "none";
       const last = HISTORY[HISTORY.length - 1];
       document.getElementById("lastUpdate").textContent = last.date || "—";
-      showTokenBanner(last.token);
+      showTokenBanner(last.token, data[data.length - 1]);
       // Maqsadlar faylini yuklash (bo'lsa)
       try {
         const g = await fetch("maqsadlar.json?v=" + Date.now());
@@ -647,19 +652,52 @@ async function loadData() {
   }
 }
 
-// ---- Token muddati ogohlantirishi ----
-function showTokenBanner(token) {
+// ---- Sana bugundan necha kun orqada? ----
+function kunlarOrqada(sana) {
+  const d = new Date(sana + "T00:00:00");
+  if (isNaN(d.getTime())) return null;
+  const bugun = new Date();
+  bugun.setHours(0, 0, 0, 0);
+  return Math.round((bugun - d) / 86400000);
+}
+
+const WARN_SVG = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v4M12 16v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
+// ---- Token / eskirgan ma'lumot ogohlantirishi ----
+// token    — ko'rsatilayotgan (oxirgi haqiqiy) kunning token holati
+// xomOxirgi — tarixdagi eng so'nggi yozuv (bo'sh bo'lishi ham mumkin)
+function showTokenBanner(token, xomOxirgi) {
   const el = document.getElementById("tokenBanner");
-  if (!el || !token || token.never || token.days_left === null) {
-    if (el) el.style.display = "none";
+  if (!el) return;
+
+  const oxirgiToza = HISTORY[HISTORY.length - 1];
+  const eskirgan = oxirgiToza && oxirgiToza.date ? kunlarOrqada(oxirgiToza.date) : null;
+  const tokenTugagan = !!(xomOxirgi && xomOxirgi.token && xomOxirgi.token.expired);
+
+  // 1) Ma'lumot eskirgan — bu eng muhim ogohlantirish, shuning uchun birinchi.
+  if (tokenTugagan || (eskirgan !== null && eskirgan >= 2)) {
+    const sabab = tokenTugagan
+      ? "Sabab: <b>Instagram token muddati tugagan</b>."
+      : "Eng ko'p uchraydigan sabab — Instagram token muddati tugagan.";
+    el.className = "info-banner glass " + ((eskirgan === null || eskirgan >= 5) ? "danger" : "warn");
+    el.innerHTML = `${WARN_SVG}<p><b>Ma'lumot yangilanmayapti${eskirgan !== null ? ` — ${eskirgan} kundan beri` : ""}.</b>
+      Quyida <b>${oxirgiToza && oxirgiToza.date ? oxirgiToza.date : "—"}</b> holatidagi oxirgi haqiqiy ma'lumot ko'rsatilmoqda.
+      ${sabab} Yangi token olib, GitHub → Settings → Secrets and variables → Actions →
+      <code>IG_ACCESS_TOKEN</code> ni yangilang, so'ng Actions → <b>"Instagram ma'lumot yig'ish"</b> → Run workflow.</p>`;
+    el.style.display = "flex";
+    return;
+  }
+
+  // 2) Token tez orada tugaydimi?
+  if (!token || token.never || token.days_left === null || token.days_left === undefined) {
+    el.style.display = "none";
     return;
   }
   const days = token.days_left;
   if (days > 14) { el.style.display = "none"; return; } // hammasi joyida, ko'rsatmaymiz
 
-  const warnSvg = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3l9 16H3l9-16z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v4M12 16v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
   el.className = "info-banner glass " + (days <= 5 ? "danger" : "warn");
-  el.innerHTML = `${warnSvg}<p><b>Token muddati tugayapti!</b> Instagram token ${days} kundan keyin (${token.expires_at}) tugaydi. Shundan keyin yangi ma'lumot kelmaydi. Yangi token olib, GitHub'dagi <code>IG_ACCESS_TOKEN</code> Secret'ini yangilang.</p>`;
+  el.innerHTML = `${WARN_SVG}<p><b>Token muddati tugayapti!</b> Instagram token ${days} kundan keyin (${token.expires_at}) tugaydi. Shundan keyin yangi ma'lumot kelmaydi. Yangi token olib, GitHub'dagi <code>IG_ACCESS_TOKEN</code> Secret'ini yangilang.</p>`;
   el.style.display = "flex";
 }
 
