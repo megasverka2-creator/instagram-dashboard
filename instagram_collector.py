@@ -36,6 +36,10 @@ ACCOUNTS = {
 
 ACCESS_TOKEN = os.environ.get("IG_ACCESS_TOKEN", ACCESS_TOKEN)
 
+# Token bilan bog'liq xato (OAuthException, code 190) — api_get uni shu yerga yozadi,
+# keyin snapshot va log xabarlarida ishlatiladi.
+TOKEN_XATO = None
+
 API_VERSION = "v22.0"
 BASE_URL = f"https://graph.facebook.com/{API_VERSION}"
 DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "instagram_data.json")
@@ -55,8 +59,17 @@ def api_get(path, params=None):
         with urllib.request.urlopen(url, timeout=30) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
+        global TOKEN_XATO
         body = e.read().decode("utf-8", errors="replace")
         print(f"  ! API xato ({e.code}): {body[:200]}")
+        # Token eskirgan/bekor qilingan bo'lsa — alohida belgilab qo'yamiz,
+        # chunki bu holatda hamma so'rov barbir muvaffaqiyatsiz bo'ladi.
+        try:
+            xato = json.loads(body).get("error", {})
+            if xato.get("code") == 190:
+                TOKEN_XATO = xato.get("message", "Token yaroqsiz")
+        except Exception:
+            pass
         return None
     except Exception as e:
         print(f"  ! Ulanish xatosi: {e}")
@@ -270,6 +283,10 @@ def check_token_expiry():
             }
     except Exception as e:
         print(f"  ! Token tekshirishda xato: {e}")
+    if TOKEN_XATO:
+        # debug_token ham ishlamadi va sabab — tokenning o'zi.
+        return {"days_left": 0, "expires_at": None, "never": False,
+                "expired": True, "xato": TOKEN_XATO}
     return {"days_left": None, "expires_at": None, "never": False}
 
 
@@ -320,6 +337,17 @@ def collect():
         print(f"     followers: {followers}, ER: {analysis['engagement_rate']}%, "
               f"reach(7d): {insights.get('reach', 0)}, profil ko'rish: {insights.get('profile_views', 0)}")
 
+    if not snapshot["accounts"]:
+        # Hech bir akkaunt olinmadi. Bo'sh kunni tarixga yozsak, sahifadagi
+        # "oxirgi 7 kun" quruq chiqadi va muammo bilinmay qoladi — shuning uchun
+        # hech narsa saqlamaymiz va workflow'ni ataylab xatoga chiqaramiz.
+        print("\n  XATO: birorta ham akkaunt ma'lumoti olinmadi — bo'sh kun saqlanmadi.")
+        if TOKEN_XATO:
+            print(f"  Sabab: {TOKEN_XATO}")
+            print("  Yechim: yangi Instagram token oling va GitHub -> Settings -> "
+                  "Secrets and variables -> Actions -> IG_ACCESS_TOKEN ni yangilang.")
+        sys.exit(1)
+
     # Tarixni yuklash: avval shifrlangan, bo'lmasa eski ochiq (ko'chish davri)
     history = None
     if SAVDO_PAROL:
@@ -332,6 +360,13 @@ def collect():
             history = None
     if history is None:
         history = []
+
+    # Token tugagan davrda yozilib qolgan bo'sh kunlarni tarixdan olib tashlaymiz
+    bosh_kunlar = [h for h in history if not h.get("accounts")]
+    if bosh_kunlar:
+        print(f"  Bo'sh kunlar tozalandi: {len(bosh_kunlar)} ta "
+              f"({bosh_kunlar[0].get('date')} … {bosh_kunlar[-1].get('date')})")
+        history = [h for h in history if h.get("accounts")]
 
     today = snapshot["date"]
     history = [h for h in history if h.get("date") != today]
