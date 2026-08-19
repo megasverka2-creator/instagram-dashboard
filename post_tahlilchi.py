@@ -144,7 +144,8 @@ def main():
     history = shifr.load_encrypted(IG_ENC, SAVDO_PAROL) if SAVDO_PAROL else None
     if not history:
         print("XATO: instagram ma'lumoti topilmadi/bo'sh.")
-        sys.exit(0)
+        # Bu haqiqiy xato — workflow qizil bo'lishi va xato_signal ogohlantirishi kerak.
+        sys.exit(1)
     snap = history[-1]
     snap_date = datetime.strptime(snap["date"], "%Y-%m-%d").date()
     print(f"Oxirgi snapshot: {snap['date']}")
@@ -207,7 +208,7 @@ def main():
 
     if not API_KEY:
         print("XATO: ANTHROPIC_API_KEY topilmadi (GitHub Secret'ni tekshiring).")
-        sys.exit(0)
+        sys.exit(1)
 
     yangi = 0
     for p in nomzod[:MAX_NEW_PER_RUN]:
