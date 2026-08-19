@@ -374,8 +374,12 @@ def collect():
     history.sort(key=lambda h: h.get("date", ""))
 
     if SAVDO_PAROL:
-        shifr.save_encrypted(IG_ENC, history, SAVDO_PAROL)
-        print(f"\n  Saqlandi (shifrlangan): {IG_ENC}")
+        # v2 format: har kun alohida shifrlanadi, o'zgarmagan kunlar
+        # eski baytlari bilan qoladi — git faylni har kuni to'liq
+        # qayta saqlamaydi (kuniga ~1.25 MB o'rniga ~22 KB).
+        yangilangan = shifr.save_days_encrypted(IG_ENC, history, SAVDO_PAROL)
+        print(f"\n  Saqlandi (shifrlangan, v2): {IG_ENC}")
+        print(f"  Qayta shifrlangan kunlar: {yangilangan} / {len(history)}")
     else:
         with open(DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(history, f, ensure_ascii=False, indent=2)

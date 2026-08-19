@@ -3,11 +3,12 @@
 //  Bu fayl barcha sahifalarga ulanadi (kirish.html dan tashqari)
 // ============================================================
 (function () {
-  // Parol hash'i (SHA-256). Parolni o'zgartirish: yangi parol hash'ini shu yerga qo'ying.
-  const PAROL_HASH = "38f35912846eb95406aa8620795a68851541e0bd26e1969216ab22352b11f958";
+  // Parol hash'i rp_auth.js dan keladi (u shu fayldan OLDIN ulanishi shart).
+  // Parolni o'zgartirish: parol_almashtirish workflow'ini ishga tushiring.
 
   // --- 1. Himoya tekshiruvi ---
-  if (sessionStorage.getItem("rp_auth") !== PAROL_HASH) {
+  if (typeof RP_PAROL_HASH === "undefined" ||
+      sessionStorage.getItem("rp_auth") !== RP_PAROL_HASH) {
     location.replace("kirish.html");
     return;
   }

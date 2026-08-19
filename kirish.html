@@ -67,19 +67,13 @@
     <div class="foot">Faqat jamoa a'zolari uchun</div>
   </div>
 
+<script src="rp_auth.js"></script>
 <script>
-const PAROL_HASH = "38f35912846eb95406aa8620795a68851541e0bd26e1969216ab22352b11f958";
-
-async function sha256(text) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
-  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
-}
-
 async function kirish() {
   const val = document.getElementById("parol").value;
   if (!val) return;
-  const hash = await sha256(val);
-  if (hash === PAROL_HASH) {
+  const hash = await rpParolHash(val);
+  if (hash === RP_PAROL_HASH) {
     sessionStorage.setItem("rp_auth", hash);
     // Shifrlangan savdo ma'lumotlarini ochish uchun (faqat shu brauzer seansida saqlanadi)
     sessionStorage.setItem("rp_pw", btoa(unescape(encodeURIComponent(val))));
